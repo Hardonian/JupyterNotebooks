@@ -1,12 +1,38 @@
 # Agent Factory Platform - API Reference
 
+Complete reference for the Agent Factory REST API, Python SDK, and CLI.
+
+---
+
 ## REST API
 
 Base URL: `http://localhost:8000/api/v1`
 
 ### Authentication
 
-Currently, the API does not require authentication for development. In production, add API key authentication.
+**Development:** Authentication is optional for local development.
+
+**Production:** Use API key authentication:
+
+```http
+Authorization: Bearer your-api-key
+```
+
+Or use API key header:
+
+```http
+X-API-Key: your-api-key
+```
+
+**Getting an API Key:**
+
+```bash
+# Via CLI
+agent-factory auth create-api-key --name "Production Key"
+
+# Via API
+POST /api/v1/auth/api-keys
+```
 
 ### Agents
 
