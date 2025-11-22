@@ -10,18 +10,23 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "GPL-3.0"}
 authors = [
-    {name = "Agent Factory Team"},
+    {name = "Agent Factory Team", email = "support@agentfactory.io"},
 ]
-keywords = ["ai", "agents", "automation", "llm", "openai"]
+keywords = ["ai", "agents", "automation", "llm", "openai", "anthropic", "education", "higher-education"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
+    "Intended Audience :: Education",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Education",
 ]
 
 dependencies = [
@@ -45,7 +50,16 @@ dependencies = [
     "stripe>=7.0.0",
     "passlib>=1.7.4",
     "bcrypt>=4.0.0",
+    "packaging>=23.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/agentfactory/platform"
+Documentation = "https://docs.agentfactory.io"
+Repository = "https://github.com/agentfactory/platform"
+Issues = "https://github.com/agentfactory/platform/issues"
+Marketplace = "https://marketplace.agentfactory.io"
+Partnerships = "https://www.mheducation.ca/partnerships"
 
 [project.optional-dependencies]
 dev = [
@@ -54,6 +68,11 @@ dev = [
     "black>=23.0.0",
     "ruff>=0.1.0",
     "mypy>=1.0.0",
+]
+demo = [
+    "streamlit>=1.28.0",
+    "plotly>=5.17.0",
+    "pandas>=2.0.0",
 ]
 
 [project.scripts]
