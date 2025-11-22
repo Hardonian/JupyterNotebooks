@@ -334,7 +334,18 @@ class Blueprint:
         )
     
     def _generate_readme(self) -> str:
-        """Generate README for blueprint."""
+        """
+        Generate README for blueprint.
+        
+        Returns:
+            README content as string
+        """
+        env_vars_section = ""
+        if self.config.environment_variables:
+            env_vars_section = "\n## Configuration\n\nRequired environment variables:\n" + "\n".join(
+                f"- `{k}`: {v}" for k, v in self.config.environment_variables.items()
+            )
+        
         return f"""# {self.name}
 
 {self.description}
@@ -352,12 +363,7 @@ class Blueprint:
 ```bash
 agent-factory blueprint install {self.id}
 ```
-
-## Configuration
-
-Required environment variables:
-{chr(10).join(f"- `{k}`: {v}" for k, v in self.config.environment_variables.items())}
-
+{env_vars_section}
 ## Usage
 
 [Usage instructions would go here]
@@ -368,7 +374,12 @@ Required environment variables:
 """
     
     def _generate_env_example(self) -> str:
-        """Generate .env.example file."""
+        """
+        Generate .env.example file content.
+        
+        Returns:
+            .env.example content as string
+        """
         lines = ["# Blueprint Configuration", ""]
         for key, description in self.config.environment_variables.items():
             lines.append(f"# {description}")

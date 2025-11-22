@@ -41,12 +41,16 @@ setup_rate_limiting(
     requests_per_hour=int(os.getenv("RATE_LIMIT_PER_HOUR", "1000"))
 )
 
-# Initialize database
-try:
-    init_db()
-    logger.info("Database initialized")
-except Exception as e:
-    logger.error("Failed to initialize database", error=str(e))
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize services on application startup."""
+    try:
+        init_db()
+        logger.info("Database initialized")
+    except Exception as e:
+        logger.error("Failed to initialize database", error=str(e))
+
 
 # Include routers
 app.include_router(agents.router, prefix="/api/v1/agents", tags=["agents"])

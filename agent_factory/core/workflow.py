@@ -194,7 +194,16 @@ class Workflow:
             )
     
     def _map_inputs(self, mapping: Dict[str, str], context: Dict[str, Any]) -> str:
-        """Map workflow context to agent input."""
+        """
+        Map workflow context to agent input.
+        
+        Args:
+            mapping: Input mapping dictionary
+            context: Workflow context
+            
+        Returns:
+            Mapped input string
+        """
         # Simple mapping - in production, would support expressions like "$trigger.query"
         if not mapping:
             # Default: use first context value as input
@@ -210,7 +219,16 @@ class Workflow:
         return "\n".join(inputs)
     
     def _map_outputs(self, mapping: Dict[str, str], output: str) -> Dict[str, Any]:
-        """Map agent output to workflow context."""
+        """
+        Map agent output to workflow context.
+        
+        Args:
+            mapping: Output mapping dictionary
+            output: Agent output string
+            
+        Returns:
+            Mapped output dictionary
+        """
         result = {}
         
         if not mapping:
@@ -224,7 +242,16 @@ class Workflow:
         return result
     
     def _resolve_path(self, path: str, context: Dict[str, Any]) -> Any:
-        """Resolve a path expression in context."""
+        """
+        Resolve a path expression in context.
+        
+        Args:
+            path: Path expression (e.g., "$steps.search.output")
+            context: Workflow context dictionary
+            
+        Returns:
+            Resolved value or None
+        """
         # Simple implementation - in production, would support "$steps.search.output"
         if path.startswith("$"):
             # Remove $ and resolve
