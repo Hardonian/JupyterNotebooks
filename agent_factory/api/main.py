@@ -59,6 +59,11 @@ app.include_router(workflows.router, prefix="/api/v1/workflows", tags=["workflow
 app.include_router(blueprints.router, prefix="/api/v1/blueprints", tags=["blueprints"])
 app.include_router(executions.router, prefix="/api/v1/executions", tags=["executions"])
 
+# Additional routers
+from agent_factory.api.routes import scheduler, payments
+app.include_router(scheduler.router, prefix="/api/v1/scheduler", tags=["scheduler"])
+app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
+
 
 @app.middleware("http")
 async def logging_middleware(request: Request, call_next):

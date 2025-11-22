@@ -172,10 +172,11 @@ class Workflow:
                 # Check branching
                 if step.id in self.branching:
                     condition = self.branching[step.id]
-                    if self._evaluate_condition(condition, workflow_context):
-                        # Branch to next step based on condition
-                        # For now, continue to next step
-                        pass
+                    if not self._evaluate_condition(condition, workflow_context):
+                        # Condition not met, skip remaining steps or branch to alternative path
+                        # For now, stop execution if condition not met
+                        # In production, would support alternative branch paths
+                        break
             
             execution_time = time.time() - start_time
             
@@ -356,6 +357,12 @@ class Workflow:
                     "agent_id": step.agent_id,
                     "input_mapping": step.input_mapping,
                     "output_mapping": step.output_mapping,
+                    "condition": {
+                        "expression": step.condition.expression,
+                        "description": step.condition.description,
+                    } if step.condition else None,
+                    "timeout": step.timeout,
+                    "retry_attempts": step.retry_attempts,
                 }
                 for step in self.steps
             ],
@@ -363,6 +370,7 @@ class Workflow:
                 {
                     "type": trigger.type.value,
                     "config": trigger.config,
+                    "enabled": trigger.enabled,
                 }
                 for trigger in self.triggers
             ],
