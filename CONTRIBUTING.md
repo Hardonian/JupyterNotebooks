@@ -1,169 +1,287 @@
-# Contributing to Agent Factory Platform
+# Contributing to Agent Factory
 
-Thank you for contributing to Agent Factory Platform! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to Agent Factory! This guide will help you get started.
 
-## Development Setup
+---
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-org/agent-factory.git
-   cd agent-factory
-   ```
+## 🤝 How to Contribute
 
-2. **Install dependencies:**
-   ```bash
-   pip install -e ".[dev]"
-   ```
+### Reporting Bugs
 
-3. **Run tests locally:**
-   ```bash
-   make test-unit      # Fast unit tests
-   make test           # All tests
-   make ci             # All CI checks (lint, type-check, test-unit)
-   ```
+Found a bug? Please open an issue with:
+- **Clear description** of the problem
+- **Steps to reproduce** the issue
+- **Expected vs. actual behavior**
+- **Environment details** (Python version, OS, etc.)
+- **Error messages** or logs (if applicable)
 
-## Running CI Checks Locally
+### Suggesting Features
 
-Before submitting a PR, run the same checks that CI runs:
+Have an idea? Open an issue with:
+- **Clear description** of the feature
+- **Use case** and motivation
+- **Proposed implementation** (if you have one)
+- **Examples** or mockups (if applicable)
+
+### Contributing Code
+
+1. **Fork the repository**
+2. **Create a branch:** `git checkout -b feature/your-feature-name`
+3. **Make your changes:** Follow our coding standards
+4. **Write tests:** Ensure your code is tested
+5. **Update docs:** Update relevant documentation
+6. **Submit a PR:** Include a clear description
+
+---
+
+## 🛠️ Development Setup
+
+### Prerequisites
+
+- Python 3.8+
+- pip
+- git
+
+### Installation
 
 ```bash
-# Run all CI checks
-make ci
+# Clone your fork
+git clone https://github.com/your-username/platform.git
+cd platform
 
-# Or run individually
-make lint          # Run linters (ruff + black check)
-make type-check    # Run type checker (mypy)
-make test-unit     # Run unit tests only
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -e ".[dev]"
 ```
-
-## Code Style
-
-- **Formatting**: We use `black` for code formatting
-  ```bash
-  make format      # Auto-format code
-  ```
-
-- **Linting**: We use `ruff` for linting
-  ```bash
-  make lint        # Check linting
-  ```
-
-- **Type Checking**: We use `mypy` for type checking
-  ```bash
-  make type-check  # Check types
-  ```
-
-## Test Guidelines
-
-### Test Markers
-
-We use pytest markers to categorize tests:
-
-- `@pytest.mark.unit` - Fast unit tests with no external I/O (run in CI)
-- `@pytest.mark.integration` - Integration tests requiring external services (run nightly)
-- `@pytest.mark.slow` - Slow tests taking >1 second (run nightly)
 
 ### Running Tests
 
 ```bash
-# Unit tests only (fast, runs in CI)
-pytest -m unit
+# Run all tests
+pytest tests/
 
-# Integration tests only (requires services)
-pytest -m integration
+# Run specific test file
+pytest tests/test_agent.py
 
-# Exclude slow tests
-pytest -m "not slow"
-
-# All tests
-pytest
+# Run with coverage
+pytest --cov=agent_factory --cov-report=html
 ```
+
+### Code Quality
+
+```bash
+# Format code
+black agent_factory/ tests/
+
+# Lint code
+ruff check agent_factory/ tests/
+
+# Type checking
+mypy agent_factory/
+```
+
+---
+
+## 📝 Coding Standards
+
+### Python Style
+
+- Follow **PEP 8** style guide
+- Use **type hints** for all functions
+- Write **docstrings** for all public functions/classes
+- Keep functions **focused** and **small**
+
+### Code Formatting
+
+We use **Black** for code formatting:
+
+```bash
+black agent_factory/ tests/
+```
+
+### Linting
+
+We use **Ruff** for linting:
+
+```bash
+ruff check agent_factory/ tests/
+```
+
+### Type Checking
+
+We use **mypy** for type checking:
+
+```bash
+mypy agent_factory/
+```
+
+---
+
+## 🧪 Testing
 
 ### Writing Tests
 
-1. **Use fixtures**: Common test objects are available in `tests/conftest.py`
-   ```python
-   def test_agent(sample_agent):
-       assert sample_agent.id == "test-agent"
-   ```
+- Write tests for all new features
+- Use **pytest** for testing
+- Mock external dependencies
+- Keep tests **fast** and **deterministic**
 
-2. **Mock external dependencies**: Don't make real API calls in unit tests
-   ```python
-   @patch('agent_factory.integrations.openai_client.OpenAIAgentClient')
-   def test_agent_run(mock_client):
-       # Test with mocked client
-   ```
+### Test Structure
 
-3. **Mark tests appropriately**: Use `@pytest.mark.unit`, `@pytest.mark.integration`, or `@pytest.mark.slow`
+```python
+import pytest
+from agent_factory import Agent
 
-## Pull Request Process
+@pytest.mark.unit
+def test_agent_creation():
+    """Test creating an agent."""
+    agent = Agent(
+        id="test-agent",
+        name="Test Agent",
+        instructions="Test"
+    )
+    assert agent.id == "test-agent"
+```
 
-1. **Create a branch:**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+### Running Tests
 
-2. **Make your changes** and ensure:
-   - All tests pass (`make test-unit`)
-   - Code is formatted (`make format`)
-   - Linting passes (`make lint`)
-   - Type checking passes (`make type-check`)
+```bash
+# Run all tests
+pytest
 
-3. **Commit your changes:**
-   ```bash
-   git add .
-   git commit -m "feat: Add your feature"
-   ```
+# Run unit tests only
+pytest -m unit
 
-4. **Push and create a PR:**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+# Run with verbose output
+pytest -v
 
-5. **Ensure CI passes**: All checks must pass before merge:
-   - `lint` - Code style and linting
-   - `type-check` - Type checking
-   - `test` - Unit tests
+# Run specific test
+pytest tests/test_agent.py::test_agent_creation
+```
 
-## CI Workflow
+---
 
-### PR Checks (Required)
+## 📚 Documentation
 
-Every PR runs these checks:
+### Docstrings
 
-- **lint**: Code formatting and linting (ruff + black)
-- **type-check**: Type checking (mypy)
-- **test**: Unit tests (pytest with unit marker)
-- **build**: Docker build (smoke test)
+Use Google-style docstrings:
 
-### Nightly Checks (Optional)
+```python
+def create_agent(id: str, name: str, instructions: str) -> Agent:
+    """Create a new agent.
+    
+    Args:
+        id: Unique identifier for the agent
+        name: Display name for the agent
+        instructions: Instructions for the agent
+        
+    Returns:
+        Created Agent instance
+        
+    Raises:
+        ValueError: If agent ID already exists
+    """
+    pass
+```
 
-These run on a schedule:
+### Updating Documentation
 
-- **test-integration**: Full integration test suite with PostgreSQL/Redis
-- **security**: Security scans (safety, bandit)
+- Update relevant docs when adding features
+- Add examples for new features
+- Keep documentation **clear** and **concise**
 
-## Common Issues
+---
 
-### Tests Fail Locally But Pass in CI
+## 🔀 Pull Request Process
 
-- Ensure you're running `make test-unit` (not `make test`)
-- Check that you have the latest dependencies: `pip install -e ".[dev]"`
-- Clear pytest cache: `make clean && make test-unit`
+### Before Submitting
 
-### Type Checking Fails
+- [ ] Code follows style guidelines
+- [ ] Tests pass locally
+- [ ] Documentation updated
+- [ ] No merge conflicts
+- [ ] Commit messages are clear
 
-- Run `mypy agent_factory/` locally to see errors
-- Add type annotations to functions missing them
-- Use `# type: ignore` sparingly and document why
+### PR Description
 
-### Linting Fails
+Include:
+- **What** changed
+- **Why** it changed
+- **How** to test
+- **Screenshots** (if UI changes)
 
-- Run `make format` to auto-fix most issues
-- Check `ruff check agent_factory/` for remaining issues
+### Review Process
 
-## Questions?
+- Maintainers will review your PR
+- Address feedback promptly
+- Be open to suggestions
+- Keep PRs **focused** and **small**
 
-- Open an issue for bugs or feature requests
-- Check existing documentation in `docs/`
-- Review `CI_STABILIZATION_PLAN.md` for CI details
+---
+
+## 🎯 Good First Issues
+
+Looking for your first contribution? Check out issues labeled `good-first-issue`:
+- Documentation improvements
+- Test coverage
+- Example code
+- Bug fixes
+
+---
+
+## 📋 Commit Messages
+
+Use clear, descriptive commit messages:
+
+```
+feat: Add support for custom tools
+
+- Allow users to define custom tools
+- Add tool validation
+- Update documentation
+
+Fixes #123
+```
+
+### Commit Types
+
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation changes
+- `test:` Test additions/changes
+- `refactor:` Code refactoring
+- `style:` Code style changes
+- `chore:` Maintenance tasks
+
+---
+
+## 🚫 What Not to Contribute
+
+- Code that breaks existing functionality
+- Features without tests
+- Changes without documentation
+- Code that doesn't follow style guidelines
+
+---
+
+## ❓ Questions?
+
+- **Technical questions:** Open a GitHub Discussion
+- **Bug reports:** Open a GitHub Issue
+- **General:** Check our [documentation](docs/)
+
+---
+
+## 🙏 Thank You!
+
+Your contributions make Agent Factory better for everyone. Thank you for taking the time to contribute!
+
+---
+
+## 📜 License
+
+By contributing, you agree that your contributions will be licensed under the GPL-3.0 License.
