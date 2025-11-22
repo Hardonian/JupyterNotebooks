@@ -1,0 +1,156 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2024-01-01T00:00:00Z",
+  "blueprints": [
+    {
+      "id": "research-assistant",
+      "name": "Research Assistant",
+      "version": "1.0.0",
+      "description": "AI-powered research assistant that searches, analyzes, and generates reports",
+      "author": "Agent Factory Team",
+      "category": "data-analytics",
+      "tags": ["research", "analysis", "reports", "data"],
+      "pricing": {
+        "model": "free",
+        "price": 0.0,
+        "currency": "USD"
+      },
+      "download_url": "https://github.com/agentfactory/platform/raw/main/blueprints/research_assistant/blueprint.yaml",
+      "hash": "sha256:placeholder_hash_here",
+      "signature": "placeholder_signature_here",
+      "compatibility": {
+        "agent_factory_version": ">=0.1.0",
+        "python_version": ">=3.8"
+      },
+      "metadata": {
+        "demo_url": "https://demo.agentfactory.io/research-assistant",
+        "documentation": "https://docs.agentfactory.io/blueprints/research-assistant"
+      }
+    },
+    {
+      "id": "student-support-assistant",
+      "name": "Student Support Assistant",
+      "version": "1.0.0",
+      "description": "24/7 virtual teaching assistant for student support",
+      "author": "Agent Factory Team",
+      "category": "education",
+      "tags": ["education", "student-support", "teaching-assistant"],
+      "pricing": {
+        "model": "free",
+        "price": 0.0,
+        "currency": "USD"
+      },
+      "download_url": "https://github.com/agentfactory/platform/raw/main/blueprints/student_support_assistant/blueprint.yaml",
+      "hash": "sha256:placeholder_hash_here",
+      "signature": "placeholder_signature_here",
+      "compatibility": {
+        "agent_factory_version": ">=0.1.0",
+        "python_version": ">=3.8"
+      },
+      "metadata": {
+        "demo_url": "https://demo.agentfactory.io/student-support-assistant",
+        "documentation": "https://docs.agentfactory.io/blueprints/student-support-assistant"
+      }
+    },
+    {
+      "id": "learning-path-generator",
+      "name": "Learning Path Generator",
+      "version": "1.0.0",
+      "description": "Personalized adaptive learning paths",
+      "author": "Agent Factory Team",
+      "category": "education",
+      "tags": ["education", "learning", "adaptive"],
+      "pricing": {
+        "model": "free",
+        "price": 0.0,
+        "currency": "USD"
+      },
+      "download_url": "https://github.com/agentfactory/platform/raw/main/blueprints/learning_path_generator/blueprint.yaml",
+      "hash": "sha256:placeholder_hash_here",
+      "signature": "placeholder_signature_here",
+      "compatibility": {
+        "agent_factory_version": ">=0.1.0",
+        "python_version": ">=3.8"
+      },
+      "metadata": {
+        "demo_url": "https://demo.agentfactory.io/learning-path-generator",
+        "documentation": "https://docs.agentfactory.io/blueprints/learning-path-generator"
+      }
+    },
+    {
+      "id": "assessment-assistant",
+      "name": "Assessment Assistant",
+      "version": "1.0.0",
+      "description": "Assessment creation and grading tools",
+      "author": "Agent Factory Team",
+      "category": "education",
+      "tags": ["education", "assessment", "grading"],
+      "pricing": {
+        "model": "free",
+        "price": 0.0,
+        "currency": "USD"
+      },
+      "download_url": "https://github.com/agentfactory/platform/raw/main/blueprints/assessment_assistant/blueprint.yaml",
+      "hash": "sha256:placeholder_hash_here",
+      "signature": "placeholder_signature_here",
+      "compatibility": {
+        "agent_factory_version": ">=0.1.0",
+        "python_version": ">=3.8"
+      },
+      "metadata": {
+        "demo_url": "https://demo.agentfactory.io/assessment-assistant",
+        "documentation": "https://docs.agentfactory.io/blueprints/assessment-assistant"
+      }
+    },
+    {
+      "id": "support-bot",
+      "name": "Support Bot",
+      "version": "1.0.0",
+      "description": "Customer support chatbot",
+      "author": "Agent Factory Team",
+      "category": "customer-support",
+      "tags": ["support", "chatbot", "customer-service"],
+      "pricing": {
+        "model": "free",
+        "price": 0.0,
+        "currency": "USD"
+      },
+      "download_url": "https://github.com/agentfactory/platform/raw/main/blueprints/support_bot/blueprint.yaml",
+      "hash": "sha256:placeholder_hash_here",
+      "signature": "placeholder_signature_here",
+      "compatibility": {
+        "agent_factory_version": ">=0.1.0",
+        "python_version": ">=3.8"
+      },
+      "metadata": {
+        "demo_url": "https://demo.agentfactory.io/support-bot",
+        "documentation": "https://docs.agentfactory.io/blueprints/support-bot"
+      }
+    },
+    {
+      "id": "minimal-example",
+      "name": "Minimal Example Blueprint",
+      "version": "1.0.0",
+      "description": "A minimal example blueprint demonstrating the full roundtrip",
+      "author": "Agent Factory Team",
+      "category": "example",
+      "tags": ["example", "minimal", "tutorial"],
+      "pricing": {
+        "model": "free",
+        "price": 0.0,
+        "currency": "USD"
+      },
+      "download_url": "https://github.com/agentfactory/platform/raw/main/blueprints/minimal_example/blueprint.yaml",
+      "hash": "sha256:placeholder_hash_here",
+      "signature": "placeholder_signature_here",
+      "compatibility": {
+        "agent_factory_version": ">=0.1.0",
+        "python_version": ">=3.8"
+      },
+      "metadata": {
+        "demo_url": "",
+        "documentation": "https://docs.agentfactory.io/blueprints/minimal-example"
+      }
+    }
+  ]
+}

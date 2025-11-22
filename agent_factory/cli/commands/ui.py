@@ -3,8 +3,9 @@ CLI commands for UI generation.
 """
 
 import typer
-
-from agent_factory.ui import generate_ui
+import subprocess
+import sys
+from pathlib import Path
 
 app = typer.Typer(name="ui", help="UI generation commands")
 
@@ -17,8 +18,42 @@ def generate(
 ):
     """Generate UI for an agent."""
     try:
+        from agent_factory.ui import generate_ui
         generate_ui(agent_id, output, template)
         typer.echo(f"✅ UI generated at: {output}")
     except Exception as e:
         typer.echo(f"❌ Error: {e}", err=True)
         raise typer.Exit(1)
+
+
+@app.command()
+def demo(
+    port: int = typer.Option(8501, "--port", "-p", help="Port to run demo on"),
+    host: str = typer.Option("localhost", "--host", "-h", help="Host to bind to"),
+):
+    """Launch the Streamlit demo UI."""
+    try:
+        import streamlit
+    except ImportError:
+        typer.echo("❌ Streamlit not installed. Install with: pip install streamlit")
+        typer.echo("   Or install demo dependencies: pip install 'agent-factory[demo]'")
+        raise typer.Exit(1)
+    
+    demo_path = Path(__file__).parent.parent.parent / "demo" / "app.py"
+    
+    if not demo_path.exists():
+        typer.echo(f"❌ Demo UI not found at: {demo_path}")
+        raise typer.Exit(1)
+    
+    typer.echo(f"🚀 Starting Agent Factory Demo UI on http://{host}:{port}")
+    typer.echo("   Press Ctrl+C to stop")
+    
+    try:
+        subprocess.run([
+            sys.executable, "-m", "streamlit", "run",
+            str(demo_path),
+            "--server.port", str(port),
+            "--server.address", host,
+        ])
+    except KeyboardInterrupt:
+        typer.echo("\n👋 Demo UI stopped")
