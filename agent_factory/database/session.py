@@ -31,6 +31,11 @@ def get_db() -> Generator[Session, None, None]:
         db.close()
 
 
+def get_database_url() -> str:
+    """Get database URL from environment."""
+    return DATABASE_URL
+
+
 def init_db():
     """Initialize database tables."""
     Base.metadata.create_all(bind=engine)

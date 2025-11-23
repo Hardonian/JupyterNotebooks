@@ -5,10 +5,15 @@ Message routing logic for multi-agent orchestration.
 from typing import Dict, Any, Optional
 
 from agent_factory.orchestration.graph import AgentGraph, RoutingEdge
+from agent_factory.utils.safe_evaluator import SafeEvaluator
 
 
 class AgentRouter:
     """Route messages between agents in a graph."""
+    
+    def __init__(self):
+        """Initialize router with safe evaluator."""
+        self.evaluator = SafeEvaluator()
     
     def route(
         self,
@@ -32,14 +37,30 @@ class AgentRouter:
         if not outgoing_edges:
             return None
         
-        # Simple routing: take first edge if no conditions
-        # In production, would evaluate conditions
+        # Evaluate conditions for each edge
         for edge in outgoing_edges:
             if not edge.condition:
+                # No condition, route immediately
                 return edge.to_agent
             
-            # TODO: Evaluate condition expression
-            # For now, return first edge
-            return edge.to_agent
+            # Evaluate condition expression with message context
+            try:
+                # Build evaluation context from message
+                context = {
+                    "message": message,
+                    "current_agent": current_agent_id,
+                    **message,  # Flatten message keys for easier access
+                }
+                
+                # Evaluate condition
+                result = self.evaluator.evaluate(edge.condition, context)
+                
+                # If condition is truthy, route to this agent
+                if result:
+                    return edge.to_agent
+            except Exception:
+                # If evaluation fails, skip this edge
+                continue
         
+        # No matching edge found
         return None

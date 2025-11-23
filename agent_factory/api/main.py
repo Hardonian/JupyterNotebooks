@@ -58,13 +58,20 @@ async def startup_event():
     try:
         # Validate environment variables
         from agent_factory.utils.env_validator import validate_agent_factory_env
-        env_validator = validate_agent_factory_env()
-        logger.info("Environment variables validated")
+        validated_env = validate_agent_factory_env()
+        logger.info("Environment variables validated", validated_count=len(validated_env))
         
+        # Initialize database
         init_db()
         logger.info("Database initialized")
+        
+        # Initialize cache
+        cache = get_cache()
+        if cache:
+            logger.info("Cache initialized")
+        
     except Exception as e:
-        logger.error("Failed to initialize database", error=str(e))
+        logger.error("Failed to initialize application", error=str(e))
         raise
 
 

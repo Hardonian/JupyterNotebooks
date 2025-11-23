@@ -189,8 +189,18 @@ def revoke_api_key(key_id: str, user_id: str) -> bool:
         
         # Check authorization (user must own key or be tenant admin)
         if api_key_model.user_id != user_id:
-            # TODO: Check if user is tenant admin
-            return False
+            # Check if user is tenant admin
+            from agent_factory.database.models import User, Tenant
+            user = db.query(User).filter(User.id == user_id).first()
+            if user:
+                tenant = db.query(Tenant).filter(Tenant.id == api_key_model.tenant_id).first()
+                if tenant and tenant.admin_user_id == user_id:
+                    # User is tenant admin, allow
+                    pass
+                else:
+                    return False
+            else:
+                return False
         
         api_key_model.is_active = False
         db.commit()

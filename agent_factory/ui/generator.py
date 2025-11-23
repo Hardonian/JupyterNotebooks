@@ -28,13 +28,14 @@ def generate_ui(
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # TODO: Load agent from registry
-    # For now, create placeholder agent
-    agent = Agent(
-        id=agent_id,
-        name=agent_id.replace("-", " ").title(),
-        instructions="Agent instructions",
-    )
+    # Load agent from registry
+    from agent_factory.registry.local_registry import LocalRegistry
+    
+    registry = LocalRegistry()
+    agent = registry.get_agent(agent_id)
+    
+    if not agent:
+        raise ValueError(f"Agent not found: {agent_id}")
     
     schema = infer_ui_schema(agent)
     

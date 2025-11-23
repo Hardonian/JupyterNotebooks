@@ -96,12 +96,40 @@ def root():
 
 @app.post("/api/v1/agents/{agent_id}/run", response_model=RunResponse)
 async def run_agent(agent_id: str, request: RunRequest):
-    # TODO: Integrate with agent_factory runtime
-    # For now, placeholder
-    return RunResponse(
-        output=f"Agent {agent_id} would process: {request.input}",
-        status="success"
-    )
+    # Integrate with agent_factory runtime
+    from agent_factory.runtime.engine import RuntimeEngine
+    from agent_factory.registry.local_registry import LocalRegistry
+    
+    runtime = RuntimeEngine()
+    registry = LocalRegistry()
+    
+    # Load agent if not already registered
+    agent = runtime.agents_registry.get(agent_id)
+    if not agent:
+        agent = registry.get_agent(agent_id)
+        if agent:
+            runtime.register_agent(agent)
+        else:
+            raise HTTPException(status_code=404, detail=f"Agent not found: {agent_id}")
+    
+    # Run agent
+    try:
+        execution_id = runtime.run_agent(
+            agent_id=agent_id,
+            input_text=request.input,
+            session_id=request.session_id,
+        )
+        execution = runtime.get_execution(execution_id)
+        
+        if execution and execution.status == "completed":
+            result = execution.result
+            output = result.output if hasattr(result, "output") else str(result)
+            return RunResponse(output=output, status="success")
+        else:
+            error = execution.error if execution else "Execution failed"
+            return RunResponse(output=error, status="error")
+    except Exception as e:
+        return RunResponse(output=str(e), status="error")
 
 
 @app.get("/health")

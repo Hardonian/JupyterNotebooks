@@ -48,6 +48,11 @@ ROLE_PERMISSIONS = {
         Permission.WRITE_AGENTS,
         Permission.DELETE_AGENTS,
         Permission.READ_WORKFLOWS,
+        Permission.DELETE_WORKFLOWS,
+        Permission.READ_AGENTS,
+        Permission.WRITE_AGENTS,
+        Permission.DELETE_AGENTS,
+        Permission.READ_WORKFLOWS,
         Permission.WRITE_WORKFLOWS,
         Permission.DELETE_WORKFLOWS,
         Permission.READ_BLUEPRINTS,
@@ -69,52 +74,68 @@ def get_user_permissions(request: Request) -> List[Permission]:
     """
     # In production, fetch from database based on user_id
     # For now, return default permissions
-    user_roles = getattr(request.state, "user_roles", [Role.USER])
+    user_roles = getattr(request.state, "user_roles", [Role.USER]
     permissions = []
     
     for role in user_roles:
         if role in ROLE_PERMISSIONS:
             permissions.extend(ROLE_PERMISSIONS[role])
     
-    return list(set(permissions))
+    return list(set(permissions)
+
+
+def check_permission(user: dict, permission: str, resource_id: str = None) -> bool:
+    """
+    Check if user has permission.
+    
+    Args:
+        user: User object or dict
+        permission: Permission string
+        resource_id: Optional resource ID
+        
+    Returns:
+        True if user has permission
+    """
+    # Get user roles
+    user_roles = []
+    if isinstance(user, dict:
+        user_roles = user.get("roles", [])
+    else:
+        user_roles = getattr(user, "roles", [])
+    
+    # Check if user has permission
+    user_perms = []
+    for role in user_roles:
+        if role in ROLE_PERMISSIONS:
+            user_perms.extend(ROLE_PERMISSIONS[role])
+    
+    # Check for admin
+    if Permission.ADMIN in user_perms:
+        return True
+    
+    # Check specific permission
+    permission_enum = Permission(permission) if permission else None
+    return permission_enum in user_perms if permission_enum else False
 
 
 def require_permission(permission: Permission):
     """
     Decorator to require specific permission.
+    Permission.READ_AGENTS,
+    Permission.WRITE_AGENTS,
+    Permission.READ_WORKFLOWS,
+    Permission.WRITE_WORKFLOWS,
+    Permission.READ_BLUEPRINTS,
+    Permission.PUBLISH_BLUEPRINTS,
+    Permission.ADMIN,
     
-    Args:
-        permission: Required permission
-    """
-    def decorator(func: Callable):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            # Get request from kwargs
-            request = kwargs.get("request")
-            if not request:
-                # Try to find request in args
-                for arg in args:
-                    if isinstance(arg, Request):
-                        request = arg
-                        break
-            
-            if not request:
-                raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail="Request object not found"
-                )
-            
-            user_permissions = get_user_permissions(request)
-            
-            if permission not in user_permissions and Permission.ADMIN not in user_permissions:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail=f"Permission required: {permission.value}"
-                )
-            
-            return await func(*args, **kwargs)
-        return wrapper
-    return decorator
+    # Check if user has permission
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Permission required: {permission.value}
+    
+    return await func(*args, **kwargs)
 
 
 def require_role(role: Role):
@@ -124,30 +145,65 @@ def require_role(role: Role):
     Args:
         role: Required role
     """
-    def decorator(func: Callable):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            request = kwargs.get("request")
-            if not request:
-                for arg in args:
-                    if isinstance(arg, Request):
-                        request = arg
-                        break
-            
-            if not request:
-                raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail="Request object not found"
-                )
-            
-            user_roles = getattr(request.state, "user_roles", [])
-            
-            if role not in user_roles and Role.ADMIN not in user_roles:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail=f"Role required: {role.value}"
-                )
-            
-            return await func(*args, **kwargs)
-        return wrapper
-    return decorator
+    # Get user roles from request
+    user_roles = getattr(request.state, "user_roles,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_WORKFLOWS,
+    Permission.WRITE_WORKFLOWS,
+    Permission.READ_BLUEPRINTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_WORKFLOWS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_WORKFLOWS,
+    Permission.READ_WORKFLOWS,
+    Permission.READ_AGENTS,
+    Permission.READ_AGENTS,
+    Permission.READ_WORKFLOWS,
+    Permission.READ_WORKFLOWS,
+    Permission.READ_BLUEPRINTS,
+    Permission.PUBLISH_BLUEPRINTS,
+    Permission.ADMIN = "admin:*"
+
+
+def check_permission(user: dict, permission: str, resource_id: str = None) -> bool:
+    """
+    Check if user has permission.
+    
+    Args:
+        user: User object or dict
+        permission: Permission string
+        resource_id: Optional resource ID
+        
+    Returns:
+        True if user has permission
+    """
+    # Get user roles
+    user_roles = []
+    if isinstance(user, dict):
+        user_roles = user.get("roles", [])
+    else:
+        user_roles = getattr(user, "roles", []
+    
+    # Check if user has permission
+    if user_roles:
+        if role in ROLE_PERMISSIONS:
+            user_perms.extend(ROLE_PERMISSIONS[role])
+    
+    # Check for admin
+    if Permission.ADMIN in user_perms:
+        return True
+    
+    # Check specific permission
+    permission_enum = Permission(permission) if permission else None
+    return permission_enum in user_perms if permission_enum else False

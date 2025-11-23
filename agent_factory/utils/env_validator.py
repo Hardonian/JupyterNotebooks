@@ -1,106 +1,222 @@
 """
-Environment variable validation and startup checks.
+Environment variable validation for Agent Factory.
+
+Validates required and optional environment variables on startup.
 """
 
 import os
-from typing import List, Dict, Optional, Tuple
-from agent_factory.core.exceptions import ConfigurationError
+from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass
 
 
-class EnvironmentValidator:
-    """Validates environment variables at startup."""
-    
-    def __init__(self):
-        self.required_vars: List[str] = []
-        self.optional_vars: Dict[str, any] = {}
-        self.validated: bool = False
-    
-    def add_required(self, var_name: str, description: Optional[str] = None):
-        """Add a required environment variable."""
-        self.required_vars.append((var_name, description))
-    
-    def add_optional(self, var_name: str, default: any, description: Optional[str] = None):
-        """Add an optional environment variable with default."""
-        self.optional_vars[var_name] = {"default": default, "description": description}
-    
-    def validate(self, raise_on_error: bool = True) -> Tuple[bool, List[str]]:
-        """
-        Validate all environment variables.
-        
-        Args:
-            raise_on_error: Whether to raise exception on validation failure
-            
-        Returns:
-            Tuple of (is_valid, list_of_errors)
-            
-        Raises:
-            ConfigurationError: If validation fails and raise_on_error is True
-        """
-        errors = []
-        
-        # Check required variables
-        for var_name, description in self.required_vars:
-            if not os.getenv(var_name):
-                error_msg = f"Required environment variable '{var_name}' is not set"
-                if description:
-                    error_msg += f": {description}"
-                errors.append(error_msg)
-        
-        # Validate optional variables (set defaults if not present)
-        for var_name, config in self.optional_vars.items():
-            if var_name not in os.environ:
-                os.environ[var_name] = str(config["default"])
-        
-        if errors and raise_on_error:
-            raise ConfigurationError(
-                f"Environment validation failed:\n" + "\n".join(f"  - {e}" for e in errors)
-            )
-        
-        self.validated = len(errors) == 0
-        return self.validated, errors
-    
-    def get(self, var_name: str, default: Optional[str] = None) -> Optional[str]:
-        """Get environment variable value."""
-        return os.getenv(var_name, default)
+@dataclass
+class EnvVar:
+    """Environment variable definition."""
+    name: str
+    required: bool = False
+    default: Optional[str] = None
+    description: str = ""
+    validator: Optional[callable] = None
 
 
-def validate_agent_factory_env() -> None:
+class EnvironmentValidationError(Exception):
+    """Raised when environment validation fails."""
+    pass
+
+
+def validate_agent_factory_env() -> Dict[str, any]:
     """
     Validate Agent Factory environment variables.
     
-    Checks for required variables and sets defaults for optional ones.
-    
+    Returns:
+        Dictionary of validated environment variables
+        
     Raises:
-        ConfigurationError: If required variables are missing
+        EnvironmentValidationError: If validation fails
     """
-    validator = EnvironmentValidator()
+    errors = []
+    warnings = []
+    validated = {}
     
-    # Required variables (can be empty for development, but should be set for production)
-    # We'll make most optional but warn if critical ones are missing
+    # Required environment variables
+    required_vars = [
+        EnvVar(
+            name="DATABASE_URL",
+            required=True,
+            description="Database connection URL (PostgreSQL or SQLite)"
+        ),
+    ]
     
-    # Optional variables with defaults
-    validator.add_optional("API_HOST", "0.0.0.0", "API server host")
-    validator.add_optional("API_PORT", "8000", "API server port")
-    validator.add_optional("DEBUG", "false", "Debug mode")
-    validator.add_optional("LOG_LEVEL", "INFO", "Logging level")
-    validator.add_optional("DATABASE_URL", "sqlite:///./agent_factory.db", "Database URL")
-    validator.add_optional("REDIS_URL", "redis://localhost:6379/0", "Redis URL")
-    validator.add_optional("JWT_SECRET_KEY", "change-me-in-production", "JWT secret key")
-    validator.add_optional("RATE_LIMIT_PER_MINUTE", "60", "Rate limit per minute")
-    validator.add_optional("RATE_LIMIT_PER_HOUR", "1000", "Rate limit per hour")
+    # Optional but recommended environment variables
+    optional_vars = [
+        EnvVar(
+            name="OPENAI_API_KEY",
+            required=False,
+            description="OpenAI API key for LLM access"
+        ),
+        EnvVar(
+            name="ANTHROPIC_API_KEY",
+            required=False,
+            description="Anthropic API key for LLM access"
+        ),
+        EnvVar(
+            name="JWT_SECRET_KEY",
+            required=False,
+            default="change-me-in-production",
+            description="Secret key for JWT token signing"
+        ),
+        EnvVar(
+            name="REDIS_URL",
+            required=False,
+            description="Redis connection URL for caching"
+        ),
+        EnvVar(
+            name="API_HOST",
+            required=False,
+            default="0.0.0.0",
+            description="API server host"
+        ),
+        EnvVar(
+            name="API_PORT",
+            required=False,
+            default="8000",
+            description="API server port"
+        ),
+        EnvVar(
+            name="LOG_LEVEL",
+            required=False,
+            default="INFO",
+            description="Logging level (DEBUG, INFO, WARNING, ERROR)"
+        ),
+    ]
     
-    # Validate (don't raise on error for optional vars, but log warnings)
-    is_valid, errors = validator.validate(raise_on_error=False)
+    # Validate required variables
+    for var in required_vars:
+        value = os.getenv(var.name)
+        if not value:
+            errors.append(f"Required environment variable {var.name} is not set: {var.description}")
+        else:
+            validated[var.name] = value
+            # Run validator if provided
+            if var.validator:
+                try:
+                    var.validator(value)
+                except Exception as e:
+                    errors.append(f"Invalid value for {var.name}: {str(e)}")
     
-    # Warn about missing critical vars in production
-    if os.getenv("ENVIRONMENT", "development") == "production":
-        critical_vars = ["OPENAI_API_KEY", "ANTHROPIC_API_KEY"]
-        missing_critical = [v for v in critical_vars if not os.getenv(v)]
-        if missing_critical:
-            import warnings
-            warnings.warn(
-                f"Critical environment variables not set in production: {', '.join(missing_critical)}",
-                UserWarning
+    # Validate optional variables
+    for var in optional_vars:
+        value = os.getenv(var.name, var.default)
+        if value:
+            validated[var.name] = value
+            # Run validator if provided
+            if var.validator:
+                try:
+                    var.validator(value)
+                except Exception as e:
+                    warnings.append(f"Invalid value for {var.name}: {str(e)}")
+        elif var.required:
+            errors.append(f"Required environment variable {var.name} is not set: {var.description}")
+    
+    # Validate LLM providers (at least one should be configured)
+    has_openai = bool(os.getenv("OPENAI_API_KEY"))
+    has_anthropic = bool(os.getenv("ANTHROPIC_API_KEY"))
+    
+    if not has_openai and not has_anthropic:
+        warnings.append(
+            "No LLM provider configured (OPENAI_API_KEY or ANTHROPIC_API_KEY). "
+            "Agent functionality will be limited."
+        )
+    
+    # Validate database URL format
+    database_url = validated.get("DATABASE_URL")
+    if database_url:
+        if not (database_url.startswith("postgresql://") or 
+                database_url.startswith("sqlite:///")):
+            errors.append(
+                "DATABASE_URL must start with 'postgresql://' or 'sqlite:///'"
             )
     
-    return validator
+    # Validate JWT secret in production
+    jwt_secret = validated.get("JWT_SECRET_KEY", os.getenv("JWT_SECRET_KEY"))
+    debug_mode = os.getenv("DEBUG", "false").lower() == "true"
+    
+    if not debug_mode and jwt_secret in ["change-me-in-production", "your-secret-key-change-in-production"]:
+        warnings.append(
+            "JWT_SECRET_KEY is using default value. Change it in production!"
+        )
+    
+    # Validate Redis URL format if provided
+    redis_url = validated.get("REDIS_URL") or os.getenv("REDIS_URL")
+    if redis_url:
+        if not redis_url.startswith("redis://"):
+            warnings.append(
+                "REDIS_URL should start with 'redis://'. "
+                "Cache functionality may not work correctly."
+            )
+    
+    # Validate log level
+    log_level = validated.get("LOG_LEVEL", "INFO").upper()
+    valid_log_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+    if log_level not in valid_log_levels:
+        warnings.append(
+            f"Invalid LOG_LEVEL '{log_level}'. "
+            f"Valid values: {', '.join(valid_log_levels)}. Using INFO."
+        )
+        validated["LOG_LEVEL"] = "INFO"
+    
+    # Raise error if critical issues found
+    if errors:
+        error_message = "Environment validation failed:\n" + "\n".join(f"  - {e}" for e in errors)
+        if warnings:
+            error_message += "\n\nWarnings:\n" + "\n".join(f"  - {w}" for w in warnings)
+        raise EnvironmentValidationError(error_message)
+    
+    # Log warnings if any
+    if warnings:
+        import logging
+        logger = logging.getLogger(__name__)
+        for warning in warnings:
+            logger.warning(f"Environment validation warning: {warning}")
+    
+    return validated
+
+
+def validate_database_url(url: str) -> None:
+    """Validate database URL format."""
+    if not url:
+        raise ValueError("Database URL cannot be empty")
+    
+    if not (url.startswith("postgresql://") or url.startswith("sqlite:///")):
+        raise ValueError("Database URL must start with 'postgresql://' or 'sqlite:///'")
+
+
+def validate_redis_url(url: str) -> None:
+    """Validate Redis URL format."""
+    if not url:
+        raise ValueError("Redis URL cannot be empty")
+    
+    if not url.startswith("redis://"):
+        raise ValueError("Redis URL must start with 'redis://'")
+
+
+def validate_jwt_secret(secret: str) -> None:
+    """Validate JWT secret key."""
+    if not secret:
+        raise ValueError("JWT secret cannot be empty")
+    
+    if len(secret) < 32:
+        raise ValueError("JWT secret should be at least 32 characters long")
+
+
+def get_validated_env() -> Dict[str, str]:
+    """
+    Get validated environment variables.
+    
+    Returns:
+        Dictionary of validated environment variables
+        
+    Raises:
+        EnvironmentValidationError: If validation fails
+    """
+    return validate_agent_factory_env()
