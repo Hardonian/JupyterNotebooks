@@ -46,10 +46,16 @@ setup_rate_limiting(
 async def startup_event():
     """Initialize services on application startup."""
     try:
+        # Validate environment variables
+        from agent_factory.utils.env_validator import validate_agent_factory_env
+        env_validator = validate_agent_factory_env()
+        logger.info("Environment variables validated")
+        
         init_db()
         logger.info("Database initialized")
     except Exception as e:
         logger.error("Failed to initialize database", error=str(e))
+        raise
 
 
 # Include routers

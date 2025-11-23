@@ -1,6 +1,7 @@
 """Calculator tool for mathematical operations."""
 
 from agent_factory.tools.decorator import function_tool
+from agent_factory.utils.safe_evaluator import safe_evaluate
 import math
 
 
@@ -10,31 +11,31 @@ import math
 )
 def calculator(expression: str) -> float:
     """
-    Calculate a mathematical expression.
+    Calculate a mathematical expression safely.
+    
+    Supports basic arithmetic, comparisons, and safe math functions.
     
     Args:
         expression: Mathematical expression to evaluate
         
     Returns:
         Calculation result
+        
+    Raises:
+        ValueError: If expression is invalid or unsafe
     """
-    # Safe evaluation - only allow math operations
-    allowed_names = {
+    # Add math functions to context
+    math_functions = {
         k: v for k, v in math.__dict__.items() if not k.startswith("__")
     }
-    allowed_names.update({
-        "abs": abs,
-        "round": round,
-        "min": min,
-        "max": max,
-        "sum": sum,
-    })
     
     try:
-        result = eval(expression, {"__builtins__": {}}, allowed_names)
+        result = safe_evaluate(expression, context=math_functions)
         return float(result)
-    except Exception as e:
+    except ValueError as e:
         raise ValueError(f"Invalid expression: {str(e)}")
+    except Exception as e:
+        raise ValueError(f"Error evaluating expression: {str(e)}")
 
 
 # The decorator returns a Tool instance, so calculator is already a Tool
