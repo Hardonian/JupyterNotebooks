@@ -98,7 +98,16 @@ async def get_tenant_metrics(
         raise HTTPException(status_code=401, detail="Not authenticated")
     
     # Check permission
-    # TODO: Add permission check for viewing tenant metrics
+    from agent_factory.security.rbac import check_permission
+    
+    # User must be tenant admin or own the tenant
+    if tenant_id:
+        user_tenant_id = user.get("tenant_id") if isinstance(user, dict) else getattr(user, "tenant_id", None)
+        if user_tenant_id != tenant_id:
+            # Check if user is tenant admin
+            has_permission = check_permission(user, "view_tenant_metrics", tenant_id)
+            if not has_permission:
+                raise HTTPException(status_code=403, detail="Permission denied")
     
     # Parse dates
     start_dt = None

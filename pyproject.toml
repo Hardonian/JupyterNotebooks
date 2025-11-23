@@ -42,6 +42,7 @@ dependencies = [
     "schedule>=1.2.0",
     "duckduckgo-search>=3.0.0",
     "sqlalchemy>=2.0.0",
+    "alembic>=1.12.0",
     "psycopg2-binary>=2.9.0",
     "redis>=5.0.0",
     "prometheus-client>=0.18.0",

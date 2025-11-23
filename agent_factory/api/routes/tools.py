@@ -48,19 +48,53 @@ async def create_tool(
     if existing:
         raise HTTPException(status_code=400, detail=f"Tool {tool_data.id} already exists")
     
-    # Create placeholder implementation
-    # In production, would compile/load implementation_code
-    def placeholder_implementation(**kwargs):
-        raise NotImplementedError(
-            f"Tool {tool_data.id} implementation not available. "
-            "Please provide implementation function."
-        )
+    # Create implementation from code or use placeholder
+    if tool_data.implementation_code:
+        # Compile and load implementation code
+        try:
+            # Compile the code
+            code_obj = compile(tool_data.implementation_code, f"<tool_{tool_data.id}>", "exec")
+            
+            # Create a namespace for execution
+            namespace = {}
+            exec(code_obj, namespace)
+            
+            # Find the function (assume it's named after the tool_id or 'tool_function')
+            implementation = None
+            if tool_data.id in namespace:
+                implementation = namespace[tool_data.id]
+            elif "tool_function" in namespace:
+                implementation = namespace["tool_function"]
+            elif "implementation" in namespace:
+                implementation = namespace["implementation"]
+            else:
+                # Try to find any callable
+                for name, obj in namespace.items():
+                    if callable(obj) and not name.startswith("_"):
+                        implementation = obj
+                        break
+            
+            if not implementation or not callable(implementation):
+                raise ValueError("No callable function found in implementation_code")
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Failed to compile implementation code: {str(e)}"
+            )
+    else:
+        # Create placeholder implementation
+        def placeholder_implementation(**kwargs):
+            raise NotImplementedError(
+                f"Tool {tool_data.id} implementation not available. "
+                "Please provide implementation_code or implementation function."
+            )
+        implementation = placeholder_implementation
     
     tool = Tool(
         id=tool_data.id,
         name=tool_data.name,
         description=tool_data.description,
-        implementation=placeholder_implementation,
+        implementation=implementation,
     )
     
     if tool_data.metadata:
