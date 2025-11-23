@@ -338,12 +338,15 @@ class Workflow:
             result = eval_node(tree.body)
             return bool(result)
         except Exception:
-            # Fallback to simple string replacement
+            # Fallback to simple string replacement and safe evaluation
             for key, value in context.items():
                 expression = expression.replace(f"${key}", str(value))
             try:
-                return bool(eval(expression, {"__builtins__": {}}))
-            except:
+                # Use safe evaluator instead of eval
+                from agent_factory.utils.safe_evaluator import safe_evaluate
+                result = safe_evaluate(expression, context={})
+                return bool(result)
+            except Exception:
                 return False
     
     def to_dict(self) -> Dict[str, Any]:

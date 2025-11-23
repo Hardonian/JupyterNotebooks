@@ -2,7 +2,9 @@
 
 ## Overview
 
-Agent Factory Platform is a production-ready platform for building, deploying, and monetizing AI agents. This document provides a detailed technical architecture.
+Agent Factory is a production-ready platform for building, deploying, and monetizing AI agents. This document provides a comprehensive overview of the system architecture, design decisions, and implementation details.
+
+---
 
 ## System Architecture
 
@@ -10,309 +12,347 @@ Agent Factory Platform is a production-ready platform for building, deploying, a
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Client Layer                            │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
-│  │   CLI    │  │   API    │  │   SDK    │  │   Web    │  │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    API Gateway Layer                         │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │  Authentication │ Rate Limiting │ Monitoring         │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Application Layer                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
-│  │  Agents  │  │ Workflows│  │ Blueprints│ │ Marketplace│ │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Runtime Layer                             │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
-│  │  Engine  │  │ Scheduler│  │  Memory  │  │Guardrails│  │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Data Layer                                │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
-│  │PostgreSQL│  │  Redis   │  │  Files   │  │  S3/GCS │  │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │
+│                    Client Layer                              │
+├─────────────────────────────────────────────────────────────┤
+│  Python SDK  │  CLI  │  REST API  │  Web UI (Future)       │
+├─────────────────────────────────────────────────────────────┤
+│              Agent Factory Platform                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
+│  │  Agents  │  │  Tools   │  │Workflows │                │
+│  └──────────┘  └──────────┘  └──────────┘                │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
+│  │ Registry │  │  Runtime │  │Telemetry │                │
+│  └──────────┘  └──────────┘  └──────────┘                │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
+│  │ Security │  │ Billing  │  │Knowledge │                │
+│  └──────────┘  └──────────┘  └──────────┘                │
+├─────────────────────────────────────────────────────────────┤
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
+│  │Database  │  │  Cache   │  │  Queue   │                │
+│  │(Postgres)│  │ (Redis)  │  │ (Redis)  │                │
+│  └──────────┘  └──────────┘  └──────────┘                │
+├─────────────────────────────────────────────────────────────┤
+│  OpenAI  │  Anthropic  │  Custom Integrations             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
+---
+
 ## Core Components
 
-### 1. Agent System
+### 1. Agent System (`agent_factory/agents/`)
 
-**Agent Class** (`agent_factory/core/agent.py`)
-- Manages agent lifecycle
-- Handles OpenAI SDK integration
-- Memory and context management
-- Guardrails enforcement
+**Purpose**: Core abstraction for AI agents.
 
-**Key Features**:
-- Session-based conversations
-- Tool integration
-- Multi-turn dialogue
-- Error handling
+**Key Classes:**
+- `Agent`: Main agent class with lifecycle management
+- `AgentConfig`: Configuration (model, temperature, etc.)
+- `AgentResult`: Execution result with metadata
 
-### 2. Tool System
+**Responsibilities:**
+- Define agent behavior (instructions, model, tools)
+- Execute agent runs via runtime engine
+- Manage agent lifecycle (create, update, delete)
+- Support handoffs to other agents
 
-**Tool Interface** (`agent_factory/core/tool.py`)
-- Abstract tool interface
-- Schema generation
-- Parameter validation
-- Tool discovery
+**Design Decisions:**
+- Agents are stateless; state managed via sessions
+- Tool integration via composition
+- Memory and guardrails via dependency injection
 
-**Pre-built Tools**:
-- Web search (Serper API + DuckDuckGo)
-- Calculator
-- File I/O
-- Database connectors (planned)
+---
 
-### 3. Workflow Engine
+### 2. Tool System (`agent_factory/tools/`)
 
-**Workflow Class** (`agent_factory/core/workflow.py`)
-- Multi-step orchestration
-- Conditional branching
-- Input/output mapping
-- Error recovery
+**Purpose**: Extensible tool system for agent capabilities.
 
-**Features**:
-- Parallel execution
-- Retry logic
-- Step dependencies
-- Event triggers
+**Key Classes:**
+- `Tool`: Abstract base class
+- `FunctionTool`: Tool wrapper for Python functions
+- `@function_tool`: Decorator for easy tool creation
 
-### 4. Blueprint System
+**Responsibilities:**
+- Define callable functions agents can use
+- Generate JSON schemas from Python signatures
+- Validate tool parameters and outputs
+- Register tools for discovery
 
-**Blueprint Class** (`agent_factory/core/blueprint.py`)
-- YAML/JSON definition format
-- Packaging system
-- Versioning
-- Dependency management
+**Design Decisions:**
+- Tools are first-class citizens (not just functions)
+- Schema inference from type hints
+- Validation at execution time
 
-**Marketplace Integration**:
-- Publishing
-- Search and discovery
-- Reviews and ratings
-- Payment processing
+---
 
-## Infrastructure Components
+### 3. Workflow System (`agent_factory/workflows/`)
 
-### 1. Monitoring & Observability
+**Purpose**: Multi-step workflow orchestration.
 
-**Metrics** (`agent_factory/monitoring/metrics.py`)
-- Prometheus metrics
-- HTTP request metrics
-- Agent execution metrics
-- Cache metrics
+**Key Classes:**
+- `Workflow`: Workflow definition with steps
+- `WorkflowStep`: Single step with input/output mapping
+- `Trigger`: Trigger definitions (webhook, schedule, event)
 
-**Logging** (`agent_factory/monitoring/logging.py`)
-- Structured JSON logging
-- Request/response logging
-- Error tracking
+**Responsibilities:**
+- Define multi-step agent workflows
+- Support conditional branching
+- Map inputs/outputs between steps
+- Support various triggers
 
-**Tracing** (`agent_factory/monitoring/tracing.py`)
-- Distributed tracing
-- Request correlation IDs
-- Performance profiling
+**Design Decisions:**
+- Workflows are declarative (YAML/JSON)
+- Steps execute sequentially with dependencies
+- Conditions use safe AST-based evaluation
 
-### 2. Security
+---
 
-**Authentication** (`agent_factory/security/auth.py`)
-- JWT token-based auth
-- Token refresh
-- User management
+### 4. Runtime Engine (`agent_factory/runtime/`)
 
-**Authorization** (`agent_factory/security/rbac.py`)
-- Role-based access control
-- Permission system
-- Resource-level access
+**Purpose**: Unified execution engine for agents and workflows.
 
-**Rate Limiting** (`agent_factory/security/rate_limit.py`)
-- Per-IP rate limiting
-- Per-user rate limiting
-- Configurable limits
+**Key Classes:**
+- `RuntimeEngine`: Main execution engine
+- `Execution`: Execution instance tracking
 
-**Audit Logging** (`agent_factory/security/audit.py`)
-- Security event logging
-- Compliance tracking
-- Audit trail
+**Responsibilities:**
+- Execute agents and workflows
+- Track execution history
+- Integrate with prompt logging
+- Record telemetry
 
-### 3. Database Layer
+**Design Decisions:**
+- Centralized execution for observability
+- Automatic prompt logging
+- Telemetry integration
 
-**Models** (`agent_factory/database/models.py`)
-- User management
-- Tenant isolation
-- Agent/workflow storage
-- Execution tracking
-- Audit logs
+---
 
-**Session Management** (`agent_factory/database/session.py`)
-- SQLAlchemy ORM
-- Connection pooling
-- Transaction management
+### 5. Blueprint System (`agent_factory/blueprints/`)
 
-### 4. Caching Layer
+**Purpose**: Package agents, tools, workflows into reusable bundles.
 
-**Redis Cache** (`agent_factory/cache/redis_cache.py`)
-- Blueprint caching
-- Search result caching
-- Session caching
-- Performance optimization
+**Key Classes:**
+- `Blueprint`: Blueprint definition
+- `BlueprintMetadata`: Metadata (author, category, pricing)
 
-## Enterprise Features
+**Responsibilities:**
+- Package agents/tools/workflows
+- Define dependencies and configuration
+- Support marketplace publishing
+- Include monetization metadata
 
-### 1. Multi-tenancy
+---
 
-**Tenant Isolation** (`agent_factory/enterprise/multitenancy.py`)
-- Resource quotas
-- Usage tracking
-- Billing integration
-- Tenant management
+### 6. Knowledge Packs (`agent_factory/knowledge/`)
 
-### 2. SSO Integration
+**Purpose**: Domain-specific knowledge (RAG modules).
 
-**SSO Support** (`agent_factory/enterprise/sso.py`)
-- SAML 2.0
-- OAuth 2.0
-- LDAP/Active Directory
+**Key Classes:**
+- `KnowledgePack`: Pack definition
+- `KnowledgeRetriever`: Abstract retriever interface
 
-### 3. Compliance
+**Responsibilities:**
+- Package domain-specific knowledge
+- Define data sources and embedding configs
+- Attach knowledge to agents/workflows
 
-**GDPR** (`agent_factory/enterprise/compliance.py`)
-- Data export
-- Right to be forgotten
-- Data retention policies
+---
 
-**SOC2**
-- Audit trails
-- Access controls
-- Security monitoring
+### 7. Prompt Logging (`agent_factory/promptlog/`)
 
-### 4. Webhooks
+**Purpose**: Log all agent/workflow runs for replay and debugging.
 
-**Webhook System** (`agent_factory/enterprise/webhooks.py`)
-- Event subscriptions
-- Payload signing
-- Retry logic
-- Delivery tracking
+**Key Classes:**
+- `Run`: Single execution record
+- `PromptLogEntry`: Detailed prompt/response log
 
-## Payment Integration
+**Responsibilities:**
+- Log all runs with full context
+- Support replay functionality
+- Enable diff comparison
+- Store execution history
 
-### Stripe Integration
+---
 
-**Payment Processing** (`agent_factory/payments/stripe_client.py`)
-- Checkout sessions
-- Payment intents
-- Subscription management
-- Webhook handling
+### 8. Evaluation System (`agent_factory/eval/`)
 
-**Revenue Sharing** (`agent_factory/payments/revenue_sharing.py`)
-- Creator payouts
-- Platform fees
-- Payment distribution
+**Purpose**: Benchmark agents, stress test, and auto-tune.
 
-## Deployment Architecture
+**Key Classes:**
+- `Scenario`: Evaluation scenario
+- `EvaluationResult`: Result with metrics
+- `BenchmarkSuite`: Collection of scenarios
 
-### Kubernetes Deployment
+**Responsibilities:**
+- Define evaluation scenarios
+- Execute benchmarks
+- Stress testing
+- Auto-tuning configurations
 
-**Components**:
-- API deployment (3+ replicas)
-- PostgreSQL database
-- Redis cache
-- Ingress controller
-- Monitoring stack (Prometheus, Grafana)
+---
 
-**Scaling**:
-- Horizontal Pod Autoscaling
-- Database connection pooling
-- Cache clustering
+## Data Flow
 
-### CI/CD Pipeline
+### Agent Execution Flow
 
-**Stages**:
-1. Test (unit, integration)
-2. Lint & Security scan
-3. Build Docker image
-4. Deploy to staging
-5. Deploy to production
+```
+User Input
+    ↓
+CLI/API Endpoint
+    ↓
+Runtime Engine
+    ↓
+Agent.run()
+    ↓
+Guardrails (Input Validation)
+    ↓
+Memory (Load Context)
+    ↓
+LLM Client (OpenAI/Anthropic)
+    ↓
+Tool Execution (if needed)
+    ↓
+Guardrails (Output Validation)
+    ↓
+Memory (Save Interaction)
+    ↓
+Prompt Log (Log Run)
+    ↓
+Telemetry (Record Metrics)
+    ↓
+Response to User
+```
 
-## Performance Considerations
+### Workflow Execution Flow
 
-### Optimization Strategies
+```
+Trigger (Webhook/Schedule/Event)
+    ↓
+Workflow.execute()
+    ↓
+For each step:
+    ├─ Evaluate Condition
+    ├─ Map Inputs
+    ├─ Execute Agent
+    ├─ Map Outputs
+    └─ Continue to Next Step
+    ↓
+Aggregate Results
+    ↓
+Prompt Log (Log Workflow Run)
+    ↓
+Telemetry (Record Metrics)
+    ↓
+Return Workflow Result
+```
 
-1. **Caching**: Redis for frequently accessed data
-2. **Async Execution**: Background task processing
-3. **Database Indexing**: Optimized queries
-4. **Connection Pooling**: Efficient database connections
-5. **CDN**: Static asset delivery
-
-### Scalability
-
-- **Horizontal Scaling**: Stateless API servers
-- **Database Scaling**: Read replicas, sharding
-- **Cache Scaling**: Redis cluster
-- **Load Balancing**: Kubernetes service mesh
+---
 
 ## Security Architecture
 
-### Defense in Depth
+### Input Validation
+- **Guardrails**: Input/output validation via guardrail system
+- **Path Validation**: File I/O tools validate paths to prevent traversal
+- **Safe Evaluation**: AST-based evaluation (no eval())
 
-1. **Network Layer**: Firewall, DDoS protection
-2. **Application Layer**: Authentication, authorization
-3. **Data Layer**: Encryption at rest, in transit
-4. **Monitoring**: Intrusion detection, audit logs
+### Authentication & Authorization
+- **JWT**: Token-based authentication
+- **RBAC**: Role-based access control
+- **API Keys**: API key authentication for programmatic access
 
-### Compliance
+### Secrets Management
+- **Environment Variables**: All secrets via env vars
+- **Validation**: Startup validation of required secrets
+- **No Hardcoding**: No secrets in code
 
-- **SOC2 Type II**: Security controls
-- **GDPR**: Data protection, privacy
-- **PCI DSS**: Payment processing (via Stripe)
+---
 
-## Monitoring & Alerting
+## Performance Considerations
+
+### Caching Strategy
+- **Agent Definitions**: Cached in Redis
+- **Tool Schemas**: Cached in Redis
+- **Blueprint Metadata**: Cached in Redis
+
+### Database Optimization
+- **Indexes**: Key fields indexed for performance
+- **Connection Pooling**: SQLAlchemy connection pooling
+- **Query Optimization**: Eager loading where appropriate
+
+### Scalability
+- **Stateless Design**: Agents are stateless
+- **Horizontal Scaling**: API can scale horizontally
+- **Async Support**: Future async/await support planned
+
+---
+
+## Observability
+
+### Logging
+- **Structured Logging**: JSON-formatted logs
+- **Context Propagation**: Request IDs for tracing
+- **Log Levels**: Configurable log levels
 
 ### Metrics
+- **Prometheus**: Metrics exposed via Prometheus
+- **Custom Metrics**: Agent runs, tool calls, errors
+- **Performance Metrics**: Latency, throughput
 
-- **Application Metrics**: Request rate, latency, errors
-- **Business Metrics**: Agent executions, blueprint downloads
-- **Infrastructure Metrics**: CPU, memory, disk
+### Tracing
+- **Distributed Tracing**: Optional tracing support
+- **Request Tracing**: Full request lifecycle
 
-### Alerts
+---
 
-- High error rate
-- High latency
-- Resource exhaustion
-- Security events
+## Deployment Architecture
 
-## Disaster Recovery
+### Containerization
+- **Docker**: Containerized application
+- **Docker Compose**: Local development setup
+- **Kubernetes**: Production deployment configs
 
-### Backup Strategy
+### Environment Configuration
+- **Environment Variables**: All config via env vars
+- **Validation**: Startup validation
+- **Defaults**: Sensible defaults for development
 
-- **Database**: Daily backups, point-in-time recovery
-- **Files**: S3/GCS with versioning
-- **Configuration**: Git-based version control
+---
 
-### Recovery Procedures
+## Extension Points
 
-- **RTO**: 1 hour
-- **RPO**: 15 minutes
-- **Failover**: Automated failover to standby
+### Custom Tools
+- Use `@function_tool` decorator
+- Implement `Tool` interface for advanced cases
+
+### Custom Integrations
+- Implement LLM client interface
+- Add to `integrations/` directory
+
+### Custom Guardrails
+- Implement `Guardrail` interface
+- Add to guardrails collection
+
+---
+
+## Design Principles
+
+1. **Composability**: Agents, tools, workflows compose seamlessly
+2. **Extensibility**: Easy to add custom tools, integrations
+3. **Production-Ready**: Built-in observability, security, scaling
+4. **Developer Experience**: Clean API, comprehensive docs
+5. **Monetization**: Blueprint system enables marketplace
+
+---
 
 ## Future Enhancements
 
-1. **GraphQL API**: Alternative to REST
-2. **Event Streaming**: Kafka integration
-3. **Advanced Analytics**: Data warehouse integration
-4. **ML Model Serving**: Custom model support
-5. **Edge Deployment**: CDN edge functions
+1. **Async Support**: Full async/await support
+2. **Distributed Execution**: Task queue integration
+3. **Advanced Orchestration**: More complex workflow patterns
+4. **Real-time Collaboration**: WebSocket support
+5. **Plugin System**: Formal plugin registry
+
+---
+
+**Last Updated**: 2024-01-XX  
+**Version**: 0.1.0
