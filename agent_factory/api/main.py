@@ -78,9 +78,13 @@ app.include_router(telemetry.router, prefix="/api/v1/telemetry", tags=["telemetr
 
 # Additional routers
 from agent_factory.api.routes import scheduler, payments, health as health_routes
+from agent_factory.api.routes import financial, research
+
 app.include_router(scheduler.router, prefix="/api/v1/scheduler", tags=["scheduler"])
 app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
 app.include_router(health_routes.router, prefix="/api/v1/health", tags=["health"])
+app.include_router(financial.router, prefix="/api/v1/financial", tags=["financial"])
+app.include_router(research.router, prefix="/api/v1/research", tags=["research"])
 
 
 @app.middleware("http")
