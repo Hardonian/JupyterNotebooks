@@ -11,6 +11,7 @@ from agent_factory.security import setup_rate_limiting
 from agent_factory.database import init_db
 from agent_factory.cache import get_cache
 from agent_factory.api.routes import agents, tools, workflows, blueprints, executions, telemetry
+from agent_factory.api.middleware import SecurityHeadersMiddleware, RequestIDMiddleware, TimingMiddleware
 
 # Setup structured logging
 logger = setup_structured_logging(os.getenv("LOG_LEVEL", "INFO"))
@@ -41,6 +42,15 @@ setup_rate_limiting(
     requests_per_hour=int(os.getenv("RATE_LIMIT_PER_HOUR", "1000"))
 )
 
+# Add security headers middleware
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Add request ID middleware for tracing
+app.add_middleware(RequestIDMiddleware)
+
+# Add timing middleware
+app.add_middleware(TimingMiddleware)
+
 
 @app.on_event("startup")
 async def startup_event():
@@ -67,9 +77,14 @@ app.include_router(executions.router, prefix="/api/v1/executions", tags=["execut
 app.include_router(telemetry.router, prefix="/api/v1/telemetry", tags=["telemetry"])
 
 # Additional routers
-from agent_factory.api.routes import scheduler, payments
+from agent_factory.api.routes import scheduler, payments, health as health_routes
+from agent_factory.api.routes import financial, research
+
 app.include_router(scheduler.router, prefix="/api/v1/scheduler", tags=["scheduler"])
 app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
+app.include_router(health_routes.router, prefix="/api/v1/health", tags=["health"])
+app.include_router(financial.router, prefix="/api/v1/financial", tags=["financial"])
+app.include_router(research.router, prefix="/api/v1/research", tags=["research"])
 
 
 @app.middleware("http")
@@ -96,17 +111,72 @@ async def logging_middleware(request: Request, call_next):
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    """Global exception handler."""
+    """
+    Global exception handler with enhanced error reporting.
+    
+    Provides detailed error information in development mode,
+    generic messages in production for security.
+    """
+    import traceback
+    from agent_factory.core.exceptions import AgentFactoryError
+    
+    # Determine if we're in debug mode
+    debug_mode = os.getenv("DEBUG", "false").lower() == "true"
+    
+    # Log the exception
     logger.exception(
         "Unhandled exception",
         error=str(exc),
+        error_type=type(exc).__name__,
         path=request.url.path,
-        method=request.method
+        method=request.method,
+        query_params=dict(request.query_params) if request.query_params else None,
     )
+    
+    # Handle known exceptions
+    if isinstance(exc, AgentFactoryError):
+        # Use specific error handling for known exceptions
+        error_detail = {
+            "error": type(exc).__name__,
+            "message": str(exc),
+        }
+        
+        # Add stack trace in debug mode
+        if debug_mode:
+            error_detail["traceback"] = traceback.format_exc()
+        
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=error_detail
+        )
+    
+    # Handle validation errors (Pydantic)
+    if hasattr(exc, "errors"):
+        error_detail = {
+            "error": "ValidationError",
+            "message": "Request validation failed",
+            "details": exc.errors() if callable(exc.errors) else exc.errors,
+        }
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_detail
+        )
+    
+    # Generic error response
+    error_detail = {
+        "error": "InternalServerError",
+        "message": "An internal server error occurred",
+    }
+    
+    # Add detailed information in debug mode
+    if debug_mode:
+        error_detail["exception_type"] = type(exc).__name__
+        error_detail["exception_message"] = str(exc)
+        error_detail["traceback"] = traceback.format_exc()
     
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": "Internal server error"}
+        content=error_detail
     )
 
 
@@ -122,38 +192,94 @@ def root():
 
 @app.get("/health")
 async def health():
-    """Health check endpoint."""
+    """
+    Comprehensive health check endpoint.
+    
+    Returns status of all critical dependencies:
+    - Database connectivity
+    - Cache/Redis connectivity
+    - LLM provider availability (if configured)
+    
+    Status codes:
+    - 200: All systems healthy
+    - 503: One or more systems degraded
+    """
+    import time
+    from datetime import datetime
+    
+    start_time = time.time()
     health_status = {
         "status": "healthy",
-        "database": "unknown",
-        "cache": "unknown"
+        "timestamp": datetime.utcnow().isoformat(),
+        "version": "0.1.0",
+        "checks": {}
     }
     
+    overall_healthy = True
+    
     # Check database
+    db_check = {"status": "unknown", "response_time_ms": 0}
     try:
         from agent_factory.database.session import engine
+        db_start = time.time()
         with engine.connect() as conn:
             conn.execute("SELECT 1")
-        health_status["database"] = "healthy"
+        db_check["status"] = "healthy"
+        db_check["response_time_ms"] = round((time.time() - db_start) * 1000, 2)
     except Exception as e:
-        health_status["database"] = "unhealthy"
-        health_status["status"] = "degraded"
+        db_check["status"] = "unhealthy"
+        db_check["error"] = str(e)
+        overall_healthy = False
         logger.error("Database health check failed", error=str(e))
+    health_status["checks"]["database"] = db_check
     
     # Check cache
+    cache_check = {"status": "unknown", "response_time_ms": 0}
     try:
         cache = get_cache()
         if cache.client:
+            cache_start = time.time()
             cache.client.ping()
-            health_status["cache"] = "healthy"
+            cache_check["status"] = "healthy"
+            cache_check["response_time_ms"] = round((time.time() - cache_start) * 1000, 2)
         else:
-            health_status["cache"] = "unavailable"
+            cache_check["status"] = "unavailable"
+            cache_check["message"] = "Cache client not initialized"
     except Exception as e:
-        health_status["cache"] = "unhealthy"
-        health_status["status"] = "degraded"
+        cache_check["status"] = "unhealthy"
+        cache_check["error"] = str(e)
+        overall_healthy = False
         logger.error("Cache health check failed", error=str(e))
+    health_status["checks"]["cache"] = cache_check
     
-    status_code = status.HTTP_200_OK if health_status["status"] == "healthy" else status.HTTP_503_SERVICE_UNAVAILABLE
+    # Check LLM providers (optional, don't fail if not configured)
+    llm_check = {"status": "unknown"}
+    try:
+        openai_key = os.getenv("OPENAI_API_KEY")
+        anthropic_key = os.getenv("ANTHROPIC_API_KEY")
+        
+        if openai_key or anthropic_key:
+            llm_check["status"] = "configured"
+            llm_check["providers"] = []
+            if openai_key:
+                llm_check["providers"].append("openai")
+            if anthropic_key:
+                llm_check["providers"].append("anthropic")
+        else:
+            llm_check["status"] = "not_configured"
+            llm_check["message"] = "No LLM providers configured (optional)"
+    except Exception as e:
+        llm_check["status"] = "error"
+        llm_check["error"] = str(e)
+    health_status["checks"]["llm_providers"] = llm_check
+    
+    # Set overall status
+    if not overall_healthy:
+        health_status["status"] = "degraded"
+    
+    health_status["response_time_ms"] = round((time.time() - start_time) * 1000, 2)
+    
+    status_code = status.HTTP_200_OK if overall_healthy else status.HTTP_503_SERVICE_UNAVAILABLE
     
     return JSONResponse(content=health_status, status_code=status_code)
 
