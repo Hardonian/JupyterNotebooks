@@ -293,16 +293,41 @@ class Workflow:
             return False
         
         try:
-            tree = ast.parse(expression, mode='eval')
-            result = eval_node(tree.body)
+            # Use safe evaluator instead of eval
+            from agent_factory.utils.safe_evaluator import safe_evaluate
+            
+            # Replace $variables with actual values
+            processed_expression = expression
+            import re
+            
+            # Replace $key or $key.path patterns
+            for key, value in context.items():
+                pattern = r'\$' + re.escape(key) + r'(?:\.\w+)*'
+                def replace_match(match):
+                    matched = match.group(0)
+                    if '.' in matched:
+                        var_name = matched.split('.')[0][1:]
+                        path_parts = matched.split('.')[1:]
+                        try:
+                            val = context.get(var_name, {})
+                            for part in path_parts:
+                                if isinstance(val, dict):
+                                    val = val.get(part)
+                                else:
+                                    return 'None'
+                            return str(val)
+                        except:
+                            return 'None'
+                    else:
+                        return str(context.get(key, 'None'))
+                
+                processed_expression = re.sub(pattern, replace_match, processed_expression)
+            
+            result = safe_evaluate(processed_expression, context=context)
             return bool(result)
         except Exception:
-            for key, value in context.items():
-                expression = expression.replace(f"${key}", str(value))
-            try:
-                return bool(eval(expression, {"__builtins__": {}}))
-            except:
-                return False
+            # Fallback: return False if evaluation fails
+            return False
     
     def to_dict(self) -> Dict[str, Any]:
         """Serialize workflow to dictionary."""
