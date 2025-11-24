@@ -219,11 +219,21 @@ Agent Factory is designed with education in mind. We partner with institutions t
 
 ### 🗄️ Database & Backend
 
-- **[Supabase Setup Guide](docs/supabase-setup.md)** — **Start here!** Complete Supabase configuration guide
+- **[Stack Discovery](docs/stack-discovery.md)** — **Complete stack inventory and architecture overview**
+- **[Backend Strategy](docs/backend-strategy.md)** — **Canonical backend choice and rationale**
+- **[Supabase Setup Guide](docs/supabase-setup.md)** — Complete Supabase configuration guide
 - **[Backend Discovery](docs/backend-discovery.md)** — Database setup and migration framework overview
 - **[Data Model Overview](docs/data-model-overview.md)** — Complete schema documentation
 - **[Backend Options & Costs](docs/backend-options-and-costs.md)** — Supabase vs alternatives analysis
 - **[Migrations Workflow](docs/migrations-workflow.md)** — How to run and create migrations
+
+### 🚀 Development & Deployment
+
+- **[Local Development](docs/local-dev.md)** — **Complete local setup guide**
+- **[CI/CD Overview](docs/ci-overview.md)** — **CI workflows and required checks**
+- **[Environment & Secrets](docs/env-and-secrets.md)** — **Environment variables guide**
+- **[Frontend Hosting Strategy](docs/frontend-hosting-strategy.md)** — **API-first platform (no frontend)**
+- **[Demo Script](docs/demo-script.md)** — **Step-by-step demo guide**
 
 ---
 
