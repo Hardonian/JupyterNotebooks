@@ -7,14 +7,21 @@ from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from agent_factory.monitoring import setup_metrics, setup_structured_logging, setup_tracing
+from agent_factory.monitoring.sentry import setup_sentry
+from agent_factory.monitoring.apm import setup_apm
 from agent_factory.security import setup_rate_limiting
 from agent_factory.database import init_db
 from agent_factory.cache import get_cache
 from agent_factory.api.routes import agents, tools, workflows, blueprints, executions, telemetry
 from agent_factory.api.middleware import SecurityHeadersMiddleware, RequestIDMiddleware, TimingMiddleware
 
-# Setup structured logging
+# Setup structured logging first
 logger = setup_structured_logging(os.getenv("LOG_LEVEL", "INFO"))
+
+# Setup Sentry error tracking (if configured)
+sentry_client = setup_sentry()
+if sentry_client:
+    logger.info("Sentry error tracking enabled")
 
 app = FastAPI(
     title="Agent Factory Platform API",
@@ -34,6 +41,7 @@ app.add_middleware(
 # Setup monitoring
 setup_metrics(app)
 setup_tracing(app)
+setup_apm(app)
 
 # Setup rate limiting
 setup_rate_limiting(
@@ -126,9 +134,18 @@ async def global_exception_handler(request: Request, exc: Exception):
     """
     import traceback
     from agent_factory.core.exceptions import AgentFactoryError
+    from agent_factory.monitoring.sentry import capture_exception
     
     # Determine if we're in debug mode
     debug_mode = os.getenv("DEBUG", "false").lower() == "true"
+    
+    # Capture exception in Sentry
+    capture_exception(
+        exc,
+        request_path=request.url.path,
+        request_method=request.method,
+        query_params=dict(request.query_params) if request.query_params else None,
+    )
     
     # Log the exception
     logger.exception(
