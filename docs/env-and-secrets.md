@@ -328,9 +328,35 @@ nano .env
 **Location:** GitHub Repository Secrets
 
 **Required Secrets:**
+
+#### Core Secrets
 - `DATABASE_URL` - Production database (for migrations)
 - `OPENAI_API_KEY` - For tests (optional)
 - `ANTHROPIC_API_KEY` - For tests (optional)
+
+#### Vercel Deployment Secrets (Required for Vercel deployments)
+- `VERCEL_TOKEN` - Vercel API token (required for deployments)
+- `VERCEL_ORG_ID` - Vercel organization/team ID (required for deployments)
+- `VERCEL_PROJECT_ID` - Vercel project ID (required for deployments)
+- `VERCEL_PRODUCTION_URL` - Production URL (optional, for notifications)
+
+**How to Get Vercel Secrets:**
+
+1. **VERCEL_TOKEN:**
+   - Go to https://vercel.com/account/tokens
+   - Click "Create Token"
+   - Name it (e.g., "GitHub Actions")
+   - Copy the token (only shown once!)
+
+2. **VERCEL_ORG_ID:**
+   - Go to Vercel Dashboard → Team Settings → General
+   - Find "Team ID" (or use your personal account ID)
+   - Copy the ID
+
+3. **VERCEL_PROJECT_ID:**
+   - Go to Vercel Dashboard → Your Project → Settings → General
+   - Find "Project ID"
+   - Copy the ID
 
 **How to Set:**
 1. Go to Repository → Settings → Secrets and variables → Actions
@@ -341,6 +367,9 @@ nano .env
 ```yaml
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 ```
 
 ---
@@ -367,7 +396,39 @@ env:
 
 **Location:** Vercel Dashboard → Project Settings → Environment Variables
 
-**Required:** Same as Render
+**Required Environment Variables:**
+
+**Preview Environment:**
+- `DATABASE_URL` (if using database)
+- `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`
+- `JWT_SECRET_KEY` (if using auth)
+- Any app-specific variables
+
+**Production Environment:**
+- Same as Preview, but with production values
+- `DEBUG=false`
+- `LOG_LEVEL=INFO`
+- Production database URLs
+- Production API keys
+
+**How to Set:**
+1. Go to Vercel Dashboard → Your Project
+2. Go to Settings → Environment Variables
+3. Add variables for each environment (Preview, Production)
+4. Set values for each environment
+
+**Important:** 
+- Environment variables in Vercel are separate from GitHub Secrets
+- GitHub Secrets are used by workflows (VERCEL_TOKEN, etc.)
+- Vercel Environment Variables are used by the deployed app
+- **Both are required** - secrets for deployment, env vars for runtime
+
+**GitHub Secrets vs Vercel Environment Variables:**
+
+| Purpose | Location | Used By |
+|---------|----------|---------|
+| Vercel API authentication | GitHub Secrets | GitHub Actions workflows |
+| App runtime configuration | Vercel Environment Variables | Deployed application |
 
 #### Docker/Kubernetes
 

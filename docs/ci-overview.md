@@ -226,17 +226,78 @@ python scripts/db-validate-schema.py
 
 ## 4. Deployment Workflows
 
-### Current Status: ❌ Not Automated
+### Current Status: ✅ Automated (Vercel)
 
-**Manual Deployment Process:**
-1. Merge PR to `main`
-2. CI runs (test, lint, security, build)
-3. Migrations run automatically (if `db-migrate.yml` configured)
-4. Manual deployment to hosting platform
+**Deployment Process:**
+1. PR created → Preview deployment to Vercel
+2. Merge PR to `main` → Production deployment to Vercel
+3. CI runs (test, lint, security, build)
+4. Migrations run automatically (if `db-migrate.yml` configured)
+5. Vercel deployment runs automatically
 
-**To Be Added:**
-- `.github/workflows/deploy-production.yml`
-- `.github/workflows/deploy-preview.yml`
+### 4.1 Vercel Preview Deployment (`deploy-vercel-preview.yml`)
+
+**Purpose:** Deploy preview builds for PRs
+
+**Triggers:**
+- Pull requests to `main` branch
+- Types: `opened`, `synchronize`, `reopened`
+- Manual dispatch
+
+**Jobs:**
+1. **build-and-test** - Run tests and linting (non-blocking for preview)
+2. **deploy-preview** - Deploy to Vercel Preview
+3. **preview-smoke-tests** - Run smoke tests on preview
+4. **comment-pr** - Comment preview URL on PR
+
+**Status:** ✅ Active
+
+**Secrets Required:**
+- `VERCEL_TOKEN` - Vercel API token
+- `VERCEL_ORG_ID` - Vercel organization ID
+- `VERCEL_PROJECT_ID` - Vercel project ID
+
+**Output:** Preview URL commented on PR
+
+---
+
+### 4.2 Vercel Production Deployment (`deploy-vercel-production.yml`)
+
+**Purpose:** Deploy production builds for main branch
+
+**Triggers:**
+- Push to `main` branch
+- Manual dispatch
+
+**Jobs:**
+1. **pre-deployment-checks** - Run tests, lint, security scans
+2. **deploy-production** - Deploy to Vercel Production
+3. **post-deployment-smoke-tests** - Run smoke tests on production
+4. **notify** - Post deployment summary
+
+**Status:** ✅ Active
+
+**Secrets Required:**
+- `VERCEL_TOKEN` - Vercel API token
+- `VERCEL_ORG_ID` - Vercel organization ID
+- `VERCEL_PROJECT_ID` - Vercel project ID
+
+**Dependencies:**
+- Requires `pre-deployment-checks` to pass
+- Runs after CI pipeline (if configured)
+
+**Output:** Production URL in workflow summary
+
+---
+
+### 4.3 Other Deployment Workflows
+
+**Render/Docker Deployments:**
+- `deploy-preview.yml` - Render preview deployments (alternative to Vercel)
+- `deploy-production.yml` - Render/Docker/K8s production deployments (alternative to Vercel)
+- `deploy-multi-env.yml` - Multi-environment deployments (Render/Docker)
+
+**Note:** Vercel is the primary deployment target. Render/Docker workflows are alternatives.
 
 ---
 
@@ -518,13 +579,15 @@ gh run view [run-id]
 - ✅ Comprehensive CI pipeline
 - ✅ Migration automation
 - ✅ Security scanning
-- ❌ Deployment automation (to be added)
+- ✅ Vercel deployment automation (Preview + Production)
 
 **Next Steps:**
-1. Add deployment workflows
-2. Add smoke tests
-3. Consolidate redundant workflows
-4. Set up branch protection rules
+1. Configure GitHub Secrets (VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID)
+2. Configure Vercel Environment Variables
+3. Test Preview deployment with PR
+4. Test Production deployment with push to main
+5. Consolidate redundant workflows (optional)
+6. Set up branch protection rules
 
 **Required Checks for Main:**
 - test
@@ -532,3 +595,8 @@ gh run view [run-id]
 - security
 - build
 - validate-migrations
+- pre-deployment-checks (from deploy-vercel-production.yml)
+
+**Deployment Workflows:**
+- `deploy-vercel-preview.yml` - Vercel Preview (PRs)
+- `deploy-vercel-production.yml` - Vercel Production (main)
