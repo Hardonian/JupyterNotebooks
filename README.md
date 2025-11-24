@@ -217,6 +217,13 @@ Agent Factory is designed with education in mind. We partner with institutions t
 - **[Use Cases](USE_CASES.md)** — Real-world examples and patterns
 - **[Value Proposition](VALUE_PROPOSITION.md)** — Why Agent Factory exists
 
+### 🗄️ Database & Backend
+
+- **[Backend Discovery](docs/backend-discovery.md)** — Database setup and migration framework overview
+- **[Data Model Overview](docs/data-model-overview.md)** — Complete schema documentation
+- **[Backend Options & Costs](docs/backend-options-and-costs.md)** — Supabase vs alternatives analysis
+- **[Migrations Workflow](docs/migrations-workflow.md)** — How to run and create migrations
+
 ---
 
 ## 🛠️ Development
