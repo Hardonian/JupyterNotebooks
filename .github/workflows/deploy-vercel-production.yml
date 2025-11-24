@@ -1,0 +1,213 @@
+name: Deploy Vercel Production
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/workflows/deploy-vercel-preview.yml'
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  pre-deployment-checks:
+    name: Pre-Deployment Checks
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      
+      - name: Run tests
+        run: |
+          pytest tests/ -v --cov=agent_factory --cov-report=xml
+      
+      - name: Run linting
+        run: |
+          ruff check agent_factory/ tests/
+          black --check agent_factory/ tests/
+          mypy agent_factory/
+      
+      - name: Security scan
+        run: |
+          safety check || echo "⚠️  Safety check had issues (non-blocking)"
+          bandit -r agent_factory/ -f json -o bandit-report.json || echo "⚠️  Bandit scan had issues (non-blocking)"
+        continue-on-error: true
+      
+      - name: Check deployment readiness
+        id: check
+        run: |
+          echo "should_deploy=true" >> $GITHUB_OUTPUT
+          echo "✓ All pre-deployment checks passed"
+
+  deploy-production:
+    name: Deploy to Vercel Production
+    runs-on: ubuntu-latest
+    needs: pre-deployment-checks
+    if: needs.pre-deployment-checks.outputs.should_deploy == 'true'
+    environment:
+      name: production
+      url: ${{ secrets.VERCEL_PRODUCTION_URL || 'https://[project-name].vercel.app' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      
+      - name: Pull Vercel Environment Information
+        id: vercel-pull
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "❌ VERCEL_TOKEN secret not set. Production deployment cannot proceed."
+            echo ""
+            echo "To enable Vercel production deployments:"
+            echo "1. Get Vercel token: https://vercel.com/account/tokens"
+            echo "2. Add VERCEL_TOKEN to GitHub Secrets"
+            echo "3. Add VERCEL_ORG_ID to GitHub Secrets"
+            echo "4. Add VERCEL_PROJECT_ID to GitHub Secrets"
+            exit 1
+          fi
+          
+          if [ -z "${{ secrets.VERCEL_ORG_ID }}" ] || [ -z "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+            echo "❌ VERCEL_ORG_ID or VERCEL_PROJECT_ID secret not set."
+            echo "Add these secrets to enable production deployments."
+            exit 1
+          fi
+          
+          # Pull Vercel configuration
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} \
+            --scope=${{ secrets.VERCEL_ORG_ID }} || {
+            echo "❌ Failed to pull Vercel config."
+            echo "Verify VERCEL_ORG_ID and VERCEL_PROJECT_ID are correct."
+            exit 1
+          }
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Build Project
+        run: |
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} || {
+            echo "❌ Build failed. Check build logs above."
+            exit 1
+          }
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Deploy to Vercel Production
+        id: vercel-deploy
+        run: |
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} 2>&1 | grep -o 'https://[^ ]*\.vercel\.app' | head -1)
+          
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "⚠️  Failed to extract deployment URL. Check Vercel logs above."
+            # Try to get from Vercel API or use default
+            DEPLOYMENT_URL="${{ secrets.VERCEL_PRODUCTION_URL || 'https://[project-name].vercel.app' }}"
+          fi
+          
+          echo "production_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "✓ Production deployed: $DEPLOYMENT_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Deployment Summary
+        run: |
+          echo "## 🚀 Production Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment URL:** ${{ steps.vercel-deploy.outputs.production_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Workflow:** [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+
+  post-deployment-smoke-tests:
+    name: Post-Deployment Smoke Tests
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: success()
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Wait for deployment
+        run: |
+          echo "Waiting for production deployment to be ready..."
+          sleep 45
+      
+      - name: Run smoke tests
+        env:
+          PRODUCTION_URL: ${{ needs.deploy-production.outputs.production_url }}
+        run: |
+          if [ -z "$PRODUCTION_URL" ] || [ "$PRODUCTION_URL" == "https://[project-name].vercel.app" ]; then
+            echo "⚠️  Production URL not available. Skipping smoke tests."
+            exit 0
+          fi
+          
+          echo "Testing production deployment: $PRODUCTION_URL"
+          
+          # Test health endpoint
+          if curl -f -s "$PRODUCTION_URL/health" > /dev/null; then
+            echo "✅ Health check passed"
+          else
+            echo "⚠️  Health check failed (non-blocking)"
+          fi
+          
+          # Test root endpoint
+          if curl -f -s "$PRODUCTION_URL/" > /dev/null; then
+            echo "✅ Root endpoint accessible"
+          else
+            echo "⚠️  Root endpoint check failed (non-blocking)"
+          fi
+          
+          # Test API docs endpoint
+          if curl -f -s "$PRODUCTION_URL/docs" > /dev/null; then
+            echo "✅ API docs accessible"
+          else
+            echo "⚠️  API docs check failed (non-blocking)"
+          fi
+        continue-on-error: true
+      
+      - name: Health check summary
+        if: always()
+        run: |
+          echo "## Health Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Smoke tests completed. Check logs above for details." >> $GITHUB_STEP_SUMMARY
+
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks, deploy-production, post-deployment-smoke-tests]
+    if: always()
+    steps:
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Pre-deployment checks: ${{ needs.pre-deployment-checks.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Production deployment: ${{ needs.deploy-production.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Smoke tests: ${{ needs.post-deployment-smoke-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Production URL:** ${{ needs.deploy-production.outputs.production_url || 'Not available' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Workflow:** [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY

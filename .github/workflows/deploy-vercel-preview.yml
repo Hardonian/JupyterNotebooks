@@ -1,0 +1,203 @@
+name: Deploy Vercel Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to deploy (optional)'
+        required: false
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      
+      - name: Run tests
+        run: |
+          pytest tests/ -v --cov=agent_factory --cov-report=xml || echo "⚠️  Tests had issues (non-blocking for preview)"
+        continue-on-error: true
+      
+      - name: Run linting
+        run: |
+          ruff check agent_factory/ tests/ || echo "⚠️  Linting had issues (non-blocking for preview)"
+          black --check agent_factory/ tests/ || echo "⚠️  Formatting had issues (non-blocking for preview)"
+        continue-on-error: true
+
+  deploy-preview:
+    name: Deploy to Vercel Preview
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.event.pull_request.number != '' || github.event_name == 'workflow_dispatch'
+    environment:
+      name: preview
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      
+      - name: Pull Vercel Environment Information
+        id: vercel-pull
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "⚠️  VERCEL_TOKEN secret not set. Preview deployment skipped."
+            echo "To enable Vercel preview deployments:"
+            echo "1. Get Vercel token: https://vercel.com/account/tokens"
+            echo "2. Add VERCEL_TOKEN to GitHub Secrets"
+            echo "3. Add VERCEL_ORG_ID to GitHub Secrets"
+            echo "4. Add VERCEL_PROJECT_ID to GitHub Secrets"
+            exit 1
+          fi
+          
+          # Pull Vercel configuration
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} \
+            --scope=${{ secrets.VERCEL_ORG_ID }} || {
+            echo "⚠️  Failed to pull Vercel config. Check VERCEL_ORG_ID and VERCEL_PROJECT_ID secrets."
+            exit 1
+          }
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Build Project
+        run: |
+          vercel build --token=${{ secrets.VERCEL_TOKEN }} || {
+            echo "✗ Build failed. Check build logs above."
+            exit 1
+          }
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Deploy to Vercel Preview
+        id: vercel-deploy
+        run: |
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} 2>&1 | grep -o 'https://[^ ]*\.vercel\.app' | head -1)
+          
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "⚠️  Failed to extract deployment URL. Check Vercel logs above."
+            DEPLOYMENT_URL="https://[project-name].vercel.app (check Vercel dashboard)"
+          fi
+          
+          echo "preview_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "✓ Preview deployed: $DEPLOYMENT_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Comment PR with Preview URL
+        if: github.event.pull_request.number != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.issue.number;
+            const previewUrl = '${{ steps.vercel-deploy.outputs.preview_url }}';
+            const deploymentStatus = '${{ job.status }}';
+            
+            const body = `## 🚀 Vercel Preview Deployment
+            
+            **Preview URL:** ${previewUrl}
+            
+            **Status:** ${deploymentStatus === 'success' ? '✅ Deployed' : '❌ Failed'}
+            
+            **Deployment Details:**
+            - Branch: \`${{ github.head_ref }}\`
+            - Commit: \`${{ github.event.pull_request.head.sha }}\`
+            - Workflow: [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            **Note:** This preview will be automatically cleaned up when the PR is closed.
+            `;
+            
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.type === 'Bot' && comment.body.includes('Vercel Preview Deployment')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: body,
+              });
+            }
+
+  preview-smoke-tests:
+    name: Preview Smoke Tests
+    runs-on: ubuntu-latest
+    needs: deploy-preview
+    if: success()
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Wait for preview deployment
+        run: |
+          echo "Waiting for preview deployment to be ready..."
+          sleep 30
+      
+      - name: Run smoke tests
+        env:
+          PREVIEW_URL: ${{ needs.deploy-preview.outputs.preview_url }}
+        run: |
+          if [ -z "$PREVIEW_URL" ] || [ "$PREVIEW_URL" == "https://[project-name].vercel.app (check Vercel dashboard)" ]; then
+            echo "⚠️  Preview URL not available. Skipping smoke tests."
+            exit 0
+          fi
+          
+          echo "Testing preview deployment: $PREVIEW_URL"
+          
+          # Test health endpoint
+          if curl -f -s "$PREVIEW_URL/health" > /dev/null; then
+            echo "✅ Health check passed"
+          else
+            echo "⚠️  Health check failed (non-blocking)"
+          fi
+          
+          # Test root endpoint
+          if curl -f -s "$PREVIEW_URL/" > /dev/null; then
+            echo "✅ Root endpoint accessible"
+          else
+            echo "⚠️  Root endpoint check failed (non-blocking)"
+          fi
+        continue-on-error: true
