@@ -12,7 +12,44 @@ DATABASE_URL = os.getenv(
     f"postgresql://{os.getenv('POSTGRES_USER', 'agent_factory')}:{os.getenv('POSTGRES_PASSWORD', '')}@{os.getenv('POSTGRES_HOST', 'localhost')}:{os.getenv('POSTGRES_PORT', '5432')}/{os.getenv('POSTGRES_DB', 'agent_factory')}"
 )
 
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+# Optimize connection pooling for Supabase
+# Supabase recommends connection pooling with pgbouncer
+# Use transaction mode for best compatibility
+is_supabase = os.getenv("SUPABASE_URL") is not None
+
+if is_supabase:
+    # Supabase connection pooling settings
+    # Use connection pooler if available (port 6543), otherwise direct (port 5432)
+    database_url = DATABASE_URL
+    if ":5432/" in database_url:
+        # Try to use connection pooler (port 6543)
+        # Note: Supabase provides both direct and pooled connections
+        # Direct: port 5432, Pooled: port 6543
+        # For production, prefer pooled connections
+        pooler_url = database_url.replace(":5432/", ":6543/")
+        # Use pooler if SUPABASE_USE_POOLER is set, otherwise direct
+        if os.getenv("SUPABASE_USE_POOLER", "true").lower() == "true":
+            database_url = pooler_url
+    
+    engine = create_engine(
+        database_url,
+        pool_pre_ping=True,
+        pool_size=5,  # Smaller pool for Supabase (they handle scaling)
+        max_overflow=10,
+        pool_recycle=3600,  # Recycle connections after 1 hour
+        connect_args={
+            "sslmode": "require",  # Supabase requires SSL
+        }
+    )
+else:
+    # Standard PostgreSQL connection settings
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,
+        pool_size=10,
+        max_overflow=20,
+    )
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

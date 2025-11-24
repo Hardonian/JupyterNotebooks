@@ -219,6 +219,7 @@ Agent Factory is designed with education in mind. We partner with institutions t
 
 ### 🗄️ Database & Backend
 
+- **[Supabase Setup Guide](docs/supabase-setup.md)** — **Start here!** Complete Supabase configuration guide
 - **[Backend Discovery](docs/backend-discovery.md)** — Database setup and migration framework overview
 - **[Data Model Overview](docs/data-model-overview.md)** — Complete schema documentation
 - **[Backend Options & Costs](docs/backend-options-and-costs.md)** — Supabase vs alternatives analysis
