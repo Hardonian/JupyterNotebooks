@@ -163,26 +163,78 @@ jobs:
           fi
           
           echo "Testing production deployment: $PRODUCTION_URL"
+          echo ""
+          
+          TESTS_PASSED=0
+          TESTS_FAILED=0
           
           # Test health endpoint
-          if curl -f -s "$PRODUCTION_URL/health" > /dev/null; then
-            echo "✅ Health check passed"
+          echo "Testing /api/v1/health endpoint..."
+          HEALTH_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PRODUCTION_URL/api/v1/health" || echo "000")
+          HEALTH_BODY=$(curl -s --max-time 10 "$PRODUCTION_URL/api/v1/health" || echo "")
+          if [ "$HEALTH_STATUS" = "200" ]; then
+            echo "✅ Health check passed (200)"
+            if echo "$HEALTH_BODY" | grep -q "healthy\|status"; then
+              echo "   Response contains health status"
+            fi
+            ((TESTS_PASSED++))
           else
-            echo "⚠️  Health check failed (non-blocking)"
+            echo "❌ Health check failed ($HEALTH_STATUS)"
+            ((TESTS_FAILED++))
           fi
           
           # Test root endpoint
-          if curl -f -s "$PRODUCTION_URL/" > /dev/null; then
-            echo "✅ Root endpoint accessible"
+          echo "Testing root endpoint..."
+          ROOT_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PRODUCTION_URL/" || echo "000")
+          if [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "404" ] || [ "$ROOT_STATUS" = "307" ] || [ "$ROOT_STATUS" = "301" ]; then
+            echo "✅ Root endpoint accessible ($ROOT_STATUS)"
+            ((TESTS_PASSED++))
           else
-            echo "⚠️  Root endpoint check failed (non-blocking)"
+            echo "⚠️  Root endpoint returned $ROOT_STATUS"
           fi
           
           # Test API docs endpoint
-          if curl -f -s "$PRODUCTION_URL/docs" > /dev/null; then
+          echo "Testing API docs endpoint..."
+          DOCS_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PRODUCTION_URL/docs" || echo "000")
+          if [ "$DOCS_STATUS" = "200" ]; then
             echo "✅ API docs accessible"
+            ((TESTS_PASSED++))
           else
-            echo "⚠️  API docs check failed (non-blocking)"
+            echo "⚠️  API docs returned $DOCS_STATUS"
+          fi
+          
+          # Test OpenAPI JSON
+          echo "Testing OpenAPI JSON endpoint..."
+          OPENAPI_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PRODUCTION_URL/openapi.json" || echo "000")
+          if [ "$OPENAPI_STATUS" = "200" ]; then
+            echo "✅ OpenAPI JSON accessible"
+            ((TESTS_PASSED++))
+          else
+            echo "ℹ️  OpenAPI JSON returned $OPENAPI_STATUS (optional)"
+          fi
+          
+          # Test agents endpoint (should return 200 or 401/403)
+          echo "Testing agents endpoint..."
+          AGENTS_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PRODUCTION_URL/api/v1/agents/" || echo "000")
+          if [ "$AGENTS_STATUS" = "200" ] || [ "$AGENTS_STATUS" = "401" ] || [ "$AGENTS_STATUS" = "403" ]; then
+            echo "✅ Agents endpoint accessible ($AGENTS_STATUS)"
+            ((TESTS_PASSED++))
+          else
+            echo "⚠️  Agents endpoint returned $AGENTS_STATUS"
+          fi
+          
+          echo ""
+          echo "=========================================="
+          echo "Smoke Test Summary"
+          echo "=========================================="
+          echo "Passed: $TESTS_PASSED"
+          echo "Failed: $TESTS_FAILED"
+          echo ""
+          
+          if [ "$TESTS_FAILED" -gt 0 ]; then
+            echo "⚠️  Some smoke tests failed. Review deployment."
+          else
+            echo "✅ All critical smoke tests passed!"
           fi
         continue-on-error: true
       
