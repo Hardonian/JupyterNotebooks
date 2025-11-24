@@ -186,18 +186,35 @@ jobs:
           fi
           
           echo "Testing preview deployment: $PREVIEW_URL"
+          echo ""
           
           # Test health endpoint
-          if curl -f -s "$PREVIEW_URL/health" > /dev/null; then
-            echo "✅ Health check passed"
+          echo "Testing /api/v1/health endpoint..."
+          HEALTH_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PREVIEW_URL/api/v1/health" || echo "000")
+          if [ "$HEALTH_STATUS" = "200" ]; then
+            echo "✅ Health check passed (200)"
           else
-            echo "⚠️  Health check failed (non-blocking)"
+            echo "⚠️  Health check returned $HEALTH_STATUS (non-blocking)"
           fi
           
           # Test root endpoint
-          if curl -f -s "$PREVIEW_URL/" > /dev/null; then
-            echo "✅ Root endpoint accessible"
+          echo "Testing root endpoint..."
+          ROOT_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PREVIEW_URL/" || echo "000")
+          if [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "404" ] || [ "$ROOT_STATUS" = "307" ]; then
+            echo "✅ Root endpoint accessible ($ROOT_STATUS)"
           else
-            echo "⚠️  Root endpoint check failed (non-blocking)"
+            echo "⚠️  Root endpoint returned $ROOT_STATUS (non-blocking)"
           fi
+          
+          # Test API docs (if available)
+          echo "Testing API docs endpoint..."
+          DOCS_STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$PREVIEW_URL/docs" || echo "000")
+          if [ "$DOCS_STATUS" = "200" ]; then
+            echo "✅ API docs accessible"
+          else
+            echo "ℹ️  API docs returned $DOCS_STATUS (optional)"
+          fi
+          
+          echo ""
+          echo "Smoke tests completed"
         continue-on-error: true

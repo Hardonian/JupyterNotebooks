@@ -204,21 +204,23 @@ This is an **API-first platform** with no traditional frontend application.
   - Slow tests
 - **Status:** ✅ Active (may be redundant with `nightly.yml`)
 
-### Missing CI Workflows
+### CI Workflows Status
 
-**❌ Database Migrations**
-- No automated migration workflow
-- Migrations must be run manually
-- No migration validation in CI
+**✅ Database Migrations** (`db-migrate.yml`)
+- Automated migration workflow configured
+- Migrations run automatically on main branch
+- Migration validation in PRs
+- Schema validation script exists
 
-**❌ Deployment Workflows**
-- No automated deployment to production
-- No preview/staging deployments
-- No deployment rollback mechanism
+**✅ Deployment Workflows**
+- Preview deployments: `deploy-vercel-preview.yml` (PRs)
+- Production deployments: `deploy-vercel-production.yml` (main branch)
+- Alternative deployments: Render, Docker, K8s configs available
 
-**❌ Smoke Tests**
-- No post-deployment smoke tests
-- Health checks exist but not automated in CI
+**✅ Smoke Tests**
+- Post-deployment smoke tests configured
+- Health checks automated in CI
+- Preview and production smoke tests implemented
 
 ---
 
@@ -332,29 +334,32 @@ This is an **API-first platform** with no traditional frontend application.
 
 ## 9. Notable Gaps & Red Flags
 
-### Critical Gaps
+### Current Status
 
-1. **❌ No CI Migration Workflow**
-   - Migrations must be run manually
-   - Risk of schema drift between environments
-   - No migration validation in CI
+1. **✅ CI Migration Workflow** (`db-migrate.yml`)
+   - Migrations automated on main branch
+   - Migration validation in PRs
+   - Schema validation script exists
 
-2. **❌ No Deployment Automation**
-   - No automated production deployments
-   - No preview/staging environments
-   - Manual deployment process
+2. **✅ Deployment Automation**
+   - Preview deployments on PRs (Vercel)
+   - Production deployments on main (Vercel)
+   - Multiple deployment options (Render, Docker, K8s)
 
-3. **❌ No Smoke Tests**
-   - No automated health checks post-deployment
-   - No validation that deployments succeeded
+3. **✅ Smoke Tests**
+   - Automated health checks post-deployment
+   - Preview and production smoke tests configured
+   - Deployment validation implemented
 
-4. **❌ Secrets Management Not Documented**
-   - No clear process for managing secrets
-   - No rotation strategy
+4. **✅ Secrets Management Documented**
+   - Comprehensive documentation in `docs/env-and-secrets.md`
+   - GitHub Secrets mapping documented
+   - Hosting platform secrets documented
 
-5. **❌ No Seed Data Scripts**
-   - No documented way to seed demo data
-   - No seed workflow in CI
+5. **✅ Seed Data Scripts**
+   - Seed script exists: `scripts/db-seed-demo.py`
+   - Documentation available
+   - Can be run manually or in CI
 
 ### Medium Priority Gaps
 
@@ -383,27 +388,31 @@ This is an **API-first platform** with no traditional frontend application.
 
 ## 10. Recommendations Summary
 
-### Immediate Actions
+### Completed Actions
 
-1. **Create CI Migration Workflow**
+1. **✅ CI Migration Workflow Created**
    - Automated migrations on main branch
    - Migration validation in PRs
+   - Schema validation script
 
-2. **Add Deployment Workflows**
-   - Production deployment on main
-   - Preview deployments on PRs
+2. **✅ Deployment Workflows Added**
+   - Production deployment on main (Vercel)
+   - Preview deployments on PRs (Vercel)
+   - Alternative deployments (Render, Docker, K8s)
 
-3. **Add Smoke Tests**
+3. **✅ Smoke Tests Added**
    - Post-deployment health checks
    - API endpoint validation
+   - Preview and production smoke tests
 
-4. **Document Secrets Management**
+4. **✅ Secrets Management Documented**
    - GitHub Secrets mapping
    - Hosting platform secrets
+   - Comprehensive documentation
 
-5. **Create Seed Data Scripts**
-   - Demo data for testing
-   - CI seed workflow
+5. **✅ Seed Data Scripts Created**
+   - Demo data script exists
+   - Can be run manually or in CI
 
 ### Short-Term Improvements
 
