@@ -4,6 +4,7 @@ S3 storage backend.
 
 import os
 from typing import BinaryIO, Optional, List
+from agent_factory.storage.local import LocalStorage
 from datetime import datetime, timedelta
 from io import BytesIO
 
@@ -107,19 +108,24 @@ class S3Storage(StorageBackend):
             return f"https://{self.bucket_name}.s3.amazonaws.com/{path}"
 
 
-def get_storage_backend(storage_type: str = "local", **kwargs) -> StorageBackend:
+def get_storage_backend(storage_type: Optional[str] = None, **kwargs) -> StorageBackend:
     """
     Get storage backend instance.
     
     Args:
-        storage_type: Type of storage ("local" or "s3")
+        storage_type: Type of storage ("local", "s3", or "supabase")
+                      If None, auto-detect from environment
         **kwargs: Additional arguments
         
     Returns:
         StorageBackend instance
     """
+    # Auto-detect storage type from environment
+    if storage_type is None:
+        storage_type = os.getenv("STORAGE_TYPE", "local")
+    
     if storage_type == "local":
-        base_path = kwargs.get("base_path", "./storage")
+        base_path = kwargs.get("base_path") or os.getenv("STORAGE_PATH", "./storage")
         return LocalStorage(base_path=base_path)
     elif storage_type == "s3":
         bucket_name = kwargs.get("bucket_name") or os.getenv("AWS_S3_BUCKET")
@@ -131,5 +137,13 @@ def get_storage_backend(storage_type: str = "local", **kwargs) -> StorageBackend
             aws_secret_access_key=kwargs.get("aws_secret_access_key"),
             region=kwargs.get("region", "us-east-1"),
         )
+    elif storage_type == "supabase":
+        try:
+            from agent_factory.storage.supabase import SupabaseStorage
+        except ImportError:
+            raise ImportError("Supabase storage requires supabase package. Install with: pip install supabase")
+        
+        bucket_name = kwargs.get("bucket_name") or os.getenv("SUPABASE_STORAGE_BUCKET", "agent-factory")
+        return SupabaseStorage(bucket_name=bucket_name)
     else:
         raise ValueError(f"Unknown storage type: {storage_type}")
