@@ -19,6 +19,8 @@ from agent_factory.telemetry.model import (
     BillingUsageEvent,
     TenantEvent,
     ProjectEvent,
+    UserActivatedEvent,
+    ReferralEvent,
 )
 from agent_factory.telemetry.collector import TelemetryCollector, get_collector
 from agent_factory.telemetry.backends.base import TelemetryBackend
@@ -43,6 +45,8 @@ __all__ = [
     "BillingUsageEvent",
     "TenantEvent",
     "ProjectEvent",
+    "UserActivatedEvent",
+    "ReferralEvent",
     "TelemetryCollector",
     "get_collector",
     "TelemetryBackend",
