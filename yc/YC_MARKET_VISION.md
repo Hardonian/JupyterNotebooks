@@ -90,34 +90,88 @@ Start with education institutions deploying teaching assistants and learning too
 
 ### Serviceable Obtainable Market (SOM)
 
-**Year 1:** $1M ARR
-- 100 paid developers ($99/month average) = $120K/year
-- 5 education institutions ($20K/year average) = $100K/year
-- 2 enterprise customers ($50K/year average) = $100K/year
-- Marketplace revenue (30% of $500K) = $150K/year
+**SOM Definition:** The portion of SAM (Serviceable Addressable Market) that we can realistically capture in 3 years, given our resources, capabilities, and competitive landscape.
+
+**SOM Calculation:**
+
+**Year 1 SOM:** $500K - $1M ARR
+- **Solo Founders:** 50-100 paid developers ($99/month average) = $60K-$120K/year
+  - **Penetration:** 0.05-0.1% of 100K solo founders
+  - **Rationale:** Early stage, need to prove product-market fit
+- **Education Institutions:** 3-5 institutions ($20K/year average) = $60K-$100K/year
+  - **Penetration:** 0.15-0.25% of 2,000 higher ed institutions
+  - **Rationale:** Long sales cycles, need to prove compliance and value
+- **Enterprise:** 1-2 customers ($50K/year average) = $50K-$100K/year
+  - **Penetration:** 0.02-0.04% of 5K enterprise prospects
+  - **Rationale:** Very long sales cycles, need enterprise features
+- **Marketplace Revenue:** 30% of $200K-$500K = $60K-$150K/year
+  - **Rationale:** Marketplace needs to bootstrap, early stage
 - **Total:** ~$500K ARR (conservative) to $1M ARR (aggressive)
+- **SOM as % of SAM:** 0.01-0.02% (very early stage)
 
-**Year 3:** $10M ARR
-- 500 paid developers = $600K/year
-- 50 education institutions = $1M/year
-- 20 enterprise customers = $2M/year
-- Marketplace revenue (30% of $5M) = $1.5M/year
-- Professional services = $1M/year
+**Year 3 SOM:** $6M - $10M ARR
+- **Solo Founders:** 300-500 paid developers ($99/month average) = $360K-$600K/year
+  - **Penetration:** 0.3-0.5% of 100K solo founders
+  - **Rationale:** Product-market fit proven, growth accelerating
+- **Education Institutions:** 30-50 institutions ($20K/year average) = $600K-$1M/year
+  - **Penetration:** 1.5-2.5% of 2,000 higher ed institutions
+  - **Rationale:** Partnership channels working, compliance proven
+- **Enterprise:** 15-20 customers ($100K/year average) = $1.5M-$2M/year
+  - **Penetration:** 0.3-0.4% of 5K enterprise prospects
+  - **Rationale:** Enterprise features mature, sales process proven
+- **Marketplace Revenue:** 30% of $3M-$5M = $900K-$1.5M/year
+  - **Rationale:** Marketplace flywheel working, creator ecosystem growing
+- **Professional Services:** $500K-$1M/year
+  - **Rationale:** Enterprise customers need custom work
 - **Total:** ~$6M ARR (conservative) to $10M ARR (aggressive)
+- **SOM as % of SAM:** 0.12-0.2% (growing market share)
 
-**Year 5:** $50M ARR
-- 2,000 paid developers = $2.4M/year
-- 200 education institutions = $10M/year
-- 100 enterprise customers = $10M/year
-- Marketplace revenue (30% of $50M) = $15M/year
-- Professional services = $5M/year
+**Year 5 SOM:** $40M - $50M ARR
+- **Solo Founders:** 1,500-2,000 paid developers ($99/month average) = $1.8M-$2.4M/year
+  - **Penetration:** 1.5-2% of 100K solo founders
+  - **Rationale:** Market leadership, strong brand, network effects
+- **Education Institutions:** 150-200 institutions ($50K/year average) = $7.5M-$10M/year
+  - **Penetration:** 7.5-10% of 2,000 higher ed institutions
+  - **Rationale:** Market leadership in education, strong partnerships
+- **Enterprise:** 80-100 customers ($100K/year average) = $8M-$10M/year
+  - **Penetration:** 1.6-2% of 5K enterprise prospects
+  - **Rationale:** Enterprise market leadership, strong sales
+- **Marketplace Revenue:** 30% of $40M-$50M = $12M-$15M/year
+  - **Rationale:** Marketplace flywheel mature, creator ecosystem large
+- **Professional Services:** $3M-$5M/year
+  - **Rationale:** Large enterprise customers, custom work
 - **Total:** ~$40M ARR (conservative) to $50M ARR (aggressive)
+- **SOM as % of SAM:** 0.8-1% (significant market share)
 
-**Assumptions:**
-- 1% market penetration by Year 3
-- Strong go-to-market execution
-- Partnership channels (McGraw Hill) drive education growth
-- Marketplace flywheel drives developer growth
+**SOM Breakdown by Segment:**
+
+| Segment | Year 1 | Year 3 | Year 5 | % of Total (Year 5) |
+|---------|--------|--------|--------|---------------------|
+| Solo Founders | $60K-$120K | $360K-$600K | $1.8M-$2.4M | 4-5% |
+| Education | $60K-$100K | $600K-$1M | $7.5M-$10M | 19-20% |
+| Enterprise | $50K-$100K | $1.5M-$2M | $8M-$10M | 20% |
+| Marketplace | $60K-$150K | $900K-$1.5M | $12M-$15M | 30% |
+| Services | $0 | $500K-$1M | $3M-$5M | 8-10% |
+| **Total** | **$500K-$1M** | **$6M-$10M** | **$40M-$50M** | **100%** |
+
+**Key Assumptions:**
+- **Year 1:** Early stage, proving product-market fit, limited resources
+- **Year 3:** Product-market fit proven, growth accelerating, partnerships working
+- **Year 5:** Market leadership, strong brand, network effects, mature sales
+- **Penetration Rates:** Conservative (realistic given competition and market dynamics)
+- **Pricing:** Assumes pricing holds, may increase with value
+- **Marketplace:** Assumes flywheel works, may be slower if it doesn't
+- **Partnerships:** Assumes partnerships drive growth, may be slower without
+
+**SOM as % of SAM:**
+- **Year 1:** 0.01-0.02% (very early stage)
+- **Year 3:** 0.12-0.2% (growing)
+- **Year 5:** 0.8-1% (significant market share)
+
+**SOM Growth Rate:**
+- **Year 1-3:** 12-20x growth (proving product-market fit)
+- **Year 3-5:** 6.7-8.3x growth (scaling)
+- **CAGR (Year 1-5):** 100-120% (very high growth, but realistic for early-stage SaaS)
 
 ---
 

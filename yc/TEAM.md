@@ -1,222 +1,260 @@
 # Team - Agent Factory
 
-**For:** Y Combinator Application & Interview  
+**For:** YC Application, Investor Meetings, Team Building  
 **Last Updated:** 2024-01-XX
 
 ---
 
-## Founders
+## Overview
 
-### [Founder Name 1] - [Role]
-
-**Background:**
-- [Previous company/role]
-- [Years of experience]
-- [Domain expertise]
-
-**Why This Problem:**
-- [Personal connection to the problem]
-- [Why you're the right person to solve it]
-
-**Commitment:**
-- [ ] Full-time
-- [ ] Part-time (X% time)
-- Runway: [X months]
-
-**Expertise:**
-- [Key skills relevant to Agent Factory]
-- [Technical/product/business expertise]
-
-**Contact:**
-- Email: [email]
-- LinkedIn: [url]
-- GitHub: [url]
-
----
-
-### [Founder Name 2] - [Role]
-
-**Background:**
-- [Previous company/role]
-- [Years of experience]
-- [Domain expertise]
-
-**Why This Problem:**
-- [Personal connection to the problem]
-- [Why you're the right person to solve it]
-
-**Commitment:**
-- [ ] Full-time
-- [ ] Part-time (X% time)
-- Runway: [X months]
-
-**Expertise:**
-- [Key skills relevant to Agent Factory]
-- [Technical/product/business expertise]
-
-**Contact:**
-- Email: [email]
-- LinkedIn: [url]
-- GitHub: [url]
-
----
-
-### [Founder Name 3] - [Role] (if applicable)
-
-[Same format as above]
+This document provides information about the Agent Factory team, including founders, roles, and team composition. This is a placeholder document—founders should fill in actual team information.
 
 ---
 
 ## Team Composition
 
-**Total Team Size:** [X] people
+### Current Team Size
+**Status:** [To be filled by founders]
 
-**Full-Time:** [X] people
-**Part-Time:** [X] people
-**Contractors:** [X] people
+**Inferred from Repository:**
+- Likely 2-4 people (based on codebase scope and documentation)
+- Mix of technical and business roles
+- Full-time or part-time: [To be confirmed]
+
+---
+
+## Founders
+
+### Founder 1: [Name]
+
+**Role:** [To be filled]
+- **Background:** [To be filled]
+- **Previous Companies:** [To be filled]
+- **Expertise:** [To be filled]
+- **Why This Problem:** [To be filled]
+- **Commitment:** [Full-time / Part-time]
+- **LinkedIn:** [To be filled]
+
+**Inferred from Repository:**
+- Strong technical background (evidenced by codebase)
+- Infrastructure expertise (auth, billing, deployment)
+- Full-stack development skills
+
+---
+
+### Founder 2: [Name]
+
+**Role:** [To be filled]
+- **Background:** [To be filled]
+- **Previous Companies:** [To be filled]
+- **Expertise:** [To be filled]
+- **Why This Problem:** [To be filled]
+- **Commitment:** [Full-time / Part-time]
+- **LinkedIn:** [To be filled]
+
+**Inferred from Repository:**
+- Product/business background (evidenced by documentation, strategy)
+- Education market expertise (FERPA, LMS integrations, McGraw Hill partnership)
+- GTM and partnership development skills
+
+---
+
+### Founder 3: [Name] (If Applicable)
+
+**Role:** [To be filled]
+- **Background:** [To be filled]
+- **Previous Companies:** [To be filled]
+- **Expertise:** [To be filled]
+- **Why This Problem:** [To be filled]
+- **Commitment:** [Full-time / Part-time]
+- **LinkedIn:** [To be filled]
+
+**Inferred from Repository:**
+- AI/ML background (evidenced by notebook converter, agent framework)
+- Research experience (notebook workflow understanding)
+
+---
+
+## Team Roles
+
+### Technical Team
 
 **Roles:**
-- Engineering: [X] people
-- Product: [X] people
-- Business/GTM: [X] people
-- Other: [X] people
+- Backend Development (FastAPI, Python)
+- Infrastructure (Docker, Kubernetes, Supabase)
+- AI/ML Integration (OpenAI, Anthropic)
+- DevOps (CI/CD, deployment)
 
-**Equity Split:**
-- [Founder 1]: [X]%
-- [Founder 2]: [X]%
-- [Founder 3]: [X]% (if applicable)
+**Evidence from Repository:**
+- Comprehensive codebase (174 Python files)
+- Production-ready architecture
+- Multiple deployment options
+- Testing infrastructure
+
+---
+
+### Product Team
+
+**Roles:**
+- Product Strategy
+- User Experience
+- Documentation
+- Developer Experience
+
+**Evidence from Repository:**
+- Comprehensive documentation (136+ markdown files)
+- Clear product vision and roadmap
+- User guides and getting started docs
+- API documentation
+
+---
+
+### Business Team
+
+**Roles:**
+- Business Development
+- Partnerships
+- Sales
+- Marketing
+
+**Evidence from Repository:**
+- Monetization strategy
+- Market analysis
+- Partnership development (McGraw Hill)
+- GTM planning
+
+---
+
+## Equity Split
+
+**Status:** [To be filled by founders]
+
+**Format:**
+- Founder 1: [X]%
+- Founder 2: [X]%
+- Founder 3: [X]% (if applicable)
 - Option Pool: [X]%
+- Total: 100%
 
 ---
 
-## Founder-Market Fit
+## Advisory Board
 
-**Why This Team:**
+**Status:** [To be filled by founders]
 
-[Explain why these founders are uniquely qualified to build Agent Factory]
-
-**Key Strengths:**
-1. [Strength 1 - e.g., "Built production infrastructure at scale"]
-2. [Strength 2 - e.g., "Deep education market knowledge"]
-3. [Strength 3 - e.g., "AI/ML expertise"]
-
-**Domain Expertise:**
-- [Area 1]: [Years/experience]
-- [Area 2]: [Years/experience]
-- [Area 3]: [Years/experience]
+**Potential Advisors:**
+- EdTech advisors
+- Infrastructure/DevOps advisors
+- AI/ML advisors
+- Investor advisors
 
 ---
 
-## Track Record
+## Early Team Members
 
-### Previous Companies/Projects
+**Status:** [To be filled by founders]
 
-**[Company/Project Name 1]**
-- **Role:** [Role]
-- **Duration:** [Dates]
-- **Outcome:** [Success/failure, what you learned]
-- **Relevance:** [How it relates to Agent Factory]
-
-**[Company/Project Name 2]**
-- [Same format]
-
-### Key Achievements
-
-1. [Achievement 1]
-2. [Achievement 2]
-3. [Achievement 3]
-
-### Failures & Learnings
-
-1. **[Failure 1]**
-   - What happened: [Description]
-   - What we learned: [Key learning]
-   - How it helps now: [Application to Agent Factory]
-
-2. **[Failure 2]**
-   - [Same format]
+**Potential Early Hires:**
+- Frontend developer (when needed)
+- Sales/business development (when scaling)
+- Content marketer (when scaling)
 
 ---
 
-## Execution Evidence
+## Team Strengths
 
-**What We've Built:**
-- ✅ Complete platform (174 Python files)
-- ✅ Production-ready infrastructure
-- ✅ Comprehensive documentation (136+ markdown files)
-- ✅ Multiple integrations (OpenAI, Anthropic, Stripe, Supabase)
-- ✅ Compliance framework (FERPA, SOC2-ready)
-- ✅ Marketplace system
-- ✅ Billing and payments
+### Technical Excellence
+- ✅ Production-ready codebase
+- ✅ Comprehensive architecture
+- ✅ Multiple integrations
+- ✅ Testing and quality assurance
 
-**Shipping Velocity:**
-- [X] features shipped in last [time period]
-- [X] deployments per [time period]
-- [X] users acquired in last [time period]
+### Product Thinking
+- ✅ User-focused design
+- ✅ Comprehensive documentation
+- ✅ Clear value proposition
+- ✅ Well-thought-out features
 
-**Evidence We Can Execute:**
-- [Evidence 1 - e.g., "Shipped complete platform in X months"]
-- [Evidence 2 - e.g., "Built Y integrations"]
-- [Evidence 3 - e.g., "Achieved Z milestone"]
+### Business Acumen
+- ✅ Clear monetization strategy
+- ✅ Market analysis
+- ✅ Competitive positioning
+- ✅ Partnership strategy
+
+### Execution
+- ✅ Shipped comprehensive platform
+- ✅ Multiple deployment options
+- ✅ Documentation and marketing materials
+- ✅ Compliance and enterprise features
 
 ---
 
-## Network & Relationships
+## Team Gaps
 
-**Investors:**
-- [Investor/advisor name]: [Relationship, how they help]
+### Current Gaps
+1. **Frontend Development:** Limited frontend capability (demo UI only)
+2. **Sales/Business Development:** Limited sales experience evidence
+3. **Content Marketing:** Content not yet published
+4. **UX Design:** Limited UX design evidence
 
-**Advisors:**
-- [Advisor name]: [Expertise, how they help]
-
-**Partners:**
-- McGraw Hill Education: [Partnership details]
-- [Other partners]: [Details]
-
-**Customers:**
-- [Early customer name]: [Relationship, how they help]
-
-**Industry Connections:**
-- [Connection 1]: [How it helps]
-- [Connection 2]: [How it helps]
+### How to Fill Gaps
+1. **Hire:** Frontend developer, sales, content marketer (when scaling)
+2. **Partner:** Use design agencies, freelancers
+3. **Learn:** Founders learn new skills
+4. **Outsource:** Outsource non-core functions
 
 ---
 
 ## Hiring Plan
 
-**Next 3 Months:**
-- [Role 1]: [Why needed, what they'll do]
-- [Role 2]: [Why needed, what they'll do]
+### Immediate (Next 3 Months)
+- [ ] No immediate hires planned (focus on launch and validation)
 
-**Next 6 Months:**
-- [Role 3]: [Why needed, what they'll do]
-- [Role 4]: [Why needed, what they'll do]
+### Short-Term (Next 6 Months)
+- [ ] Consider hiring sales/business development (if education market validates)
+- [ ] Consider hiring content marketer (if content marketing works)
 
-**Next 12 Months:**
-- [Role 5]: [Why needed, what they'll do]
-- [Role 6]: [Why needed, what they'll do]
-
----
-
-## TODO: Founders to Fill In
-
-**Required Information:**
-- [ ] Founder names and backgrounds
-- [ ] Previous companies/roles
-- [ ] Domain expertise
-- [ ] Founder-market fit story
-- [ ] Track record (successes, failures, learnings)
-- [ ] Execution evidence
-- [ ] Network and relationships
-- [ ] Hiring plan
-
-**Optional but Helpful:**
-- [ ] LinkedIn profiles
-- [ ] Previous company websites/products
-- [ ] Blog posts/articles written
-- [ ] Speaking engagements
-- [ ] Open-source contributions
+### Long-Term (Next 12 Months)
+- [ ] Hire frontend developer (if production UI needed)
+- [ ] Hire sales team (if enterprise sales needed)
+- [ ] Hire content team (if content marketing scales)
 
 ---
 
-**Next:** See `/yc/FUNDING_STATUS.md` for funding and runway information.
+## Commitment Status
+
+### Founders
+**Status:** [To be filled by founders]
+- **Full-Time:** [Yes / No]
+- **Part-Time:** [Yes / No]
+- **Runway:** [To be filled]
+
+### Team Members
+**Status:** [To be filled by founders]
+- **Full-Time:** [Count]
+- **Part-Time:** [Count]
+- **Contractors:** [Count]
+
+---
+
+## Next Steps
+
+### This Month
+1. [ ] Fill in actual founder information
+2. [ ] Document team composition
+3. [ ] Document equity split
+4. [ ] Document commitment status
+
+### Next Quarter
+1. [ ] Update team information
+2. [ ] Add early team members (if any)
+3. [ ] Add advisors (if any)
+
+---
+
+**Last Updated:** 2024-01-XX  
+**Next Review:** [Date]
+
+---
+
+**Next:** See `/yc/FOUNDER_MARKET_FIT.md` for founder-market fit and `/yc/FOUNDER_CAPABILITIES.md` for capabilities matrix.
