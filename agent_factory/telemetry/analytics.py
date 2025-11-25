@@ -144,7 +144,7 @@ class AnalyticsEngine:
         """
         Compute conversion funnel metrics.
         
-        Tracks: notebook → agent → blueprint → SaaS app
+        User-focused funnel: Visitor → Signup → Activated → Retained → Paying
         
         Args:
             start_date: Start date
@@ -165,21 +165,71 @@ class AnalyticsEngine:
             limit=10000,
         )
         
-        # Count conversions
+        from agent_factory.telemetry.model import (
+            TenantEvent, UserSignupEvent, UserActivatedEvent, RevenueEvent
+        )
+        
+        # Count funnel stages
+        signups = self._count_events(events, EventType.USER_SIGNUP.value)
+        activated = self._count_events(events, EventType.USER_ACTIVATED.value)
+        
+        # Retained = users active in last 7 days who signed up in period
+        signup_user_ids = {
+            e.user_id for e in events
+            if isinstance(e, (TenantEvent, UserSignupEvent)) and e.user_id
+        }
+        
+        # Check retention (active in last 7 days)
+        retention_start = end_date - timedelta(days=7)
+        retention_events = self.collector.query_events(
+            start_time=retention_start,
+            end_time=end_date,
+            limit=10000,
+        )
+        retained_user_ids = {
+            e.user_id for e in retention_events
+            if e.user_id in signup_user_ids
+        }
+        retained = len(retained_user_ids)
+        
+        # Paying = users with revenue events
+        paying_user_ids = {
+            e.user_id for e in events
+            if isinstance(e, RevenueEvent) and e.user_id
+        }
+        paying = len(paying_user_ids)
+        
+        # Also track product funnel (notebook → agent → blueprint → project)
         notebook_conversions = self._count_events(events, EventType.NOTEBOOK_CONVERTED.value)
         agents_created = self._count_unique_agents(events)
         blueprints_installed = self._count_events(events, EventType.BLUEPRINT_INSTALL.value)
         projects_created = self._count_events(events, EventType.PROJECT_CREATED.value)
         
         funnel = {
-            "notebooks_converted": notebook_conversions,
-            "agents_created": agents_created,
-            "blueprints_installed": blueprints_installed,
-            "projects_created": projects_created,
-            "conversion_rates": {
-                "notebook_to_agent": agents_created / notebook_conversions if notebook_conversions > 0 else 0.0,
-                "agent_to_blueprint": blueprints_installed / agents_created if agents_created > 0 else 0.0,
-                "blueprint_to_project": projects_created / blueprints_installed if blueprints_installed > 0 else 0.0,
+            # User-focused funnel
+            "user_funnel": {
+                "signups": signups,
+                "activated": activated,
+                "retained": retained,
+                "paying": paying,
+                "conversion_rates": {
+                    "signup_to_activated": activated / signups if signups > 0 else 0.0,
+                    "activated_to_retained": retained / activated if activated > 0 else 0.0,
+                    "retained_to_paying": paying / retained if retained > 0 else 0.0,
+                    "signup_to_paying": paying / signups if signups > 0 else 0.0,
+                },
+            },
+            # Product funnel (legacy)
+            "product_funnel": {
+                "notebooks_converted": notebook_conversions,
+                "agents_created": agents_created,
+                "blueprints_installed": blueprints_installed,
+                "projects_created": projects_created,
+                "conversion_rates": {
+                    "notebook_to_agent": agents_created / notebook_conversions if notebook_conversions > 0 else 0.0,
+                    "agent_to_blueprint": blueprints_installed / agents_created if agents_created > 0 else 0.0,
+                    "blueprint_to_project": projects_created / blueprints_installed if blueprints_installed > 0 else 0.0,
+                },
             },
         }
         
@@ -491,9 +541,15 @@ class AnalyticsEngine:
             current_value = self._count_events(current_events, EventType.AGENT_RUN.value)
             previous_value = self._count_events(previous_events, EventType.AGENT_RUN.value)
         elif metric == "revenue":
-            # Would need revenue events - placeholder for now
-            current_value = 0.0
-            previous_value = 0.0
+            from agent_factory.telemetry.model import RevenueEvent
+            current_value = sum(
+                e.amount for e in current_events
+                if isinstance(e, RevenueEvent)
+            )
+            previous_value = sum(
+                e.amount for e in previous_events
+                if isinstance(e, RevenueEvent)
+            )
         else:
             current_value = 0
             previous_value = 0

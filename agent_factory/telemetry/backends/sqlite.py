@@ -180,6 +180,11 @@ class SQLiteTelemetryBackend(TelemetryBackend):
             BillingUsageEvent,
             TenantEvent,
             ProjectEvent,
+            UserActivatedEvent,
+            ReferralEvent,
+            RevenueEvent,
+            UserSignupEvent,
+            UserLoginEvent,
         )
         
         # Map event types to classes
@@ -194,6 +199,12 @@ class SQLiteTelemetryBackend(TelemetryBackend):
             EventType.TENANT_UPDATED: TenantEvent,
             EventType.PROJECT_CREATED: ProjectEvent,
             EventType.PROJECT_UPDATED: ProjectEvent,
+            EventType.USER_ACTIVATED: UserActivatedEvent,
+            EventType.REFERRAL_SENT: ReferralEvent,
+            EventType.REFERRAL_CONVERTED: ReferralEvent,
+            EventType.REVENUE: RevenueEvent,
+            EventType.USER_SIGNUP: UserSignupEvent,
+            EventType.USER_LOGIN: UserLoginEvent,
         }
         
         event_class = event_classes.get(event_type)

@@ -26,6 +26,9 @@ class EventType(str, Enum):
     USER_ACTIVATED = "user_activated"
     REFERRAL_SENT = "referral_sent"
     REFERRAL_CONVERTED = "referral_converted"
+    REVENUE = "revenue"
+    USER_SIGNUP = "user_signup"
+    USER_LOGIN = "user_login"
 
 
 @dataclass
@@ -310,5 +313,81 @@ class ReferralEvent(TelemetryEvent):
             "referral_type": self.referral_type,
             "referred_user_id": self.referred_user_id,
             "reward_granted": self.reward_granted,
+        })
+        return base
+
+
+@dataclass(kw_only=True)
+class RevenueEvent(TelemetryEvent):
+    """Telemetry event for revenue tracking."""
+    amount: float  # Required field
+    currency: str = "USD"
+    revenue_type: str  # subscription, marketplace, services, enterprise
+    plan_id: Optional[str] = None
+    subscription_id: Optional[str] = None
+    period_start: Optional[datetime] = None
+    period_end: Optional[datetime] = None
+    
+    def __post_init__(self):
+        """Set event type."""
+        self.event_type = EventType.REVENUE
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        base = super().to_dict()
+        base.update({
+            "amount": self.amount,
+            "currency": self.currency,
+            "revenue_type": self.revenue_type,
+            "plan_id": self.plan_id,
+            "subscription_id": self.subscription_id,
+            "period_start": self.period_start.isoformat() if self.period_start else None,
+            "period_end": self.period_end.isoformat() if self.period_end else None,
+        })
+        return base
+
+
+@dataclass(kw_only=True)
+class UserSignupEvent(TelemetryEvent):
+    """Telemetry event for user signup."""
+    email: Optional[str] = None
+    signup_source: Optional[str] = None  # organic, paid, referral, partnership, etc.
+    utm_source: Optional[str] = None
+    utm_medium: Optional[str] = None
+    utm_campaign: Optional[str] = None
+    referral_code: Optional[str] = None
+    
+    def __post_init__(self):
+        """Set event type."""
+        self.event_type = EventType.USER_SIGNUP
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        base = super().to_dict()
+        base.update({
+            "email": self.email,
+            "signup_source": self.signup_source,
+            "utm_source": self.utm_source,
+            "utm_medium": self.utm_medium,
+            "utm_campaign": self.utm_campaign,
+            "referral_code": self.referral_code,
+        })
+        return base
+
+
+@dataclass(kw_only=True)
+class UserLoginEvent(TelemetryEvent):
+    """Telemetry event for user login."""
+    login_method: Optional[str] = None  # email, oauth, api_key, etc.
+    
+    def __post_init__(self):
+        """Set event type."""
+        self.event_type = EventType.USER_LOGIN
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        base = super().to_dict()
+        base.update({
+            "login_method": self.login_method,
         })
         return base

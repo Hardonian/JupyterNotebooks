@@ -20,4 +20,10 @@ try:
 except ImportError:
     metrics = None
 
-__all__ = ["agent", "tool", "workflow", "blueprint", "registry", "marketplace", "execution", "doctor", "config", "docs", "metrics"]
+# Import export if available
+try:
+    from agent_factory.cli.commands import export
+except ImportError:
+    export = None
+
+__all__ = ["agent", "tool", "workflow", "blueprint", "registry", "marketplace", "execution", "doctor", "config", "docs", "metrics", "export"]

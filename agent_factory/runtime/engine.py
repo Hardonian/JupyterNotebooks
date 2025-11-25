@@ -11,6 +11,7 @@ from agent_factory.agents.agent import Agent, AgentResult
 from agent_factory.workflows.model import Workflow, WorkflowResult
 from agent_factory.promptlog import SQLiteStorage, Run as RunModel
 from agent_factory.telemetry.collector import get_collector
+from agent_factory.telemetry.model import UserActivatedEvent, UserSignupEvent, UserLoginEvent
 
 
 @dataclass
@@ -99,6 +100,10 @@ class RuntimeEngine:
             raise ValueError(f"Agent not found: {agent_id}")
         
         execution_id = str(uuid.uuid4())
+        
+        # Track user activation (first agent run)
+        if self.user_id:
+            self._track_activation_if_first_run(agent_id)
         execution = Execution(
             id=execution_id,
             type="agent",
@@ -251,6 +256,58 @@ class RuntimeEngine:
             )
             self.prompt_log_storage.save_run(run)
         except Exception:
+            pass
+    
+    def _track_activation_if_first_run(self, agent_id: str) -> None:
+        """
+        Track user activation if this is their first agent run.
+        
+        Args:
+            agent_id: Agent ID that was run
+        """
+        if not self.user_id:
+            return
+        
+        try:
+            # Check if user has run any agent before
+            events = self.telemetry_collector.query_events(
+                user_id=self.user_id,
+                limit=1000,
+            )
+            
+            # Check if user has activated before
+            has_activated = any(
+                isinstance(e, UserActivatedEvent) for e in events
+            )
+            
+            if not has_activated:
+                # This is first agent run - track activation
+                # Get signup date to calculate days to activation
+                signup_events = [
+                    e for e in events
+                    if isinstance(e, UserSignupEvent) or (
+                        hasattr(e, 'event_type') and 
+                        e.event_type.value in ['tenant_created', 'user_signup']
+                    )
+                ]
+                
+                days_to_activation = None
+                if signup_events:
+                    signup_date = signup_events[0].timestamp
+                    days_to_activation = (datetime.utcnow() - signup_date).days
+                
+                activation_event = UserActivatedEvent(
+                    event_id=str(uuid.uuid4()),
+                    activation_criteria="first_agent_run",
+                    days_to_activation=days_to_activation,
+                    tenant_id=self.tenant_id,
+                    user_id=self.user_id,
+                    project_id=self.project_id,
+                )
+                
+                self.telemetry_collector.record_event(activation_event)
+        except Exception:
+            # Don't fail execution if activation tracking fails
             pass
     
     def get_execution(self, execution_id: str) -> Optional[Execution]:
