@@ -144,7 +144,7 @@ class AnalyticsEngine:
         """
         Compute conversion funnel metrics.
         
-        Tracks: notebook → agent → blueprint → SaaS app
+        User-focused funnel: Visitor → Signup → Activated → Retained → Paying
         
         Args:
             start_date: Start date
@@ -165,21 +165,71 @@ class AnalyticsEngine:
             limit=10000,
         )
         
-        # Count conversions
+        from agent_factory.telemetry.model import (
+            TenantEvent, UserSignupEvent, UserActivatedEvent, RevenueEvent
+        )
+        
+        # Count funnel stages
+        signups = self._count_events(events, EventType.USER_SIGNUP.value)
+        activated = self._count_events(events, EventType.USER_ACTIVATED.value)
+        
+        # Retained = users active in last 7 days who signed up in period
+        signup_user_ids = {
+            e.user_id for e in events
+            if isinstance(e, (TenantEvent, UserSignupEvent)) and e.user_id
+        }
+        
+        # Check retention (active in last 7 days)
+        retention_start = end_date - timedelta(days=7)
+        retention_events = self.collector.query_events(
+            start_time=retention_start,
+            end_time=end_date,
+            limit=10000,
+        )
+        retained_user_ids = {
+            e.user_id for e in retention_events
+            if e.user_id in signup_user_ids
+        }
+        retained = len(retained_user_ids)
+        
+        # Paying = users with revenue events
+        paying_user_ids = {
+            e.user_id for e in events
+            if isinstance(e, RevenueEvent) and e.user_id
+        }
+        paying = len(paying_user_ids)
+        
+        # Also track product funnel (notebook → agent → blueprint → project)
         notebook_conversions = self._count_events(events, EventType.NOTEBOOK_CONVERTED.value)
         agents_created = self._count_unique_agents(events)
         blueprints_installed = self._count_events(events, EventType.BLUEPRINT_INSTALL.value)
         projects_created = self._count_events(events, EventType.PROJECT_CREATED.value)
         
         funnel = {
-            "notebooks_converted": notebook_conversions,
-            "agents_created": agents_created,
-            "blueprints_installed": blueprints_installed,
-            "projects_created": projects_created,
-            "conversion_rates": {
-                "notebook_to_agent": agents_created / notebook_conversions if notebook_conversions > 0 else 0.0,
-                "agent_to_blueprint": blueprints_installed / agents_created if agents_created > 0 else 0.0,
-                "blueprint_to_project": projects_created / blueprints_installed if blueprints_installed > 0 else 0.0,
+            # User-focused funnel
+            "user_funnel": {
+                "signups": signups,
+                "activated": activated,
+                "retained": retained,
+                "paying": paying,
+                "conversion_rates": {
+                    "signup_to_activated": activated / signups if signups > 0 else 0.0,
+                    "activated_to_retained": retained / activated if activated > 0 else 0.0,
+                    "retained_to_paying": paying / retained if retained > 0 else 0.0,
+                    "signup_to_paying": paying / signups if signups > 0 else 0.0,
+                },
+            },
+            # Product funnel (legacy)
+            "product_funnel": {
+                "notebooks_converted": notebook_conversions,
+                "agents_created": agents_created,
+                "blueprints_installed": blueprints_installed,
+                "projects_created": projects_created,
+                "conversion_rates": {
+                    "notebook_to_agent": agents_created / notebook_conversions if notebook_conversions > 0 else 0.0,
+                    "agent_to_blueprint": blueprints_installed / agents_created if agents_created > 0 else 0.0,
+                    "blueprint_to_project": projects_created / blueprints_installed if blueprints_installed > 0 else 0.0,
+                },
             },
         }
         
@@ -323,6 +373,204 @@ class AnalyticsEngine:
         
         error_count = self._count_events(events, EventType.ERROR.value)
         return error_count / total_events
+    
+    def get_channel_attribution(
+        self,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+    ) -> Dict[str, Any]:
+        """
+        Get user acquisition by channel.
+        
+        Args:
+            start_date: Start date
+            end_date: End date
+            
+        Returns:
+            Channel attribution metrics
+        """
+        if not end_date:
+            end_date = datetime.utcnow()
+        
+        if not start_date:
+            start_date = end_date - timedelta(days=30)
+        
+        events = self.collector.query_events(
+            event_type=EventType.TENANT_CREATED.value,
+            start_time=start_date,
+            end_time=end_date,
+            limit=10000,
+        )
+        
+        from agent_factory.telemetry.model import TenantEvent
+        
+        channel_counts = defaultdict(int)
+        channel_conversions = defaultdict(int)  # To paid
+        
+        for e in events:
+            if isinstance(e, TenantEvent) and e.signup_source:
+                channel = e.signup_source
+                channel_counts[channel] += 1
+                # Count conversions to paid (if plan is not free)
+                if e.plan and e.plan != "free":
+                    channel_conversions[channel] += 1
+        
+        # Calculate conversion rates
+        channel_metrics = {}
+        for channel, count in channel_counts.items():
+            conversions = channel_conversions.get(channel, 0)
+            channel_metrics[channel] = {
+                "signups": count,
+                "paid_conversions": conversions,
+                "conversion_rate": conversions / count if count > 0 else 0.0,
+            }
+        
+        return {
+            "period_start": start_date.isoformat(),
+            "period_end": end_date.isoformat(),
+            "channels": dict(channel_metrics),
+            "total_signups": sum(channel_counts.values()),
+        }
+    
+    def get_retention_cohort(
+        self,
+        cohort_date: datetime,
+        days: List[int] = [1, 7, 30],
+    ) -> Dict[int, float]:
+        """
+        Compute retention for a cohort.
+        
+        Args:
+            cohort_date: Date when cohort signed up
+            days: List of days to check retention (e.g., [1, 7, 30])
+            
+        Returns:
+            Dictionary mapping days to retention rate
+        """
+        # Get users who signed up on cohort_date
+        signup_events = self.collector.query_events(
+            event_type=EventType.TENANT_CREATED.value,
+            start_time=cohort_date.replace(hour=0, minute=0, second=0, microsecond=0),
+            end_time=cohort_date.replace(hour=23, minute=59, second=59, microsecond=999999),
+            limit=10000,
+        )
+        
+        from agent_factory.telemetry.model import TenantEvent
+        
+        cohort_user_ids = {
+            e.user_id for e in signup_events
+            if isinstance(e, TenantEvent) and e.user_id
+        }
+        
+        if not cohort_user_ids:
+            return {day: 0.0 for day in days}
+        
+        cohort_size = len(cohort_user_ids)
+        
+        # Check retention at each day
+        retention = {}
+        for day in days:
+            check_date = cohort_date + timedelta(days=day)
+            check_start = check_date.replace(hour=0, minute=0, second=0, microsecond=0)
+            check_end = check_start + timedelta(days=1)
+            
+            # Get active users from cohort on check_date
+            active_events = self.collector.query_events(
+                start_time=check_start,
+                end_time=check_end,
+                limit=10000,
+            )
+            
+            active_user_ids = {
+                e.user_id for e in active_events
+                if e.user_id in cohort_user_ids
+            }
+            
+            retention[day] = len(active_user_ids) / cohort_size if cohort_size > 0 else 0.0
+        
+        return retention
+    
+    def get_growth_rate(
+        self,
+        metric: str,  # "users", "tenants", "revenue", "agent_runs"
+        period: str = "month",  # "week", "month"
+    ) -> Dict[str, float]:
+        """
+        Compute growth rate for a metric.
+        
+        Args:
+            metric: Metric to track ("users", "tenants", "revenue", "agent_runs")
+            period: Period for comparison ("week", "month")
+            
+        Returns:
+            Dictionary with growth rate and values
+        """
+        end_date = datetime.utcnow()
+        
+        if period == "week":
+            delta = timedelta(days=7)
+        else:  # month
+            delta = timedelta(days=30)
+        
+        current_start = end_date - delta
+        previous_start = current_start - delta
+        previous_end = current_start
+        
+        # Get current period value
+        current_events = self.collector.query_events(
+            start_time=current_start,
+            end_time=end_date,
+            limit=10000,
+        )
+        
+        # Get previous period value
+        previous_events = self.collector.query_events(
+            start_time=previous_start,
+            end_time=previous_end,
+            limit=10000,
+        )
+        
+        # Calculate metric values
+        if metric == "users":
+            current_value = self._count_unique_users(current_events)
+            previous_value = self._count_unique_users(previous_events)
+        elif metric == "tenants":
+            current_value = self._count_unique_tenants(current_events)
+            previous_value = self._count_unique_tenants(previous_events)
+        elif metric == "agent_runs":
+            current_value = self._count_events(current_events, EventType.AGENT_RUN.value)
+            previous_value = self._count_events(previous_events, EventType.AGENT_RUN.value)
+        elif metric == "revenue":
+            from agent_factory.telemetry.model import RevenueEvent
+            current_value = sum(
+                e.amount for e in current_events
+                if isinstance(e, RevenueEvent)
+            )
+            previous_value = sum(
+                e.amount for e in previous_events
+                if isinstance(e, RevenueEvent)
+            )
+        else:
+            current_value = 0
+            previous_value = 0
+        
+        # Calculate growth rate
+        if previous_value == 0:
+            growth_rate = float('inf') if current_value > 0 else 0.0
+        else:
+            growth_rate = ((current_value - previous_value) / previous_value) * 100
+        
+        return {
+            "metric": metric,
+            "period": period,
+            "current_value": current_value,
+            "previous_value": previous_value,
+            "growth_rate": growth_rate,
+            "current_period_start": current_start.isoformat(),
+            "current_period_end": end_date.isoformat(),
+            "previous_period_start": previous_start.isoformat(),
+            "previous_period_end": previous_end.isoformat(),
+        }
 
 
 # Global analytics instance
