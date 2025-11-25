@@ -288,6 +288,22 @@ GPL-3.0 License — see [LICENSE](LICENSE) file.
 
 ---
 
+## 🎯 YC Readiness
+
+**For Y Combinator applicants and investors:**
+
+Comprehensive YC readiness assessment and preparation materials are available in the `/yc/` directory:
+
+- **[YC Readiness Package](yc/README.md)** - Complete guide to YC preparation
+- **[Product Overview](yc/YC_PRODUCT_OVERVIEW.md)** - Product narrative and value proposition
+- **[Gap Analysis](yc/YC_GAP_ANALYSIS.md)** - What's missing and how to fix it
+- **[Interview Cheat Sheet](yc/YC_INTERVIEW_CHEATSHEET.md)** - Interview preparation guide
+- **[Metrics Checklist](yc/YC_METRICS_CHECKLIST.md)** - What metrics YC asks for
+
+**Quick Start:** See [yc/README.md](yc/README.md) for overview and next steps.
+
+---
+
 **Built by developers, for developers.**  
 **Making AI agents accessible to everyone.**
 
