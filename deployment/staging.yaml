@@ -1,0 +1,38 @@
+# Staging Environment Configuration
+# For Render.com staging deployment
+
+services:
+  - type: web
+    name: agent-factory-api-staging
+    env: staging
+    buildCommand: pip install -e ".[dev]" && alembic upgrade head
+    startCommand: uvicorn agent_factory.api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ENVIRONMENT
+        value: staging
+      - key: DEBUG
+        value: "true"
+      - key: LOG_LEVEL
+        value: DEBUG
+      - key: DATABASE_URL
+        sync: false  # Set in Render dashboard
+      - key: REDIS_URL
+        sync: false  # Set in Render dashboard
+      - key: OPENAI_API_KEY
+        sync: false  # Set in Render dashboard
+      - key: ANTHROPIC_API_KEY
+        sync: false  # Set in Render dashboard
+      - key: JWT_SECRET_KEY
+        sync: false  # Set in Render dashboard
+      - key: API_KEY_ENABLED
+        value: "true"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "120"  # Higher limit for staging
+      - key: CORS_ORIGINS
+        value: "http://localhost:3000,https://staging.agentfactory.io"
+      - key: TELEMETRY_ENABLED
+        value: "true"
+      - key: METRICS_ENABLED
+        value: "true"
+    healthCheckPath: /health
+    autoDeploy: false  # Manual deployment for staging
