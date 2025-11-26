@@ -1,286 +1,148 @@
-# Unit Economics - Agent Factory
+# Unit Economics Analysis
 
-**For:** Y Combinator Application & Interview  
-**Last Updated:** 2024-01-XX
-
----
-
-## Overview
-
-This document calculates and tracks unit economics for Agent Factory. Unit economics show whether our business model is viable at the unit level (per customer).
+**Date:** 2025-11-26  
+**Founder, CEO & Operator:** Scott Hardie  
+**Status:** PRELIMINARY (No Real Data)
 
 ---
 
-## Key Metrics
+## Inputs
 
-### CAC (Customer Acquisition Cost)
-
-**Definition:** How much it costs to acquire one paying customer.
-
-**Formula:** Marketing Spend / New Paying Customers
-
-**Current:** $[X] per customer
-
-**By Channel:**
-- Organic/SEO: $[X]
-- Paid Ads: $[X]
-- Partnerships: $[X]
-- Referrals: $[X]
-- Other: $[X]
-
-**Target:** < $50 per customer
-
-**Trend:** [Increasing / Decreasing / Stable]
+- **Marketing Spend (30 days):** $0.00
+- **New Customers (30 days):** 0
+- **ARPU (Monthly):** $49.00
+- **Customer Lifetime:** 12.0 months
+- **Gross Margin:** 80.0%
 
 ---
 
-### LTV (Lifetime Value)
+## Calculated Metrics
 
-**Definition:** Total revenue from a customer over their lifetime.
+### Customer Acquisition Cost (CAC)
+**Formula:** Marketing Spend / New Customers
 
-**Formula:** ARPU × Average Customer Lifetime
+**CAC:** $0.00
 
-**ARPU (Average Revenue Per User):**
-- Current: $[X]/month
-- By Plan:
-  - Pro: $99/month
-  - Business: $499/month
-  - Enterprise: $[X]/month (custom)
+⚠️  No customers yet - CAC cannot be calculated
 
-**Average Customer Lifetime:**
-- Current: [X] months
-- Churn Rate: [X]%/month
-- Lifetime = 1 / Churn Rate = [X] months
+---
 
-**LTV Calculation:**
-- LTV = $[X]/month × [X] months = $[X]
+### Lifetime Value (LTV)
+**Formula:** ARPU × Customer Lifetime
 
-**Target:** > $1,800 per customer
+**LTV:** $588.00
 
-**Trend:** [Increasing / Decreasing / Stable]
+**Breakdown:**
+- ARPU: $49.00/month
+- Lifetime: 12.0 months
+- Total: $588.00
 
 ---
 
 ### LTV:CAC Ratio
-
 **Formula:** LTV / CAC
 
-**Current:** [X]:1
+**Ratio:** 0.00:1
 
-**Target:** > 3:1 (ideally > 10:1)
+**Interpretation:**
+⚠️  Cannot calculate (no customers)
 
-**Assessment:** [ ] Good / [ ] Needs Improvement
+**Target:** 3:1 or higher
 
 ---
 
 ### Payback Period
-
-**Definition:** How long it takes to recover CAC.
-
 **Formula:** CAC / (MRR × Gross Margin)
 
-**Current:** [X] months
+**Payback Period:** 0.0 months
 
-**Target:** < 6 months (ideally < 3 months)
+**Breakdown:**
+- CAC: $0.00
+- MRR: $0.00
+- Gross Margin: 80.0%
+- Monthly Profit: $0.00
+- Payback: 0.0 months
 
-**Assessment:** [ ] Good / [ ] Needs Improvement
+**Target:** <12 months (ideally <6 months)
 
 ---
 
 ### Gross Margin
+**Gross Margin:** 80.0%
 
-**Definition:** Revenue minus cost of goods sold (COGS).
+**Interpretation:**
+✅ Excellent (>80%)
 
-**Formula:** (Revenue - COGS) / Revenue × 100%
-
-**COGS Breakdown:**
-- LLM API costs: $[X]/month per customer
-- Infrastructure (Supabase, Redis): $[X]/month per customer
-- Support costs: $[X]/month per customer
-- Other: $[X]/month per customer
-- **Total COGS:** $[X]/month per customer
-
-**Gross Margin:**
-- Revenue: $[X]/month per customer
-- COGS: $[X]/month per customer
-- Gross Margin: $[X]/month = [X]%
-
-**Target:** > 70% (ideally > 80%)
-
-**Trend:** [Increasing / Decreasing / Stable]
+**Target:** >70% for SaaS
 
 ---
 
-## Unit Economics by Plan Tier
+## Summary
 
-### Free Tier
-- **CAC:** $0 (no acquisition cost, organic)
-- **ARPU:** $0
-- **LTV:** $0
-- **Gross Margin:** N/A
-- **Purpose:** User acquisition, conversion funnel
-
-### Pro Tier ($99/month)
-- **CAC:** $[X]
-- **ARPU:** $99/month
-- **Average Lifetime:** [X] months
-- **LTV:** $[X]
-- **COGS:** $[X]/month
-- **Gross Margin:** [X]%
-- **LTV:CAC:** [X]:1
-- **Payback:** [X] months
-
-### Business Tier ($499/month)
-- **CAC:** $[X]
-- **ARPU:** $499/month
-- **Average Lifetime:** [X] months
-- **LTV:** $[X]
-- **COGS:** $[X]/month
-- **Gross Margin:** [X]%
-- **LTV:CAC:** [X]:1
-- **Payback:** [X] months
-
-### Enterprise Tier (Custom)
-- **CAC:** $[X] (higher due to sales cycle)
-- **ARPU:** $[X]/month (custom pricing)
-- **Average Lifetime:** [X] months (longer)
-- **LTV:** $[X]
-- **COGS:** $[X]/month
-- **Gross Margin:** [X]%
-- **LTV:CAC:** [X]:1
-- **Payback:** [X] months
+| Metric | Value | Status |
+|--------|-------|--------|
+| **CAC** | $0.00 | ⚠️  No data |
+| **LTV** | $588.00 | ✅ |
+| **LTV:CAC** | 0.00:1 | ⚠️  No data |
+| **Payback** | 0.0 months | ⚠️  No data |
+| **Gross Margin** | 80.0% | ✅ |
 
 ---
 
-## Cost Structure
+## Assumptions
 
-### Variable Costs (Per Customer)
+**Current Assumptions:**
+- ARPU: $49.00/month (based on Starter tier pricing)
+- Customer Lifetime: 12.0 months (typical SaaS churn)
+- Gross Margin: 80.0% (infrastructure costs)
 
-**LLM API Costs:**
-- Cost per agent run: $[X]
-- Average runs per customer/month: [X]
-- Total LLM cost: $[X]/month per customer
-
-**Infrastructure Costs:**
-- Supabase: $[X]/month per customer
-- Redis: $[X]/month per customer
-- Hosting: $[X]/month per customer
-- Total infrastructure: $[X]/month per customer
-
-**Support Costs:**
-- Support time per customer: [X] hours/month
-- Cost per hour: $[X]
-- Total support: $[X]/month per customer
-
-**Total Variable Costs:** $[X]/month per customer
-
-### Fixed Costs (Per Month)
-
-- Team salaries: $[X]/month
-- Office/overhead: $[X]/month
-- Tools/services: $[X]/month
-- Marketing (fixed): $[X]/month
-- Other: $[X]/month
-
-**Total Fixed Costs:** $[X]/month
+**Note:** These are placeholder calculations. Update with real data as you acquire customers.
 
 ---
 
-## Unit Economics Trends
+## Next Steps
 
-### Month 1
-- CAC: $[X]
-- LTV: $[X]
-- LTV:CAC: [X]:1
-- Payback: [X] months
-- Gross Margin: [X]%
+1. **Track Marketing Spend:**
+   - Document all marketing channels
+   - Track spend by channel
+   - Measure signups by channel
 
-### Month 3
-- CAC: $[X]
-- LTV: $[X]
-- LTV:CAC: [X]:1
-- Payback: [X] months
-- Gross Margin: [X]%
+2. **Calculate Channel-Specific CAC:**
+   - CAC by channel (SEO, paid ads, referrals, etc.)
+   - Identify most efficient channels
+   - Double down on efficient channels
 
-### Month 6
-- CAC: $[X]
-- LTV: $[X]
-- LTV:CAC: [X]:1
-- Payback: [X] months
-- Gross Margin: [X]%
+3. **Measure Customer Lifetime:**
+   - Track churn rate
+   - Calculate actual customer lifetime
+   - Update LTV calculations
 
-### Month 12
-- CAC: $[X]
-- LTV: $[X]
-- LTV:CAC: [X]:1
-- Payback: [X] months
-- Gross Margin: [X]%
+4. **Optimize Unit Economics:**
+   - Reduce CAC (improve conversion, optimize channels)
+   - Increase LTV (reduce churn, upsell, expand usage)
+   - Improve gross margin (optimize infrastructure costs)
 
 ---
 
-## Optimization Opportunities
-
-### Reduce CAC
-- [ ] Improve conversion rates (funnel optimization)
-- [ ] Focus on lower-CAC channels (organic, referrals)
-- [ ] Improve product-led growth
-- [ ] Optimize marketing spend
-
-### Increase LTV
-- [ ] Reduce churn (improve retention)
-- [ ] Upsell (Pro → Business → Enterprise)
-- [ ] Increase ARPU (pricing optimization)
-- [ ] Add new revenue streams (marketplace, services)
-
-### Improve Gross Margin
-- [ ] Optimize LLM costs (caching, batching, model selection)
-- [ ] Optimize infrastructure costs (right-size resources)
-- [ ] Automate support (reduce support costs)
-- [ ] Scale (spread fixed costs)
+**Last Updated:** 2025-11-26  
+**Next Review:** [Set monthly review]
 
 ---
 
-## Benchmarking
+## How to Use This
 
-### Industry Benchmarks
+**For YC Application:**
+- Include CAC, LTV, payback period
+- Show LTV:CAC ratio (target: >3:1)
+- Explain assumptions
 
-**SaaS Unit Economics:**
-- LTV:CAC: > 3:1 (good), > 10:1 (excellent)
-- Payback Period: < 12 months (good), < 6 months (excellent)
-- Gross Margin: > 70% (good), > 80% (excellent)
-- Churn: < 5%/month (good), < 2%/month (excellent)
+**For Investor Meetings:**
+- Show unit economics trend (improving over time)
+- Compare to industry benchmarks
+- Explain path to profitability
 
-**Our Performance vs. Benchmarks:**
-- LTV:CAC: [X]:1 vs. > 3:1 → [ ] Good / [ ] Needs Improvement
-- Payback: [X] months vs. < 12 months → [ ] Good / [ ] Needs Improvement
-- Gross Margin: [X]% vs. > 70% → [ ] Good / [ ] Needs Improvement
-- Churn: [X]%/month vs. < 5%/month → [ ] Good / [ ] Needs Improvement
+**For Internal Planning:**
+- Use to set marketing budgets
+- Calculate payback period
+- Plan for profitability
 
----
-
-## TODO: Founders to Fill In
-
-**Required Information:**
-- [ ] Actual CAC by channel
-- [ ] Actual LTV calculation
-- [ ] Actual payback period
-- [ ] Actual gross margin
-- [ ] Cost structure (variable and fixed)
-- [ ] Unit economics by plan tier
-- [ ] Trends over time
-- [ ] Optimization opportunities
-
-**Action Items:**
-- [ ] Track marketing spend by channel
-- [ ] Track customer acquisition by channel
-- [ ] Calculate CAC by channel
-- [ ] Track ARPU by plan tier
-- [ ] Track churn rates
-- [ ] Calculate LTV
-- [ ] Track COGS per customer
-- [ ] Calculate gross margin
-- [ ] Update this document monthly
-
----
-
-**Next:** See `/yc/YC_METRICS_CHECKLIST.md` for complete metrics tracking.

@@ -1,174 +1,133 @@
-# Metrics Snapshot - Agent Factory
+# Metrics Snapshot
 
-**For:** Y Combinator Application & Interview  
-**Last Updated:** 2024-01-XX
-
----
-
-## Current Metrics (As of [Date])
-
-### User Metrics
-
-- **DAU (Daily Active Users):** [X]
-- **WAU (Weekly Active Users):** [X]
-- **MAU (Monthly Active Users):** [X]
-- **Total Users:** [X]
-- **Total Tenants:** [X]
-- **Growth Rate:** [X]% MoM
+**Date:** 2025-11-26  
+**Founder, CEO & Operator:** Scott Hardie  
+**Source:** Production deployment at http://localhost:8000
 
 ---
 
-### Revenue Metrics
+## Current Metrics (Baseline)
 
-- **MRR (Monthly Recurring Revenue):** $[X]
-- **ARR (Annual Recurring Revenue):** $[X]
-- **Revenue Growth:** [X]% MoM
-- **Paying Customers:** [X]
-- **Free Users:** [X]
-- **Conversion Rate (Free → Paid):** [X]%
+### Users
+- **Total Signups:** [TO BE FILLED - check database or admin panel]
+- **Active Users (DAU):** [TO BE FILLED]
+- **Activated Users:** [TO BE FILLED] (deployed first agent)
+- **Retention:**
+  - Day 1: [TO BE FILLED]%
+  - Day 7: [TO BE FILLED]%
+  - Day 30: [TO BE FILLED]%
 
-**Revenue by Plan:**
-- Free: $0 ([X] users)
-- Pro: $[X]/month ([X] users)
-- Business: $[X]/month ([X] users)
-- Enterprise: $[X]/month ([X] users)
+**How to Get:**
+```sql
+-- Query database for user counts
+SELECT COUNT(*) as total_users FROM users;
+SELECT COUNT(*) as activated_users FROM users WHERE activated_at IS NOT NULL;
+```
 
-**Revenue by Type:**
-- Subscriptions: $[X]/month
-- Marketplace: $[X]/month
-- Services: $[X]/month
-- Enterprise: $[X]/month
+### Usage
+- **Agent Runs:** [TO BE FILLED - check telemetry events]
+- **API Calls:** [TO BE FILLED]
+- **Workflows Executed:** [TO BE FILLED]
+- **Blueprints Installed:** [TO BE FILLED]
 
----
+**How to Get:**
+```sql
+-- Query telemetry events
+SELECT COUNT(*) as agent_runs FROM events WHERE event_type = 'AGENT_RUN';
+SELECT COUNT(*) as blueprint_installs FROM events WHERE event_type = 'BLUEPRINT_INSTALL';
+```
 
-### Conversion Funnel
+Or check metrics endpoint: `curl http://localhost:8000/metrics`
 
-**User Funnel:**
-- Signups: [X]
-- Activated: [X] ([X]% conversion)
-- Retained: [X] ([X]% conversion)
-- Paying: [X] ([X]% conversion)
+### Revenue
+- **MRR:** $0 (pre-revenue)
+- **ARR:** $0
+- **Customers:** 0 (paying)
+- **ARPU:** [TO BE FILLED]
 
-**Drop-off Points:**
-- Signup → Activated: [X]% drop-off
-- Activated → Retained: [X]% drop-off
-- Retained → Paying: [X]% drop-off
+**Status:** Pre-revenue - need first paying customers
 
----
-
-### Unit Economics
-
-- **CAC (Customer Acquisition Cost):** $[X]
-- **LTV (Lifetime Value):** $[X]
-- **LTV:CAC Ratio:** [X]:1
-- **Payback Period:** [X] months
-- **Gross Margin:** [X]%
-
-**By Channel:**
-- Organic: CAC $[X], LTV $[X], Ratio [X]:1
-- Paid: CAC $[X], LTV $[X], Ratio [X]:1
-- Referrals: CAC $[X], LTV $[X], Ratio [X]:1
+### Growth
+- **MoM Growth Rate:** [TO BE FILLED]%
+- **Signup Rate:** [TO BE FILLED] signups/week
+- **Activation Rate:** [TO BE FILLED]% (signup → activation)
 
 ---
 
-### Product Metrics
+## Metrics Collection Commands
 
-- **Agent Runs:** [X] (this month)
-- **Agent Runs Growth:** [X]% MoM
-- **Blueprints Installed:** [X]
-- **Active Agents:** [X]
-- **Active Workflows:** [X]
+### Check Health
+```bash
+curl http://localhost:8000/health
+```
 
-**Engagement:**
-- Agent runs per user per week: [X]
-- Blueprints per user: [X]
-- Average session duration: [X] minutes
+### Get Metrics (Prometheus format)
+```bash
+curl http://localhost:8000/metrics
+```
 
----
+### Query Database Directly
+```bash
+# Connect to Supabase/PostgreSQL
+psql $DATABASE_URL
 
-### Retention
+# Count users
+SELECT COUNT(*) FROM users;
 
-- **Day 1 Retention:** [X]%
-- **Day 7 Retention:** [X]%
-- **Day 30 Retention:** [X]%
-- **Churn Rate:** [X]%/month
-- **Net Revenue Retention:** [X]%
+# Count agent runs
+SELECT COUNT(*) FROM events WHERE event_type = 'AGENT_RUN';
 
----
-
-### Channel Attribution
-
-**Signups by Channel:**
-- Organic/SEO: [X] ([X]%)
-- Paid Ads: [X] ([X]%)
-- Referrals: [X] ([X]%)
-- Partnerships: [X] ([X]%)
-- Other: [X] ([X]%)
-
-**Conversion Rates by Channel:**
-- Organic: [X]%
-- Paid: [X]%
-- Referrals: [X]%
-- Partnerships: [X]%
+# Count by date
+SELECT DATE(created_at), COUNT(*) 
+FROM events 
+WHERE event_type = 'AGENT_RUN' 
+GROUP BY DATE(created_at) 
+ORDER BY DATE(created_at) DESC;
+```
 
 ---
 
-### Operational Metrics
+## Metrics Infrastructure Status
 
-- **Uptime:** [X]%
-- **Error Rate:** [X]%
-- **Average Latency:** [X]ms
-- **Support Tickets:** [X]/month
-- **Customer Satisfaction:** [X]/10
+**Telemetry:** ✅ Ready (agent_factory/telemetry/)  
+**Metrics Endpoint:** ✅ Ready (http://localhost:8000/metrics)  
+**Health Check:** ✅ Ready (http://localhost:8000/health)  
+**Dashboard:** ⚠️ Not deployed (infrastructure ready)
 
----
-
-## Trends
-
-### Growth Trends (Last 3 Months)
-
-| Metric | Month 1 | Month 2 | Month 3 | Trend |
-|--------|---------|---------|---------|-------|
-| Users | [X] | [X] | [X] | [Up/Down/Stable] |
-| MRR | $[X] | $[X] | $[X] | [Up/Down/Stable] |
-| Agent Runs | [X] | [X] | [X] | [Up/Down/Stable] |
+**Events Tracked:**
+- `USER_SIGNUP`, `USER_LOGIN`, `USER_ACTIVATED`
+- `AGENT_RUN`, `WORKFLOW_RUN`
+- `BLUEPRINT_INSTALL`
+- `BILLING_USAGE`, `REVENUE`
+- `REFERRAL_SENT`, `REFERRAL_CONVERTED`
 
 ---
 
-## Key Insights
+## Next Steps
 
-**What's Working:**
-- [Insight 1]
-- [Insight 2]
-- [Insight 3]
+1. **Use the app yourself:**
+   - Create agents
+   - Run agents
+   - Install blueprints
+   - Generate activity
 
-**What Needs Improvement:**
-- [Issue 1]
-- [Issue 2]
-- [Issue 3]
+2. **Query metrics:**
+   - Use commands above
+   - Check database directly
+   - Use metrics endpoint
 
-**Opportunities:**
-- [Opportunity 1]
-- [Opportunity 2]
-- [Opportunity 3]
+3. **Set up dashboard:**
+   - Mixpanel (recommended for quick setup)
+   - Amplitude
+   - Grafana + Prometheus
 
----
-
-## TODO: Update with Real Data
-
-**Action Items:**
-- [ ] Deploy telemetry in production
-- [ ] Start collecting real metrics
-- [ ] Update this document weekly/monthly
-- [ ] Track all metrics listed above
-- [ ] Create automated metrics dashboard
-
-**Data Sources:**
-- Telemetry system (`agent_factory/telemetry/`)
-- Analytics engine (`agent_factory/telemetry/analytics.py`)
-- Revenue tracker (`agent_factory/telemetry/revenue.py`)
-- Metrics dashboard API (`agent_factory/api/routes/metrics_dashboard.py`)
+4. **Document baseline:**
+   - Fill in numbers above (even if zeros)
+   - Update this file weekly
+   - Track progress
 
 ---
 
-**Next:** See `/yc/YC_METRICS_CHECKLIST.md` for complete metrics tracking guide.
+**Last Updated:** 2025-11-26  
+**Next Update:** [Set weekly reminder]
+

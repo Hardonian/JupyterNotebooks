@@ -22,6 +22,11 @@
 - **Placeholders:** 10
 - **Examples:** [TO BE FILLED - See `yc/METRICS_SNAPSHOT.md`], [TBD], [TBD]
 
+### APPLICATION_ANSWERS_YC_DRAFT.md
+- **File:** `dataroom/APPLICATION_ANSWERS_YC_DRAFT.md`
+- **Placeholders:** 11
+- **Examples:** [TO BE FILLED - e.g., agentfactory.io], [TO BE FILLED - production URL or demo video], [TO BE FILLED]
+
 ### 04_CUSTOMER_PROOF.md
 - **File:** `dataroom/04_CUSTOMER_PROOF.md`
 - **Placeholders:** 5
@@ -31,11 +36,6 @@
 - **File:** `dataroom/07_CAP_TABLE_PLACEHOLDER.md`
 - **Placeholders:** 8
 - **Examples:** [TO BE FILLED BY FOUNDERS], [TO BE FILLED], [TO BE FILLED]
-
-### APPLICATION_ANSWERS_YC_DRAFT.md
-- **File:** `dataroom/APPLICATION_ANSWERS_YC_DRAFT.md`
-- **Placeholders:** 11
-- **Examples:** [TO BE FILLED - e.g., agentfactory.io], [TO BE FILLED - production URL or demo video], [TO BE FILLED]
 
 
 **Total Placeholders:** 67
