@@ -1,0 +1,234 @@
+name: Automated Readiness & Documentation Updates
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ main, develop ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automated-updates:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install bandit safety jq
+    
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+    
+    - name: Run Security Audit
+      id: security
+      continue-on-error: true
+      run: |
+        echo "Running security audit..."
+        SKIP_INTERACTIVE=true bash scripts/security-audit.sh || true
+        if [ -d "security-reports" ]; then
+          echo "security_reports=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Run Test Coverage Analysis
+      id: test_coverage
+      continue-on-error: true
+      run: |
+        echo "Analyzing test coverage..."
+        SKIP_INTERACTIVE=true bash scripts/test-coverage-improvement.sh || true
+        if [ -f "docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md" ]; then
+          echo "test_coverage_plan=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Analyze Data Room Placeholders
+      id: dataroom
+      continue-on-error: true
+      run: |
+        echo "Analyzing data room placeholders..."
+        SKIP_INTERACTIVE=true python3 scripts/fill-dataroom-placeholders.py || true
+        if [ -f "docs/DATAROOM_FILL_GUIDE.md" ]; then
+          echo "dataroom_guide=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Generate Metrics Snapshot Template
+      id: metrics
+      continue-on-error: true
+      run: |
+        echo "Generating metrics snapshot template..."
+        SKIP_INTERACTIVE=true PRODUCTION_URL="${PRODUCTION_URL:-http://localhost:8000}" bash scripts/collect-metrics.sh || true
+        if [ -f "yc/METRICS_SNAPSHOT.md" ]; then
+          echo "metrics_snapshot=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+        PRODUCTION_URL: ${{ secrets.PRODUCTION_URL || 'http://localhost:8000' }}
+    
+    - name: Generate Unit Economics Template
+      id: unit_economics
+      continue-on-error: true
+      run: |
+        echo "Generating unit economics template..."
+        SKIP_INTERACTIVE=true python3 scripts/calculate-unit-economics.py || true
+        if [ -f "yc/UNIT_ECONOMICS.md" ]; then
+          echo "unit_economics=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Generate YC Application Checklist
+      id: yc_checklist
+      continue-on-error: true
+      run: |
+        echo "Generating YC application checklist..."
+        SKIP_INTERACTIVE=true bash scripts/yc-application-checklist.sh || true
+        if [ -f "yc/YC_APPLICATION_CHECKLIST.md" ]; then
+          echo "yc_checklist=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Generate User Acquisition Checklist
+      id: user_acquisition
+      continue-on-error: true
+      run: |
+        echo "Generating user acquisition checklist..."
+        SKIP_INTERACTIVE=true bash scripts/get-users-checklist.sh || true
+        if [ -f "yc/EARLY_ADOPTERS.md" ]; then
+          echo "user_acquisition=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Update Weekly Progress (if Monday)
+      id: weekly_progress
+      continue-on-error: true
+      run: |
+        DAY_OF_WEEK=$(date +%u)
+        if [ "$DAY_OF_WEEK" = "1" ]; then
+          echo "It's Monday - updating weekly progress..."
+          SKIP_INTERACTIVE=true bash scripts/weekly-progress.sh || true
+          if [ -f "docs/WEEKLY_PROGRESS.md" ]; then
+            echo "weekly_progress=true" >> $GITHUB_OUTPUT
+          fi
+        else
+          echo "Not Monday - skipping weekly progress update"
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Run Readiness Check
+      id: readiness
+      continue-on-error: true
+      run: |
+        echo "Running comprehensive readiness check..."
+        SKIP_INTERACTIVE=true bash scripts/quick-start-readiness.sh > readiness-report.txt || true
+        if [ -f "readiness-report.txt" ]; then
+          echo "readiness_report=true" >> $GITHUB_OUTPUT
+        fi
+      env:
+        SKIP_INTERACTIVE: true
+    
+    - name: Check for changes
+      id: changes
+      run: |
+        git add -A
+        if git diff --staged --quiet; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "changed=true" >> $GITHUB_OUTPUT
+          git diff --staged --name-only
+        fi
+    
+    - name: Commit changes
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        git add -A
+        git commit -m "🤖 Automated: Update readiness docs and reports
+        
+        - Security audit reports generated
+        - Test coverage plan updated
+        - Data room placeholder analysis
+        - Metrics snapshot template updated
+        - Unit economics template updated
+        - YC application checklist updated
+        - User acquisition checklist updated
+        - Readiness check completed
+        
+        Generated by GitHub Actions workflow"
+        git push origin HEAD:${{ github.head_ref }} || true
+    
+    - name: Create PR comment
+      if: steps.changes.outputs.changed == 'true' && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const outputs = {
+            security: '${{ steps.security.outputs.security_reports }}',
+            test_coverage: '${{ steps.test_coverage.outputs.test_coverage_plan }}',
+            dataroom: '${{ steps.dataroom.outputs.dataroom_guide }}',
+            metrics: '${{ steps.metrics.outputs.metrics_snapshot }}',
+            unit_economics: '${{ steps.unit_economics.outputs.unit_economics }}',
+            yc_checklist: '${{ steps.yc_checklist.outputs.yc_checklist }}',
+            user_acquisition: '${{ steps.user_acquisition.outputs.user_acquisition }}',
+            readiness: '${{ steps.readiness.outputs.readiness_report }}'
+          };
+          
+          const updated = Object.entries(outputs)
+            .filter(([_, value]) => value === 'true')
+            .map(([key, _]) => key.replace(/_/g, ' '))
+            .join(', ');
+          
+          const comment = `## 🤖 Automated Readiness Updates
+          
+          The following documentation and reports have been automatically updated:
+          
+          ${updated ? `✅ **Updated:**\n- ${updated.split(', ').join('\n- ')}` : 'No updates needed'}
+          
+          **Generated Files:**
+          ${outputs.security === 'true' ? '- `security-reports/` - Security audit reports' : ''}
+          ${outputs.test_coverage === 'true' ? '- `docs/TEST_COVERAGE_IMPROVEMENT_PLAN.md` - Test coverage plan' : ''}
+          ${outputs.dataroom === 'true' ? '- `docs/DATAROOM_FILL_GUIDE.md` - Data room fill guide' : ''}
+          ${outputs.metrics === 'true' ? '- `yc/METRICS_SNAPSHOT.md` - Metrics snapshot template' : ''}
+          ${outputs.unit_economics === 'true' ? '- `yc/UNIT_ECONOMICS.md` - Unit economics template' : ''}
+          ${outputs.yc_checklist === 'true' ? '- `yc/YC_APPLICATION_CHECKLIST.md` - YC application checklist' : ''}
+          ${outputs.user_acquisition === 'true' ? '- `yc/EARLY_ADOPTERS.md` - User acquisition checklist' : ''}
+          
+          **Next Steps:**
+          - Review the updated documentation
+          - Fill in placeholders with real data
+          - Run \`make readiness-check\` locally to verify
+          
+          ---
+          *This comment was automatically generated by the Automated Readiness workflow*`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

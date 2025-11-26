@@ -1,5 +1,6 @@
 # Agent Factory - Product One-Pager
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Version:** 1.0  
 **Date:** 2024-01-XX
 

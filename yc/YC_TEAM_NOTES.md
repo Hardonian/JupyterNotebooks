@@ -12,7 +12,13 @@
 **From `pyproject.toml`:**
 - **Team Name:** "Agent Factory Team"
 - **Email:** support@agentfactory.io
-- **No individual founder names or backgrounds found**
+
+**From Git Commit History:**
+- **Primary Founder:** Scott Hardie (scottrmhardie@gmail.com)
+- **GitHub Username:** shardie-github
+- **LinkedIn:** /scottrmhardie
+- Active contributor with multiple commits
+- Co-authored commits suggest collaboration
 
 **From Repository Structure:**
 - Well-organized codebase suggests experienced engineering team
@@ -20,9 +26,10 @@
 - Multiple deployment configs suggest DevOps expertise
 - Compliance framework suggests understanding of enterprise/education requirements
 
-**From Commit History:**
-- **TODO:** Review git commit history for author information
-- **Note:** Git status shows "HEAD (no branch)" - may need to check commit authors
+**From Commit History Analysis:**
+- Scott Hardie is primary technical contributor
+- Evidence of systematic development approach
+- Multiple features and infrastructure components built
 
 ---
 

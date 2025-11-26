@@ -1,7 +1,10 @@
 # Demo Scripts
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Last Updated:** 2024-01-XX  
 **Purpose:** Standardized demo scripts for Agent Factory Platform
+
+**Note from Founder:** After 15+ years delivering enterprise demos and solution architecture presentations, I've learned that demos that tell a story and address specific pain points are most effective. These scripts reflect consultative selling and EdTech demo best practices.
 
 ---
 
@@ -20,7 +23,7 @@ This document provides demo scripts for different customer segments and use case
 ### Introduction (5 minutes)
 
 **Script:**
-"Thanks for your time today. I'm [Name], and I'm excited to show you Agent Factory.
+"Thanks for your time today. I'm Scott Hardie, Founder and CEO of Agent Factory. I'm excited to show you how we're solving the infrastructure problem that kills 90% of AI agent prototypes.
 
 Before we dive in, let me understand:
 - What are you hoping to see today?

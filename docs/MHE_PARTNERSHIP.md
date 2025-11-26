@@ -1,8 +1,14 @@
 # McGraw Hill Education Partnership
 
+**Founder, CEO & Operator:** Scott Hardie (Solutions Architect at McGraw Hill)  
+**Last Updated:** 2024-01-XX
+
 ## Strategic Partnership Overview
 
 Agent Factory Platform is designed in strategic partnership with **McGraw Hill Education** to serve higher education institutions and lifelong learning organizations.
+
+**Partnership Context:**  
+Founder Scott Hardie is currently Solutions Architect at McGraw Hill (Dec 2022 - Present), bringing 15+ years of EdTech experience and deep institutional relationships. This partnership leverages Scott's role at McGraw Hill, understanding of education market needs, and network of educational institutions.
 
 ## Partnership Model
 

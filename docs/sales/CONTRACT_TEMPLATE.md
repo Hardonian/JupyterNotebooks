@@ -25,6 +25,9 @@ This is a template only. All contracts must be:
 
 **Provider:**
 Agent Factory Platform, Inc.
+**Founder, CEO & Operator:** Scott Hardie
+**Email:** scottrmhardie@gmail.com
+**Location:** Greater Toronto Area, Canada
 [Address]
 [Contact Information]
 

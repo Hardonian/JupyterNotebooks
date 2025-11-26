@@ -11,8 +11,8 @@
 
 *Turn AI Prototypes Into Production Products*
 
-[Your Name] | [Your Title]  
-[Your Email] | [Your Phone]
+**Scott Hardie** | Founder, CEO & Operator  
+scottrmhardie@gmail.com | Greater Toronto Area, Canada
 
 ---
 

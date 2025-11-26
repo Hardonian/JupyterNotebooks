@@ -233,9 +233,18 @@ California residents have additional rights:
 
 ## 13. Contact
 
+**Agent Factory**  
+**Founder, CEO & Operator:** Scott Hardie  
+**Email:** scottrmhardie@gmail.com  
 **Privacy Questions:** privacy@agentfactory.io  
 **Data Protection Officer:** dpo@agentfactory.io  
 **General Inquiries:** hello@agentfactory.io
+
+**Company Information:**
+- **Founder, CEO & Operator:** Scott Hardie
+- **Location:** Greater Toronto Area, Canada
+- **GitHub:** github.com/shardie-github
+- **LinkedIn:** linkedin.com/in/scottrmhardie
 
 ---
 

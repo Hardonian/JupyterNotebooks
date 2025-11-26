@@ -1,7 +1,10 @@
 # Proposal Template
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Last Updated:** 2024-01-XX  
 **Purpose:** Standardized proposal template for Agent Factory Platform
+
+**Note from Founder:** After 15+ years in enterprise sales and solution architecture, I've learned that proposals that clearly articulate value and address specific pain points win deals. This template reflects consultative selling principles and EdTech enterprise sales experience.
 
 ---
 
@@ -23,7 +26,8 @@ Proposal for [Customer Name]
 
 [Date]
 
-Prepared by: [Sales Rep Name]
+Prepared by: Scott Hardie, Founder, CEO & Operator  
+scottrmhardie@gmail.com
 ```
 
 ---
