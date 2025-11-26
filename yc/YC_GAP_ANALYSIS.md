@@ -5,6 +5,102 @@
 
 ---
 
+## MASTER TODO (Prioritized)
+
+**10-20 Most Important Remaining Tasks**
+
+### MUST DO (Blockers)
+
+1. **Document Team/Founders** - Priority: MUST | Owner: Founder | Effort: LOW
+   - Create `yc/TEAM.md` with founder bios and backgrounds
+   - Create `yc/FOUNDER_MARKET_FIT.md` explaining why these founders for this problem
+   - **Why:** Critical for YC application, addresses Gap 9
+   - **Links:** `yc/TEAM.md`, `yc/FOUNDER_MARKET_FIT.md`, `yc/YC_TEAM_NOTES.md`
+
+2. **Deploy to Production** - Priority: MUST | Owner: Tech Founder | Effort: MEDIUM
+   - Configure production credentials (Vercel/Render)
+   - Set environment variables
+   - Deploy and verify
+   - **Why:** Investors need live demo, metrics need production deployment
+   - **Links:** `docs/deploy-strategy.md`, `docs/FOUNDER_MANUAL.md` Section 1.2
+
+3. **Get First Real Users** - Priority: MUST | Owner: Founder | Effort: MEDIUM
+   - Get 3-5 early users/beta testers
+   - Interview them, document feedback
+   - Get testimonials (even brief ones)
+   - **Why:** Need customer validation for YC application
+   - **Links:** `yc/EARLY_ADOPTERS.md`, `yc/CUSTOMER_TESTIMONIALS.md`, `docs/FOUNDER_MANUAL.md` Section 1.3
+
+### NEXT (High Priority)
+
+4. **Collect Real Metrics** - Priority: NEXT | Owner: Tech Founder | Effort: MEDIUM
+   - Deploy telemetry to production
+   - Use app yourself, generate activity
+   - Document baseline metrics (even if zeros)
+   - Set up metrics dashboard
+   - **Why:** YC asks for metrics, need real numbers
+   - **Links:** `yc/METRICS_SNAPSHOT.md`, `yc/YC_METRICS_CHECKLIST.md`, `docs/FOUNDER_MANUAL.md` Section 2.1
+
+5. **Create Screenshots/Demo Video** - Priority: NEXT | Owner: Founder | Effort: LOW
+   - Take screenshots of key features
+   - Create 2-3 minute video demo
+   - Add to README
+   - **Why:** Visual proof is powerful, addresses Gap 3
+   - **Links:** `docs/FOUNDER_MANUAL.md` Section 2.3, `yc/SCREENSHOTS_DEMO_PLAN.md`
+
+6. **Conduct Security Audit** - Priority: NEXT | Owner: Tech Founder | Effort: MEDIUM
+   - Run automated security scan (`bandit`, `safety`)
+   - Fix critical issues
+   - Consider professional audit
+   - **Why:** Critical for enterprise/education customers, addresses Gap 13
+   - **Links:** `docs/TECH_DUE_DILIGENCE_CHECKLIST.md`, `docs/security/SECURITY_AUDIT_CHECKLIST.md`
+
+7. **Calculate Unit Economics** - Priority: NEXT | Owner: Founder | Effort: MEDIUM
+   - Track marketing spend by channel
+   - Compute CAC, LTV, payback period
+   - Document in `yc/UNIT_ECONOMICS.md`
+   - **Why:** YC asks for unit economics, addresses Gap 5
+   - **Links:** `yc/UNIT_ECONOMICS.md`, `yc/YC_METRICS_CHECKLIST.md`
+
+### LATER (Important but Not Blocking)
+
+8. **Build Referral System** - Priority: LATER | Owner: Tech Founder | Effort: MEDIUM
+   - Implement referral code generation
+   - Create invite flow UI
+   - Track referral conversions
+   - **Why:** Drives organic growth, addresses Gap 8
+   - **Links:** `yc/REFERRAL_FLOW.md`, `yc/YC_DISTRIBUTION_PLAN.md`
+
+9. **Increase Test Coverage** - Priority: LATER | Owner: Tech Founder | Effort: MEDIUM
+   - Increase to 80%+ coverage
+   - Add E2E tests for critical paths
+   - Add billing integration tests
+   - **Why:** Important before scale, addresses technical DD
+   - **Links:** `docs/TECH_DUE_DILIGENCE_CHECKLIST.md`
+
+10. **Create Financial Model** - Priority: LATER | Owner: Founder | Effort: LOW-MEDIUM
+    - Create spreadsheet with revenue/cost projections
+    - Document assumptions
+    - Save in `yc/FINANCIAL_MODEL.md`
+    - **Why:** Shows understanding of unit economics, addresses Gap 11
+    - **Links:** `yc/FINANCIAL_MODEL.md`
+
+11. **Execute Distribution Experiments** - Priority: LATER | Owner: Founder | Effort: MEDIUM
+    - Run 3 growth experiments (SEO landing page, invite flow, marketplace launch)
+    - Track channel performance
+    - Document results
+    - **Why:** Need evidence of distribution strategy, addresses Gap 7
+    - **Links:** `yc/YC_DISTRIBUTION_PLAN.md`, `yc/DISTRIBUTION_RESULTS.md`
+
+12. **Document Product-Market Fit Evidence** - Priority: LATER | Owner: Founder | Effort: MEDIUM
+    - Collect usage metrics (retention, engagement)
+    - Document customer testimonials
+    - Measure willingness to pay
+    - **Why:** YC asks for PMF evidence, addresses Gap 2
+    - **Links:** `yc/PRODUCT_MARKET_FIT.md`, `yc/CUSTOMER_TESTIMONIALS.md`
+
+---
+
 ## Overview
 
 This document compares the current state of Agent Factory against YC application and interview expectations. For each gap, we note severity, effort to close, and concrete action items.
