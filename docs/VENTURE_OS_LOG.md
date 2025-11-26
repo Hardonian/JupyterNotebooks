@@ -29,10 +29,18 @@
 - Comprehensive codebase development
 - Production-ready architecture
 
+**Founder Background (from LinkedIn):**
+- **Education:** MA Political Science (Public Opinion & Research Methods), BA Political Science and Communication Studies, Wilfrid Laurier University
+- **Experience:** 15+ years in educational technology and SaaS
+- **Current Role:** Solutions Architect at McGraw Hill (Dec 2022 - Present)
+- **Previous:** Senior Digital Solutions Consultant, Portfolio Manager, Account Executive at McGraw Hill; Portfolio Manager at Pearson Education
+- **Achievements:** 125% YOY sales growth, President's Award for Sales Excellence (2014)
+- **AI Projects:** Built Hardonia OS, PromptPilot, Daily Intel Suite
+
 **Gaps Remaining:**
-- ⚠️ Need LinkedIn background details (previous companies, roles, education)
 - ⚠️ Need to identify co-founders (if any)
-- ⚠️ Need to document previous work experience
+- ⚠️ Need to clarify commitment status (full-time at Agent Factory vs. part-time while at McGraw Hill)
+- ⚠️ Need to document McGraw Hill relationship (partnership vs. current employer)
 
 ---
 

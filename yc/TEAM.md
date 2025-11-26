@@ -27,25 +27,78 @@ This document provides information about the Agent Factory team, including found
 
 ### Founder 1: Scott Hardie
 
-**Role:** Founder, Technical Lead
+**Role:** Founder, Technical Lead & Solutions Architect
 - **Email:** scottrmhardie@gmail.com
 - **GitHub:** shardie-github
 - **LinkedIn:** /scottrmhardie
-- **Background:** [To be filled from LinkedIn - technical/engineering background]
-- **Previous Companies:** [To be filled from LinkedIn]
-- **Expertise:** Infrastructure engineering, full-stack development, AI/ML systems, DevOps
-- **Why This Problem:** [To be filled - likely experienced prototype-to-production gap firsthand]
-- **Commitment:** [Full-time / Part-time - to be confirmed]
+- **Location:** Greater Toronto Area, Canada
+
+**Background:**
+- **Education:**
+  - Master of Arts (MA), Political Science - Public Opinion & Research Methods, Wilfrid Laurier University (2010-2011)
+  - Bachelor of Arts (BA), Political Science and Communication Studies, Wilfrid Laurier University (2006-2010)
+- **Experience:** 15+ years in educational technology and SaaS
+- **Previous Companies:** McGraw Hill (6 years), Pearson Education (2 years)
+
+**Current Role:**
+- **Solutions Architect** at McGraw Hill (December 2022 - Present, 3 years)
+  - Delivering SaaS integrations and AI-infused educational solutions
+  - Partnering with K12, Higher Ed, and corporate training leaders
+  - Consulting on AI applications in education (adaptive assessments, intelligent learning platforms)
+  - Creating custom content development workflows with AI-assisted authoring tools
+
+**Previous Roles at McGraw Hill:**
+- **Senior Digital Solutions Consultant** (Dec 2019 - Dec 2022, 3 years)
+  - Consultative sales and solution design for enterprise digital learning systems
+  - Designed AI-supported workflows for content migration and LMS integration (30% reduction in manual overhead)
+  - Managed multi-stakeholder projects, delivering complex LMS deployments on time and under budget
+- **Portfolio Manager** (Jan 2015 - Oct 2017, 2 years 10 months)
+  - Business analyst and product owner for 15+ higher education courseware solutions
+  - Led end-to-end product development using Agile methodologies
+  - Introduced early AI-driven tagging and metadata systems
+- **Account Executive** (Jan 2012 - Jan 2015, 3 years)
+  - Managed $2.5M+ territory across Canadian colleges and universities
+  - Achieved President's Award for Sales Excellence (2014)
+  - Exceeded quota 112% YOY through consultative B2B sales
+
+**Previous Role at Pearson:**
+- **Portfolio Manager** (Oct 2017 - Dec 2019, 2 years 3 months)
+  - Product manager for Pearson's Business publishing portfolio ($8.5M/yr)
+  - Designed custom content solutions with SMEs, faculty, and corporate partners
+  - Experimented with AI-assisted editorial workflows
+
+**AI/Automation Experience:**
+- Built **Hardonia OS**: Fully automated AI-driven Shopify commerce lab replacing 7+ apps with native AI workflows
+- Created **PromptPilot**: SaaS framework for orchestrating real-time prompt refinement and workflow automation
+- Developed **Daily Intel Suite**: 9 agents delivering TikTok, AliExpress, and consumer trend insights twice daily
+
+**Expertise:**
+- Education technology (15+ years at McGraw Hill and Pearson)
+- SaaS enablement and technical integration
+- AI applications in education (adaptive assessments, intelligent learning platforms)
+- Learning Management Systems (LMS) integration
+- Enterprise solution architecture
+- Sales and business development (125% YOY growth, President's Award)
+- AI-first automation and agent-based systems
+
+**Why This Problem:**
+- Experienced the gap between AI prototypes and production deployment firsthand (Hardonia OS, PromptPilot, Daily Intel Suite)
+- Witnessed education institutions struggle with AI tool deployment due to infrastructure and compliance challenges
+- Built multiple AI-driven systems and understands the infrastructure complexity
+- Strong education market expertise (McGraw Hill partnership aligns with Agent Factory's education focus)
+
+**Commitment:** [Full-time / Part-time - to be confirmed]
 
 **Evidence from Repository:**
 - Primary contributor to codebase (git commits show active development)
-- Strong technical background (evidenced by comprehensive codebase)
+- Comprehensive codebase demonstrates technical execution capability
 - Infrastructure expertise (auth, billing, deployment, multi-tenancy)
 - Full-stack development skills (FastAPI backend, CLI, SDK, API)
 - DevOps capabilities (Docker, Kubernetes, CI/CD workflows)
 - AI/ML integration experience (OpenAI, Anthropic, notebook converter)
 - Database design (Alembic migrations, PostgreSQL, Supabase)
 - Production-ready architecture (multi-tenant SaaS, observability, compliance)
+- Education focus aligns with background (FERPA compliance, LMS integrations)
 
 ---
 

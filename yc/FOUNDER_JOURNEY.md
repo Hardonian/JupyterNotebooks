@@ -19,7 +19,16 @@
 ### Starting Point
 
 **The Problem:**
-Scott Hardie experienced firsthand the gap between AI agent prototypes and production deployment. Working with AI agents in Jupyter notebooks, he saw prototypes that worked beautifully but couldn't be deployed because they lacked infrastructure: authentication, billing, multi-tenancy, error handling, observability.
+Scott Hardie experienced the gap between AI agent prototypes and production deployment through multiple lenses:
+
+1. **Education Market (15+ years at McGraw Hill and Pearson):** Helped institutions deploy AI-powered learning platforms, but saw them struggle with infrastructure complexity, compliance requirements (FERPA), and LMS integration challenges.
+
+2. **Personal AI Projects:** Built multiple AI-driven systems:
+   - **Hardonia OS**: Fully automated AI-driven Shopify commerce lab replacing 7+ apps
+   - **PromptPilot**: SaaS framework for orchestrating real-time prompt refinement and workflow automation
+   - **Daily Intel Suite**: 9 agents delivering TikTok, AliExpress, and consumer trend insights twice daily
+
+Each project hit the same wall: the AI worked, but deploying it required months of infrastructure work—authentication, billing, multi-tenancy, error handling, observability, compliance.
 
 **The Insight:**
 Most AI agent projects die not because the AI doesn't work, but because developers can't build the infrastructure needed to deploy them. This infrastructure gap kills 90%+ of prototypes.
@@ -44,13 +53,15 @@ The problem isn't building AI agents—it's deploying them.
 ### Phase 2: Solution Development
 
 **What Happened:**
-- Started building infrastructure components
+- After building Hardonia OS, PromptPilot, and Daily Intel Suite, recognized the pattern: every AI project needed the same infrastructure
+- Started building reusable infrastructure components
 - Realized this was a platform opportunity, not just a tool
 - Built comprehensive platform: auth, billing, multi-tenancy, deployment
-- Created notebook converter to address core user journey
+- Created notebook converter to address core user journey (prototype → production)
+- Applied education market expertise: added FERPA compliance, LMS integrations
 
 **Key Learning:**
-Developers need a complete platform, not just tools.
+Developers need a complete platform, not just tools. Education market needs compliance and integration built-in.
 
 ---
 
@@ -87,12 +98,14 @@ Platform approach creates network effects and defensibility.
 **Decision:** Focus on education market as initial wedge
 
 **Rationale:**
-- High barriers to entry (compliance, LMS integration)
-- Recurring revenue model
-- Strategic partnership opportunity (McGraw Hill)
-- Clear use cases (teaching assistants, learning paths)
+- **Personal Expertise:** 15+ years at McGraw Hill and Pearson, deep understanding of education market
+- **High Barriers to Entry:** Compliance (FERPA), LMS integration requirements create moat
+- **Recurring Revenue Model:** Annual contracts, institutional sales
+- **Strategic Partnership:** Current role at McGraw Hill provides market access and credibility
+- **Clear Use Cases:** Teaching assistants, learning path generators, assessment tools
+- **Network Effects:** More institutions → more blueprints → more value
 
-**Evidence:** FERPA compliance, LMS integrations, education blueprints
+**Evidence:** FERPA compliance framework, LMS integrations (Canvas, Blackboard, Moodle), education blueprints, McGraw Hill partnership
 
 ---
 
@@ -146,9 +159,11 @@ Platform approach creates network effects and defensibility.
 - Developer tooling improved
 
 **Personal Readiness:**
-- Technical expertise to build platform
-- Understanding of problem from experience
-- Network and relationships (McGraw Hill partnership)
+- **Technical Expertise:** Built multiple AI systems (Hardonia OS, PromptPilot, Daily Intel Suite), can build platform
+- **Market Understanding:** 15+ years in education technology, understands market needs
+- **Problem Experience:** Lived the problem through personal projects and client work
+- **Network and Relationships:** Current role at McGraw Hill, 15+ years of relationships in education market
+- **Sales & Business Development:** Proven track record (125% YOY growth, President's Award)
 
 ---
 
@@ -157,26 +172,30 @@ Platform approach creates network effects and defensibility.
 **Why Scott for This Problem:**
 
 1. **Technical Credibility**
-   - Built production infrastructure
+   - Built multiple AI-driven systems (Hardonia OS, PromptPilot, Daily Intel Suite)
    - Can build what others struggle with
-   - Evidence: Comprehensive codebase
+   - Evidence: Comprehensive codebase, previous AI systems
 
 2. **Firsthand Experience**
-   - Lived the problem (prototype → production gap)
+   - Lived the problem through personal projects (Hardonia OS, PromptPilot, Daily Intel Suite)
+   - Witnessed education institutions struggle with AI deployment (15+ years at McGraw Hill/Pearson)
    - Understands developer pain points
-   - Evidence: Notebook converter addresses core journey
+   - Evidence: Notebook converter addresses core journey, education focus
 
 3. **Execution Track Record**
    - Shipped comprehensive platform
+   - Built multiple AI systems successfully
+   - Delivered enterprise SaaS solutions (125% YOY growth)
    - Multiple deployment options
    - Production-ready architecture
-   - Evidence: Active development, comprehensive features
+   - Evidence: Active development, comprehensive features, President's Award
 
 4. **Domain Understanding**
-   - Infrastructure expertise
-   - Developer tooling knowledge
-   - Education market understanding (partnership)
-   - Evidence: Architecture, tooling, compliance features
+   - **Education Market:** 15+ years at McGraw Hill and Pearson
+   - **Infrastructure Expertise:** Built production systems
+   - **Developer Tooling:** Understands what developers need
+   - **Sales & Business:** Proven track record in B2B SaaS
+   - Evidence: Architecture, tooling, compliance features, education market focus
 
 ---
 

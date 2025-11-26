@@ -68,30 +68,47 @@ Agent Factory is a complete platform that provides:
 ## Team
 
 **Founder:** Scott Hardie
-- **Role:** Founder, Technical Lead
+- **Role:** Founder, Technical Lead & Solutions Architect
 - **Email:** scottrmhardie@gmail.com
 - **GitHub:** shardie-github
 - **LinkedIn:** /scottrmhardie
-- **Background:** [See LinkedIn profile for details]
+- **Location:** Greater Toronto Area, Canada
+- **Current Role:** Solutions Architect at McGraw Hill (Dec 2022 - Present)
+
+**Background:**
+- **Education:** MA Political Science (Public Opinion & Research Methods), BA Political Science and Communication Studies, Wilfrid Laurier University
+- **Experience:** 15+ years in educational technology and SaaS
+- **Previous Companies:** McGraw Hill (6 years), Pearson Education (2 years)
+- **Achievements:** 125% YOY sales growth, President's Award for Sales Excellence (2014)
 
 **Technical Capabilities:**
 - Production-ready infrastructure (multi-tenant SaaS, auth, billing)
 - Full-stack development (FastAPI, CLI, SDK, API)
 - DevOps expertise (Docker, Kubernetes, CI/CD)
 - AI/ML integration (OpenAI, Anthropic, notebook converter)
+- **AI-First Automation:** Built Hardonia OS, PromptPilot, Daily Intel Suite
+
+**Domain Expertise:**
+- **Education Technology:** 15+ years at McGraw Hill and Pearson
+- **LMS Integration:** Canvas, Blackboard, Moodle
+- **AI in Education:** Adaptive assessments, intelligent learning platforms
+- **Enterprise SaaS:** Solution architecture, SaaS enablement
+- **Sales & Business Development:** Proven track record
 
 **Evidence:**
 - Comprehensive codebase (174+ Python files)
 - Active development (git commit history)
 - Production-ready architecture
 - Multiple deployment options
+- Previous AI systems (Hardonia OS, PromptPilot, Daily Intel Suite)
+- Education market expertise (McGraw Hill partnership)
 
 **Gaps:**
-- ⚠️ Need LinkedIn background details (previous companies, roles, education)
 - ⚠️ Need to identify co-founders (if any)
-- ⚠️ Team composition not fully documented
+- ⚠️ Need to clarify commitment status (full-time at Agent Factory vs. part-time while at McGraw Hill)
+- ⚠️ Need to document McGraw Hill relationship (partnership vs. current employer)
 
-**Action:** Complete team documentation in `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md`
+**Action:** See `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md` for complete details
 
 ---
 

@@ -89,11 +89,18 @@ Developers prototype AI agents in Jupyter notebooks, but turning those prototype
 ## Team
 
 **Who are the founders?**  
-**Scott Hardie** - Founder, Technical Lead
+**Scott Hardie** - Founder, Technical Lead & Solutions Architect
 - Email: scottrmhardie@gmail.com
 - GitHub: shardie-github
 - LinkedIn: /scottrmhardie
-- Background: [Fill in from LinkedIn - technical/engineering background]
+- Location: Greater Toronto Area, Canada
+- Current Role: Solutions Architect at McGraw Hill (Dec 2022 - Present)
+
+**Background:**
+- **Education:** MA Political Science (Public Opinion & Research Methods), BA Political Science and Communication Studies, Wilfrid Laurier University
+- **Experience:** 15+ years in educational technology and SaaS
+- **Previous:** Solutions Architect, Senior Digital Solutions Consultant, Portfolio Manager, Account Executive at McGraw Hill; Portfolio Manager at Pearson Education
+- **Achievements:** 125% YOY sales growth, President's Award for Sales Excellence (2014)
 
 **Technical Capabilities:**
 - Built comprehensive production-ready platform (174+ Python files)
@@ -101,16 +108,26 @@ Developers prototype AI agents in Jupyter notebooks, but turning those prototype
 - Full-stack development (FastAPI backend, CLI, SDK, REST API)
 - DevOps capabilities (Docker, Kubernetes, CI/CD)
 - AI/ML integration (OpenAI, Anthropic, notebook converter)
+- **AI-First Automation:** Built Hardonia OS (AI-driven Shopify commerce lab), PromptPilot (SaaS framework), Daily Intel Suite (9 agents)
+
+**Domain Expertise:**
+- **Education Technology:** 15+ years at McGraw Hill and Pearson
+- **LMS Integration:** Canvas, Blackboard, Moodle
+- **AI in Education:** Adaptive assessments, intelligent learning platforms
+- **Enterprise SaaS:** Solution architecture, SaaS enablement
+- **Sales & Business Development:** Proven track record
 
 **Why This Founder:**
-- Experienced the prototype-to-production gap firsthand
+- Experienced the prototype-to-production gap firsthand (built Hardonia OS, PromptPilot, Daily Intel Suite)
+- Witnessed education institutions struggle with AI deployment (15+ years in EdTech)
 - Built the infrastructure others struggle with
 - Understands developer pain points (evidenced by CLI, SDK, API design)
-- Execution track record (shipped comprehensive platform)
+- Execution track record (shipped comprehensive platform, built multiple AI systems, 125% YOY growth)
+- Education market expertise aligns with Agent Factory's focus (McGraw Hill partnership)
 
 **Additional Founders:** [To be identified and documented]
 
-**See:** `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md` for details
+**See:** `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md` for complete details
 
 ---
 
