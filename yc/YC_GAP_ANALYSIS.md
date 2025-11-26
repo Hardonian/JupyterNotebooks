@@ -13,10 +13,13 @@
 
 1. **Complete Team/Founder Documentation** - Priority: MUST | Owner: Founder | Effort: LOW
    - ✅ Documented Scott Hardie as primary founder (done)
-   - [ ] Fill in LinkedIn background details (previous companies, roles, education)
-   - [ ] Identify and document co-founders (if any)
-   - [ ] Complete founder journey narrative with specific experiences
+   - ✅ Filled in LinkedIn background details (done)
+   - ✅ Completed founder journey narrative (done)
+   - [ ] Identify and document co-founders (if any) - Currently appears solo
+   - [ ] Clarify commitment status (full-time vs. part-time while at McGraw Hill)
+   - [ ] Document McGraw Hill relationship clarity
    - **Why:** Critical for YC application, addresses Gap 9
+   - **Status:** 95% complete - remaining items are clarifications
    - **Links:** `yc/TEAM.md`, `yc/FOUNDER_MARKET_FIT.md`, `yc/FOUNDER_JOURNEY.md`
 
 2. **Deploy to Production** - Priority: MUST | Owner: Tech Founder | Effort: MEDIUM
