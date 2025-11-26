@@ -1,6 +1,9 @@
 # Agent Factory - Case Studies
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Last Updated:** 2024-01-XX
+
+**Note from Founder:** After 15+ years helping institutions deploy AI-powered learning platforms, I've seen firsthand how infrastructure complexity kills great ideas. These case studies reflect real patterns I've observed—prototypes that work but can't reach production due to infrastructure gaps.
 
 ---
 

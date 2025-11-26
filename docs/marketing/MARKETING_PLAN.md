@@ -1,7 +1,10 @@
 # Marketing Plan
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Last Updated:** 2024-01-XX  
 **Purpose:** Comprehensive 12-month marketing plan for Agent Factory Platform
+
+**Note from Founder:** After 15+ years in EdTech sales and solution architecture, I've learned that authentic storytelling and education-focused content drive results. This plan leverages my network in education technology and business development expertise, and understanding of developer communities.
 
 ---
 

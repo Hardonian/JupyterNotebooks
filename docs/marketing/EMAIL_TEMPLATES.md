@@ -41,7 +41,10 @@ print(result.output)
 
 Happy building!
 
-The Agent Factory Team
+Scott Hardie  
+Founder, CEO & Operator  
+Agent Factory  
+scottrmhardie@gmail.com
 
 ---
 
@@ -73,7 +76,10 @@ Reply to this email or reach out at support@agentfactory.io
 
 Happy building!
 
-The Agent Factory Team
+Scott Hardie  
+Founder, CEO & Operator  
+Agent Factory  
+scottrmhardie@gmail.com
 
 ---
 
@@ -175,7 +181,10 @@ def my_tool(input: str) -> str:
 
 Happy building!
 
-The Agent Factory Team
+Scott Hardie  
+Founder, CEO & Operator  
+Agent Factory  
+scottrmhardie@gmail.com
 
 ---
 
@@ -204,7 +213,10 @@ We'd love to see what you're building! Share your agents and workflows with the 
 
 Happy building!
 
-The Agent Factory Team
+Scott Hardie  
+Founder, CEO & Operator  
+Agent Factory  
+scottrmhardie@gmail.com
 
 ---
 
@@ -333,7 +345,10 @@ Here's what's new at Agent Factory this month!
 
 Happy building!
 
-The Agent Factory Team
+Scott Hardie  
+Founder, CEO & Operator  
+Agent Factory  
+scottrmhardie@gmail.com
 
 ---
 

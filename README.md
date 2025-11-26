@@ -309,6 +309,22 @@ Comprehensive YC readiness assessment and preparation materials are available in
 
 ---
 
+## 👤 About the Founder
+
+**Scott Hardie** - Founder, CEO & Operator
+
+After 15+ years helping institutions deploy AI-powered learning platforms at McGraw Hill and Pearson Education, I saw the same problem again and again: great AI prototypes stuck in Jupyter notebooks, unable to reach production because developers couldn't build the infrastructure.
+
+I've built multiple AI-driven systems myself—Hardonia OS, PromptPilot, Daily Intel Suite—and hit the same wall every time: the AI worked, but deploying it required months of infrastructure work.
+
+**Agent Factory exists because I've lived this problem.** We've built the infrastructure so you don't have to.
+
+- **Email:** scottrmhardie@gmail.com
+- **GitHub:** [shardie-github](https://github.com/shardie-github)
+- **LinkedIn:** [scottrmhardie](https://www.linkedin.com/in/scottrmhardie)
+
+---
+
 ## ⭐ Star Us
 
 If Agent Factory helps you build something amazing, consider giving us a star on GitHub. It helps others discover the project.

@@ -205,8 +205,17 @@ These Terms are governed by [Jurisdiction] law.
 
 ## 14. Contact
 
+**Agent Factory**  
+**Founder, CEO & Operator:** Scott Hardie  
+**Email:** scottrmhardie@gmail.com  
 **Questions about Terms:** legal@agentfactory.io  
 **General Inquiries:** hello@agentfactory.io
+
+**Company Information:**
+- **Founder, CEO & Operator:** Scott Hardie
+- **Location:** Greater Toronto Area, Canada
+- **GitHub:** github.com/shardie-github
+- **LinkedIn:** linkedin.com/in/scottrmhardie
 
 ---
 

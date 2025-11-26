@@ -300,9 +300,18 @@ Scheduled maintenance does not count toward downtime if:
 
 ## Contact
 
+**Agent Factory**  
+**Founder, CEO & Operator:** Scott Hardie  
+**Email:** scottrmhardie@gmail.com  
 **SLA Questions:** sla@agentfactory.io  
 **Support:** support@agentfactory.io  
 **Enterprise:** enterprise@agentfactory.io
+
+**Company Information:**
+- **Founder, CEO & Operator:** Scott Hardie
+- **Location:** Greater Toronto Area, Canada
+- **GitHub:** github.com/shardie-github
+- **LinkedIn:** linkedin.com/in/scottrmhardie
 
 ---
 

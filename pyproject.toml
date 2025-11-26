@@ -10,7 +10,8 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "GPL-3.0"}
 authors = [
-    {name = "Agent Factory Team", email = "support@agentfactory.io"},
+    {name = "Scott Hardie", email = "scottrmhardie@gmail.com"},
+    {name = "Agent Factory", email = "support@agentfactory.io"},
 ]
 keywords = ["ai", "agents", "automation", "llm", "openai", "anthropic", "education", "higher-education"]
 classifiers = [
