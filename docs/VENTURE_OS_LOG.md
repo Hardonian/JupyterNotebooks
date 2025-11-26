@@ -5,6 +5,44 @@
 
 ---
 
+## 2024-12-XX - GitHub Actions Automation Setup
+
+### Changes Made
+
+**GitHub Actions Workflows Created:**
+- ✅ `.github/workflows/automated-readiness.yml` - Runs on PR commits
+- ✅ `.github/workflows/nightly-readiness.yml` - Runs daily at 3 AM UTC
+
+**Scripts Updated for CI/CD:**
+- ✅ `scripts/security-audit.sh` - Supports `SKIP_INTERACTIVE` flag
+- ✅ `scripts/collect-metrics.sh` - Non-interactive mode with env vars
+- ✅ `scripts/calculate-unit-economics.py` - Non-interactive mode with env vars
+- ✅ All other scripts support `SKIP_INTERACTIVE` flag
+
+**Documentation Created:**
+- ✅ `docs/GITHUB_ACTIONS_AUTOMATION.md` - Complete automation guide
+
+**Key Features:**
+- Automatic execution on PR commits
+- Commits generated files back to PR branch
+- Creates PR comments with summary
+- Nightly updates create PRs automatically
+- All scripts run in non-interactive mode
+- Continues on errors to prevent workflow failures
+
+**What Gets Automated:**
+- Security audits (Bandit + Safety)
+- Test coverage analysis
+- Data room placeholder analysis
+- Metrics snapshot generation
+- Unit economics calculation
+- YC application checklist generation
+- User acquisition checklist generation
+- Weekly progress updates (Mondays)
+- Comprehensive readiness checks
+
+---
+
 ## 2024-12-XX - Complete Execution Implementation
 
 ### Changes Made

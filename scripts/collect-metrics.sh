@@ -21,12 +21,18 @@ METRICS_FILE="yc/METRICS_SNAPSHOT.md"
 
 # Check if production URL is set
 if [ -z "$PRODUCTION_URL" ]; then
-    echo -e "${YELLOW}⚠️  PRODUCTION_URL not set${NC}"
-    echo "Set it with: export PRODUCTION_URL=https://your-domain.com"
-    echo "Or provide as argument: ./scripts/collect-metrics.sh https://your-domain.com"
-    echo ""
-    read -p "Enter production URL (or press Enter to use localhost:8000): " url
-    PRODUCTION_URL=${url:-http://localhost:8000}
+    if [ -n "$SKIP_INTERACTIVE" ] || [ ! -t 0 ]; then
+        # Non-interactive mode (CI/CD)
+        PRODUCTION_URL=${1:-http://localhost:8000}
+    else
+        # Interactive mode
+        echo -e "${YELLOW}⚠️  PRODUCTION_URL not set${NC}"
+        echo "Set it with: export PRODUCTION_URL=https://your-domain.com"
+        echo "Or provide as argument: ./scripts/collect-metrics.sh https://your-domain.com"
+        echo ""
+        read -p "Enter production URL (or press Enter to use localhost:8000): " url
+        PRODUCTION_URL=${url:-http://localhost:8000}
+    fi
 fi
 
 echo "Using URL: $PRODUCTION_URL"

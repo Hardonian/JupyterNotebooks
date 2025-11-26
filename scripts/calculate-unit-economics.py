@@ -11,34 +11,51 @@ from pathlib import Path
 def calculate_unit_economics():
     """Calculate unit economics based on inputs"""
     
+    import os
+    import sys
+    
     print("💰 Agent Factory Unit Economics Calculator")
     print("=" * 50)
     print("Founder, CEO & Operator: Scott Hardie")
     print()
     
-    # Get inputs
-    print("Enter your metrics (or press Enter for defaults/placeholders):")
-    print()
+    # Check for non-interactive mode (CI/CD)
+    skip_interactive = os.getenv("SKIP_INTERACTIVE", "").lower() in ("true", "1", "yes")
+    is_tty = sys.stdin.isatty()
     
-    # Marketing spend
-    marketing_spend = input("Total marketing spend (last 30 days): $") or "0"
-    marketing_spend = float(marketing_spend)
-    
-    # New customers
-    new_customers = input("New customers acquired (last 30 days): ") or "0"
-    new_customers = int(new_customers)
-    
-    # ARPU (Average Revenue Per User)
-    arpu = input("Average Revenue Per User (ARPU) per month: $") or "49"
-    arpu = float(arpu)
-    
-    # Customer lifetime (months)
-    customer_lifetime = input("Average customer lifetime (months): ") or "12"
-    customer_lifetime = float(customer_lifetime)
-    
-    # Gross margin (%)
-    gross_margin_pct = input("Gross margin percentage (%): ") or "80"
-    gross_margin_pct = float(gross_margin_pct) / 100
+    if skip_interactive or not is_tty:
+        # Non-interactive mode - use defaults/placeholders
+        print("Running in non-interactive mode - using placeholder values")
+        print()
+        marketing_spend = float(os.getenv("MARKETING_SPEND", "0"))
+        new_customers = int(os.getenv("NEW_CUSTOMERS", "0"))
+        arpu = float(os.getenv("ARPU", "49"))
+        customer_lifetime = float(os.getenv("CUSTOMER_LIFETIME", "12"))
+        gross_margin_pct = float(os.getenv("GROSS_MARGIN_PCT", "80")) / 100
+    else:
+        # Interactive mode
+        print("Enter your metrics (or press Enter for defaults/placeholders):")
+        print()
+        
+        # Marketing spend
+        marketing_spend = input("Total marketing spend (last 30 days): $") or "0"
+        marketing_spend = float(marketing_spend)
+        
+        # New customers
+        new_customers = input("New customers acquired (last 30 days): ") or "0"
+        new_customers = int(new_customers)
+        
+        # ARPU (Average Revenue Per User)
+        arpu = input("Average Revenue Per User (ARPU) per month: $") or "49"
+        arpu = float(arpu)
+        
+        # Customer lifetime (months)
+        customer_lifetime = input("Average customer lifetime (months): ") or "12"
+        customer_lifetime = float(customer_lifetime)
+        
+        # Gross margin (%)
+        gross_margin_pct = input("Gross margin percentage (%): ") or "80"
+        gross_margin_pct = float(gross_margin_pct) / 100
     
     # Calculate metrics
     cac = marketing_spend / new_customers if new_customers > 0 else 0

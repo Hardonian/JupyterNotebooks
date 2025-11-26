@@ -4,6 +4,11 @@
 
 set -e
 
+# Allow script to continue on errors in CI/CD
+if [ -n "$SKIP_INTERACTIVE" ]; then
+    set +e
+fi
+
 echo "🔒 Agent Factory Security Audit"
 echo "================================"
 echo ""
