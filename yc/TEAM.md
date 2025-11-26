@@ -25,20 +25,27 @@ This document provides information about the Agent Factory team, including found
 
 ## Founders
 
-### Founder 1: [Name]
+### Founder 1: Scott Hardie
 
-**Role:** [To be filled]
-- **Background:** [To be filled]
-- **Previous Companies:** [To be filled]
-- **Expertise:** [To be filled]
-- **Why This Problem:** [To be filled]
-- **Commitment:** [Full-time / Part-time]
-- **LinkedIn:** [To be filled]
+**Role:** Founder, Technical Lead
+- **Email:** scottrmhardie@gmail.com
+- **GitHub:** shardie-github
+- **LinkedIn:** /scottrmhardie
+- **Background:** [To be filled from LinkedIn - technical/engineering background]
+- **Previous Companies:** [To be filled from LinkedIn]
+- **Expertise:** Infrastructure engineering, full-stack development, AI/ML systems, DevOps
+- **Why This Problem:** [To be filled - likely experienced prototype-to-production gap firsthand]
+- **Commitment:** [Full-time / Part-time - to be confirmed]
 
-**Inferred from Repository:**
-- Strong technical background (evidenced by codebase)
-- Infrastructure expertise (auth, billing, deployment)
-- Full-stack development skills
+**Evidence from Repository:**
+- Primary contributor to codebase (git commits show active development)
+- Strong technical background (evidenced by comprehensive codebase)
+- Infrastructure expertise (auth, billing, deployment, multi-tenancy)
+- Full-stack development skills (FastAPI backend, CLI, SDK, API)
+- DevOps capabilities (Docker, Kubernetes, CI/CD workflows)
+- AI/ML integration experience (OpenAI, Anthropic, notebook converter)
+- Database design (Alembic migrations, PostgreSQL, Supabase)
+- Production-ready architecture (multi-tenant SaaS, observability, compliance)
 
 ---
 

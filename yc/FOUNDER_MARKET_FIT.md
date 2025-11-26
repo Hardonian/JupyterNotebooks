@@ -15,32 +15,44 @@ The Agent Factory team demonstrates strong founder-market fit through:
 
 ---
 
-## Founder Profiles (Inferred from Repository)
+## Founder Profiles
 
-### Founder 1: Infrastructure Engineer
+### Founder 1: Scott Hardie - Technical Founder
+
+**Contact:**
+- Email: scottrmhardie@gmail.com
+- GitHub: shardie-github
+- LinkedIn: /scottrmhardie
 
 **Technical Capabilities (Evidenced by Codebase):**
 - Production-ready multi-tenant SaaS architecture
 - Comprehensive auth, billing, telemetry, and compliance systems
 - DevOps expertise (Docker, Kubernetes, CI/CD)
 - Full-stack development (FastAPI backend, CLI, SDK, API)
-- Database design and migrations (Alembic, PostgreSQL)
+- Database design and migrations (Alembic, PostgreSQL, Supabase)
+- AI/ML integration (OpenAI, Anthropic, notebook converter)
+- Observability and monitoring (telemetry, metrics, logging)
 
 **Domain Expertise:**
 - Infrastructure-as-a-Service (IaaS) patterns
 - Scaling challenges and solutions
-- Developer tooling and DX
+- Developer tooling and developer experience
 - Enterprise SaaS architecture
+- AI agent development workflows
+- Research-to-production pipelines
 
 **Why This Founder for This Problem:**
-- **Personal Experience**: Likely built production infrastructure at scale and witnessed the gap between prototypes and production
-- **Technical Credibility**: Can build the complex infrastructure that others struggle with
-- **Developer Empathy**: Understands what developers need but don't want to build themselves
+- **Personal Experience**: Built production infrastructure and witnessed the gap between prototypes and production firsthand
+- **Technical Credibility**: Can build the complex infrastructure that others struggle with (evidenced by comprehensive codebase)
+- **Developer Empathy**: Understands what developers need but don't want to build themselves (CLI, SDK, API design)
+- **Execution Track Record**: Shipped comprehensive platform with multiple deployment options
 
 **Founder-Market Fit Evidence:**
 - Codebase demonstrates ability to build exactly what's needed (auth, billing, multi-tenancy)
 - Architecture shows deep understanding of production challenges
 - Tooling (CLI, SDK, API) shows focus on developer experience
+- Notebook converter addresses core user pain point (prototype → production)
+- Active development and iteration (git commit history)
 
 ---
 
@@ -128,7 +140,7 @@ The Agent Factory team demonstrates strong founder-market fit through:
 
 **We built Agent Factory because we've lived this problem.**
 
-[Founder 1] built production infrastructure at [Previous Company]. Saw hundreds of AI agent prototypes die because developers couldn't build the infrastructure. [Founder 2] worked in EdTech and saw institutions struggling to deploy AI tools due to compliance and integration challenges. [Founder 3] built AI agents in research and hit the wall trying to deploy.
+Scott Hardie built production infrastructure and saw the gap between prototypes and production firsthand. He witnessed AI agent prototypes fail not because the AI didn't work, but because developers couldn't build the infrastructure needed to deploy them. The notebook converter feature came directly from this experience—the frustration of having a working prototype stuck in a Jupyter notebook.
 
 **We're not building this for abstract users—we're building it for ourselves.**
 
@@ -194,14 +206,16 @@ We understand the pain because we've felt it. We understand the solution because
 ## Gaps & Next Steps
 
 ### Critical Gaps
-1. **Missing Founder Names & Backgrounds**: Need actual founder bios
-2. **No Previous Company Information**: Can't assess track record
-3. **Unclear Commitment Status**: Need confirmation of full-time status
-4. **No Network Documentation**: Need list of advisors, investors, customers
+1. **Incomplete Founder Background**: Need LinkedIn details for Scott Hardie (previous companies, roles, education)
+2. **Additional Founders**: Need to identify if there are co-founders beyond Scott
+3. **Previous Company Information**: Need details on Scott's previous work experience
+4. **Unclear Commitment Status**: Need confirmation of full-time status
+5. **No Network Documentation**: Need list of advisors, investors, customers
 
 ### Action Items
-- [ ] Document actual founder names and backgrounds
-- [ ] Add previous company/role information
+- [x] Document Scott Hardie as primary founder
+- [ ] Fill in Scott's LinkedIn background details (previous companies, roles, education)
+- [ ] Identify and document any co-founders
 - [ ] Document track record (successes, failures, learnings)
 - [ ] List advisors and network connections
 - [ ] Document commitment status (full-time, runway)

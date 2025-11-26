@@ -5,6 +5,37 @@
 
 ---
 
+## 2024-01-XX - Founder Information Added
+
+### Changes Made
+
+**Founder Documentation:**
+- ✅ Updated `yc/TEAM.md` with Scott Hardie information
+- ✅ Updated `yc/FOUNDER_MARKET_FIT.md` with Scott Hardie profile
+- ✅ Created `yc/FOUNDER_JOURNEY.md` with founder journey template
+- ✅ Updated `dataroom/01_EXEC_SUMMARY.md` with founder info
+- ✅ Updated `dataroom/APPLICATION_ANSWERS_YC_DRAFT.md` with founder info
+- ✅ Updated `yc/YC_TEAM_NOTES.md` with git commit analysis
+
+**Founder Information:**
+- **Name:** Scott Hardie
+- **Email:** scottrmhardie@gmail.com
+- **GitHub:** shardie-github
+- **LinkedIn:** /scottrmhardie
+- **Role:** Founder, Technical Lead
+
+**Evidence from Repository:**
+- Primary contributor (git commit history)
+- Comprehensive codebase development
+- Production-ready architecture
+
+**Gaps Remaining:**
+- ⚠️ Need LinkedIn background details (previous companies, roles, education)
+- ⚠️ Need to identify co-founders (if any)
+- ⚠️ Need to document previous work experience
+
+---
+
 ## 2024-01-XX - Initial Venture OS Setup
 
 ### Changes Made

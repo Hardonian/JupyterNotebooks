@@ -156,8 +156,10 @@ curl http://localhost:8000/health
 
 **Time:** 1-2 hours
 
-**TODO:** [ ] Write team bios  
-**TODO:** [ ] Document founder-market fit story
+**TODO:** [x] Document Scott Hardie as founder  
+**TODO:** [ ] Fill in LinkedIn background details  
+**TODO:** [ ] Identify co-founders (if any)  
+**TODO:** [ ] Complete founder journey narrative
 
 ---
 

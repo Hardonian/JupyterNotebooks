@@ -67,19 +67,31 @@ Agent Factory is a complete platform that provides:
 
 ## Team
 
-**Status:** [TO BE FILLED - See `yc/TEAM.md`]
+**Founder:** Scott Hardie
+- **Role:** Founder, Technical Lead
+- **Email:** scottrmhardie@gmail.com
+- **GitHub:** shardie-github
+- **LinkedIn:** /scottrmhardie
+- **Background:** [See LinkedIn profile for details]
 
-**Inferred from Repository:**
-- Strong engineering team (comprehensive codebase, 174+ Python files)
-- Product/design expertise (extensive documentation)
-- DevOps capabilities (multiple deployment configs)
-- Compliance understanding (FERPA, GDPR frameworks)
+**Technical Capabilities:**
+- Production-ready infrastructure (multi-tenant SaaS, auth, billing)
+- Full-stack development (FastAPI, CLI, SDK, API)
+- DevOps expertise (Docker, Kubernetes, CI/CD)
+- AI/ML integration (OpenAI, Anthropic, notebook converter)
+
+**Evidence:**
+- Comprehensive codebase (174+ Python files)
+- Active development (git commit history)
+- Production-ready architecture
+- Multiple deployment options
 
 **Gaps:**
-- ⚠️ Founder names/backgrounds not documented
-- ⚠️ Team composition not clear
+- ⚠️ Need LinkedIn background details (previous companies, roles, education)
+- ⚠️ Need to identify co-founders (if any)
+- ⚠️ Team composition not fully documented
 
-**Action:** Document team in `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md`
+**Action:** Complete team documentation in `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md`
 
 ---
 

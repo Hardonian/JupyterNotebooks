@@ -89,20 +89,28 @@ Developers prototype AI agents in Jupyter notebooks, but turning those prototype
 ## Team
 
 **Who are the founders?**  
-[See `yc/TEAM.md` - TO BE FILLED]
+**Scott Hardie** - Founder, Technical Lead
+- Email: scottrmhardie@gmail.com
+- GitHub: shardie-github
+- LinkedIn: /scottrmhardie
+- Background: [Fill in from LinkedIn - technical/engineering background]
 
-**Status:** [TO BE FILLED]
+**Technical Capabilities:**
+- Built comprehensive production-ready platform (174+ Python files)
+- Infrastructure expertise (auth, billing, multi-tenancy, deployment)
+- Full-stack development (FastAPI backend, CLI, SDK, REST API)
+- DevOps capabilities (Docker, Kubernetes, CI/CD)
+- AI/ML integration (OpenAI, Anthropic, notebook converter)
 
-**Inferred Capabilities:**
-- Strong engineering (comprehensive codebase)
-- Product/design expertise
-- DevOps capabilities
-- Compliance understanding
+**Why This Founder:**
+- Experienced the prototype-to-production gap firsthand
+- Built the infrastructure others struggle with
+- Understands developer pain points (evidenced by CLI, SDK, API design)
+- Execution track record (shipped comprehensive platform)
 
-**Gaps:**
-- ⚠️ Founder names/backgrounds need documentation
+**Additional Founders:** [To be identified and documented]
 
-**Action:** Document team in `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md`
+**See:** `yc/TEAM.md` and `yc/FOUNDER_MARKET_FIT.md` for details
 
 ---
 

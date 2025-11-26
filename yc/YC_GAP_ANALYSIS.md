@@ -11,11 +11,13 @@
 
 ### MUST DO (Blockers)
 
-1. **Document Team/Founders** - Priority: MUST | Owner: Founder | Effort: LOW
-   - Create `yc/TEAM.md` with founder bios and backgrounds
-   - Create `yc/FOUNDER_MARKET_FIT.md` explaining why these founders for this problem
+1. **Complete Team/Founder Documentation** - Priority: MUST | Owner: Founder | Effort: LOW
+   - ✅ Documented Scott Hardie as primary founder (done)
+   - [ ] Fill in LinkedIn background details (previous companies, roles, education)
+   - [ ] Identify and document co-founders (if any)
+   - [ ] Complete founder journey narrative with specific experiences
    - **Why:** Critical for YC application, addresses Gap 9
-   - **Links:** `yc/TEAM.md`, `yc/FOUNDER_MARKET_FIT.md`, `yc/YC_TEAM_NOTES.md`
+   - **Links:** `yc/TEAM.md`, `yc/FOUNDER_MARKET_FIT.md`, `yc/FOUNDER_JOURNEY.md`
 
 2. **Deploy to Production** - Priority: MUST | Owner: Tech Founder | Effort: MEDIUM
    - Configure production credentials (Vercel/Render)
