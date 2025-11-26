@@ -1,7 +1,10 @@
 # Partner Program
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Last Updated:** 2024-01-XX  
 **Purpose:** Comprehensive partner program for Agent Factory Platform
+
+**Note from Founder:** After 15+ years building partnerships in EdTech (McGraw Hill, Pearson), I've learned that successful partnerships are built on mutual value, clear communication, and aligned goals. This program reflects lessons from enterprise partnership development and strategic alliances.
 
 ---
 

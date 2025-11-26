@@ -1,5 +1,6 @@
 # Agent Factory - Website Copy
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Last Updated:** 2024-01-XX
 
 ---
@@ -332,6 +333,40 @@ Everything you need to build with Agent Factory.
 
 ## About Page
 
+### Our Story
+
+**Agent Factory exists because we've lived the problem.**
+
+After 15+ years helping institutions deploy AI-powered learning platforms at McGraw Hill and Pearson Education, founder Scott Hardie saw the same pattern again and again: great AI prototypes stuck in Jupyter notebooks, unable to reach production because developers couldn't build the infrastructure.
+
+He also built multiple AI-driven systems himself—Hardonia OS (AI-driven Shopify commerce lab), PromptPilot (SaaS framework), Daily Intel Suite (9 agents delivering insights)—and hit the same wall every time: the AI worked, but deploying it required months of infrastructure work.
+
+**Agent Factory is the platform we wish we'd had.** We've built the infrastructure so you don't have to.
+
+### About the Founder
+
+**Scott Hardie** - Founder, CEO & Operator
+
+Scott brings 15+ years of experience in educational technology and SaaS, with a proven track record of delivering enterprise solutions and driving growth (125% YOY sales growth, President's Award for Sales Excellence).
+
+**Background:**
+- Solutions Architect at McGraw Hill (current)
+- Senior Digital Solutions Consultant, Portfolio Manager, Account Executive at McGraw Hill
+- Portfolio Manager at Pearson Education
+- Built multiple AI-driven systems (Hardonia OS, PromptPilot, Daily Intel Suite)
+- MA Political Science, BA Political Science and Communication Studies, Wilfrid Laurier University
+
+**Why Agent Factory:**
+"I've seen hundreds of great AI prototypes die because developers couldn't build the infrastructure. I've built multiple AI systems myself and hit the same wall every time. Agent Factory exists to solve the problem we've all faced—built by someone who's lived it."
+
+**Contact:** scottrmhardie@gmail.com  
+**LinkedIn:** linkedin.com/in/scottrmhardie  
+**GitHub:** github.com/shardie-github
+
+---
+
+## About Page (Original Template)
+
 ### Page Title
 
 **Built by Developers, for Developers**
@@ -369,6 +404,25 @@ We listen to our community and build what they need.
 ---
 
 ## Contact Page
+
+### Get in Touch
+
+**Founder, CEO & Operator:** Scott Hardie  
+**Email:** scottrmhardie@gmail.com  
+**Location:** Greater Toronto Area, Canada
+
+**General Inquiries:** hello@agentfactory.io  
+**Support:** support@agentfactory.io  
+**Enterprise Sales:** enterprise@agentfactory.io  
+**Partnerships:** partnerships@agentfactory.io
+
+**Social:**
+- **LinkedIn:** linkedin.com/in/scottrmhardie
+- **GitHub:** github.com/shardie-github
+
+---
+
+## Contact Page (Original Template)
 
 ### Page Title
 
@@ -421,10 +475,10 @@ Turn AI prototypes into production products.
 - Documentation
 
 **Company**
-- About
+- About (Founded by Scott Hardie)
 - Blog
 - Careers
-- Contact
+- Contact (scottrmhardie@gmail.com)
 
 **Resources**
 - Documentation
@@ -438,6 +492,8 @@ Turn AI prototypes into production products.
 - Security
 
 © 2024 Agent Factory. All rights reserved.
+
+**Founder, CEO & Operator:** Scott Hardie | scottrmhardie@gmail.com
 
 ---
 

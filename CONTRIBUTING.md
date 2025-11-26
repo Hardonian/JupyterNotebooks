@@ -1,6 +1,10 @@
 # Contributing to Agent Factory
 
+**Founder, CEO & Operator:** Scott Hardie
+
 Thank you for your interest in contributing to Agent Factory! This guide will help you get started.
+
+**Note from Founder:** Agent Factory exists because I've lived the problem of turning AI prototypes into production. After building multiple AI-driven systems and spending 15+ years in EdTech, I know how hard infrastructure can be. Your contributions help make AI agents accessible to everyone. Thank you!
 
 ---
 

@@ -1,7 +1,10 @@
 # Sales Process
 
+**Founder, CEO & Operator:** Scott Hardie  
 **Last Updated:** 2024-01-XX  
 **Purpose:** Standardized sales process for Agent Factory Platform
+
+**Note from Founder:** After 15+ years in B2B SaaS sales (125% YOY growth, President's Award), I've learned that consultative selling and understanding customer pain points drive results. This process reflects lessons from enterprise EdTech sales and solution architecture.
 
 ---
 

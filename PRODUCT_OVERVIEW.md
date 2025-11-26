@@ -1,5 +1,8 @@
 # Agent Factory: Product Overview
 
+**Founder, CEO & Operator:** Scott Hardie  
+**Last Updated:** 2024-01-XX
+
 ## What Is Agent Factory?
 
 Agent Factory is a **composable platform for building, deploying, and monetizing AI agents**. Think of it as the Rails or Django for AI agents—everything you need to go from prototype to production.

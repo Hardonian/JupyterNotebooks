@@ -1,5 +1,7 @@
 # Why Agent Factory Exists
 
+**Founder, CEO & Operator:** Scott Hardie
+
 ## The Problem We're Solving
 
 Building AI agents shouldn't be this hard.
@@ -27,9 +29,11 @@ Suddenly, your simple idea needs a team of engineers and months of work. Most pr
 
 AI agents have the potential to transform how we work, learn, and interact with technology. But that potential is locked behind complexity.
 
-We've seen brilliant researchers, educators, and entrepreneurs with great ideas give up because the infrastructure was too hard. We've seen prototypes that could have helped thousands of people sit unused in notebooks.
+After 15+ years at McGraw Hill and Pearson Education, I've seen this pattern hundreds of times: brilliant researchers, educators, and entrepreneurs with great ideas give up because the infrastructure was too hard. I've seen prototypes that could have helped thousands of people sit unused in notebooks.
 
-That's a waste. Good ideas shouldn't die because the infrastructure is hard.
+I've also built multiple AI-driven systems myself—Hardonia OS, PromptPilot, Daily Intel Suite—and hit the same wall every time: the AI worked, but deploying it required months of infrastructure work.
+
+That's a waste. Good ideas shouldn't die because the infrastructure is hard. **Agent Factory exists because I've lived this problem.**
 
 ## Who We Help
 

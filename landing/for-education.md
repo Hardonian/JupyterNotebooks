@@ -40,9 +40,10 @@ Educational institutions need AI tools that help students learn, but building th
 - Single sign-on (SSO)
 
 **✅ Education Partnerships**
-- Partnered with McGraw Hill Education
+- Founded by Scott Hardie, Solutions Architect at McGraw Hill (15+ years EdTech experience)
+- Strategic partnership with McGraw Hill Education
 - Education-specific blueprints
-- Education support team
+- Education support team with deep institutional knowledge
 
 ---
 

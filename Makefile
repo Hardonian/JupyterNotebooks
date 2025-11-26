@@ -113,3 +113,36 @@ env-check:
 doc-sync:
 	@echo "Checking documentation synchronization..."
 	python scripts/doc-sync.py --check
+
+# Venture OS - Readiness & Execution Commands
+security-audit:
+	@echo "Running security audit..."
+	@bash scripts/security-audit.sh
+
+deploy-help:
+	@echo "Production deployment helper..."
+	@bash scripts/deploy-production.sh
+
+metrics-collect:
+	@echo "Collecting metrics..."
+	@bash scripts/collect-metrics.sh
+
+unit-economics:
+	@echo "Calculating unit economics..."
+	@python3 scripts/calculate-unit-economics.py
+
+yc-checklist:
+	@echo "YC application checklist..."
+	@bash scripts/yc-application-checklist.sh
+
+test-coverage:
+	@echo "Test coverage improvement plan..."
+	@bash scripts/test-coverage-improvement.sh
+
+weekly-progress:
+	@echo "Weekly progress tracker..."
+	@bash scripts/weekly-progress.sh
+
+# Quick readiness check
+readiness-check:
+	@bash scripts/quick-start-readiness.sh

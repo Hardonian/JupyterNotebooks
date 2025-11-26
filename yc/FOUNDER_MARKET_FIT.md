@@ -15,32 +15,60 @@ The Agent Factory team demonstrates strong founder-market fit through:
 
 ---
 
-## Founder Profiles (Inferred from Repository)
+## Founder Profiles
 
-### Founder 1: Infrastructure Engineer
+### Founder 1: Scott Hardie - Technical Founder & Solutions Architect
 
-**Technical Capabilities (Evidenced by Codebase):**
+**Contact:**
+- Email: scottrmhardie@gmail.com
+- GitHub: shardie-github
+- LinkedIn: /scottrmhardie
+- Location: Greater Toronto Area, Canada
+
+**Background:**
+- **Education:** MA Political Science (Public Opinion & Research Methods), BA Political Science and Communication Studies, Wilfrid Laurier University
+- **Experience:** 15+ years in educational technology and SaaS
+- **Current Role:** Solutions Architect at McGraw Hill (Dec 2022 - Present)
+- **Previous:** Senior Digital Solutions Consultant, Portfolio Manager, Account Executive at McGraw Hill; Portfolio Manager at Pearson Education
+
+**Technical Capabilities (Evidenced by Codebase & Experience):**
 - Production-ready multi-tenant SaaS architecture
 - Comprehensive auth, billing, telemetry, and compliance systems
 - DevOps expertise (Docker, Kubernetes, CI/CD)
 - Full-stack development (FastAPI backend, CLI, SDK, API)
-- Database design and migrations (Alembic, PostgreSQL)
+- Database design and migrations (Alembic, PostgreSQL, Supabase)
+- AI/ML integration (OpenAI, Anthropic, notebook converter)
+- Observability and monitoring (telemetry, metrics, logging)
+- **AI-First Automation:** Built Hardonia OS (AI-driven Shopify commerce lab), PromptPilot (SaaS framework), Daily Intel Suite (9 agents)
 
 **Domain Expertise:**
+- **Education Technology:** 15+ years at McGraw Hill and Pearson
+  - LMS integrations (Canvas, Blackboard, Moodle)
+  - SaaS enablement and enterprise solution architecture
+  - AI applications in education (adaptive assessments, intelligent learning platforms)
+  - Custom content development workflows
+- **Sales & Business Development:** 125% YOY growth, President's Award for Sales Excellence
+- **AI/Automation:** Multiple AI-driven systems built (Hardonia OS, PromptPilot, Daily Intel Suite)
 - Infrastructure-as-a-Service (IaaS) patterns
-- Scaling challenges and solutions
-- Developer tooling and DX
 - Enterprise SaaS architecture
+- AI agent development workflows
 
 **Why This Founder for This Problem:**
-- **Personal Experience**: Likely built production infrastructure at scale and witnessed the gap between prototypes and production
-- **Technical Credibility**: Can build the complex infrastructure that others struggle with
-- **Developer Empathy**: Understands what developers need but don't want to build themselves
+- **Personal Experience**: Built multiple AI-driven systems (Hardonia OS, PromptPilot, Daily Intel Suite) and experienced the prototype-to-production gap firsthand
+- **Education Market Expertise**: 15+ years at McGraw Hill and Pearson, understands education market needs and compliance requirements (FERPA, LMS integration)
+- **Technical Credibility**: Can build the complex infrastructure that others struggle with (evidenced by comprehensive codebase and previous AI systems)
+- **Developer Empathy**: Understands what developers need but don't want to build themselves (CLI, SDK, API design)
+- **Execution Track Record**: Shipped comprehensive platform, built multiple AI systems, delivered enterprise SaaS solutions
+- **Strategic Partnership**: Current role at McGraw Hill aligns with Agent Factory's education focus and partnership strategy
 
 **Founder-Market Fit Evidence:**
 - Codebase demonstrates ability to build exactly what's needed (auth, billing, multi-tenancy)
 - Architecture shows deep understanding of production challenges
 - Tooling (CLI, SDK, API) shows focus on developer experience
+- Notebook converter addresses core user pain point (prototype → production)
+- Education focus aligns with background (FERPA compliance, LMS integrations, McGraw Hill partnership)
+- Previous AI systems demonstrate understanding of AI automation and agent-based systems
+- Active development and iteration (git commit history)
 
 ---
 
@@ -128,11 +156,15 @@ The Agent Factory team demonstrates strong founder-market fit through:
 
 **We built Agent Factory because we've lived this problem.**
 
-[Founder 1] built production infrastructure at [Previous Company]. Saw hundreds of AI agent prototypes die because developers couldn't build the infrastructure. [Founder 2] worked in EdTech and saw institutions struggling to deploy AI tools due to compliance and integration challenges. [Founder 3] built AI agents in research and hit the wall trying to deploy.
+Scott Hardie spent 15+ years at McGraw Hill and Pearson Education, helping institutions deploy AI-powered learning platforms. He saw the gap firsthand: institutions wanted AI tools, but couldn't deploy them due to infrastructure complexity, compliance requirements, and LMS integration challenges.
+
+He also built multiple AI-driven systems himself—Hardonia OS (AI-driven Shopify commerce lab), PromptPilot (SaaS framework for prompt refinement), and Daily Intel Suite (9 agents delivering insights). Each time, he hit the same wall: the AI worked, but deploying it required months of infrastructure work.
+
+The notebook converter feature came directly from this experience—the frustration of having a working prototype stuck in a Jupyter notebook, unable to reach production without building everything from scratch.
 
 **We're not building this for abstract users—we're building it for ourselves.**
 
-We understand the pain because we've felt it. We understand the solution because we've built it. We understand the market because we're in it.
+We understand the pain because we've felt it. We understand the solution because we've built it. We understand the education market because we've worked in it for 15+ years. We understand the infrastructure challenges because we've solved them.
 
 **That's why Agent Factory exists: to solve the problem we've all faced, built by people who've lived it."**
 
@@ -194,17 +226,20 @@ We understand the pain because we've felt it. We understand the solution because
 ## Gaps & Next Steps
 
 ### Critical Gaps
-1. **Missing Founder Names & Backgrounds**: Need actual founder bios
-2. **No Previous Company Information**: Can't assess track record
-3. **Unclear Commitment Status**: Need confirmation of full-time status
-4. **No Network Documentation**: Need list of advisors, investors, customers
+1. ✅ **Founder Background**: Completed - Scott Hardie's LinkedIn details documented
+2. **Additional Founders**: Need to identify if there are co-founders beyond Scott
+3. **Commitment Status**: Need confirmation of full-time status (currently Solutions Architect at McGraw Hill)
+4. **Network Documentation**: Need list of advisors, investors, customers
+5. **McGraw Hill Partnership**: Need to clarify relationship (current employer vs. Agent Factory partnership)
 
 ### Action Items
-- [ ] Document actual founder names and backgrounds
-- [ ] Add previous company/role information
-- [ ] Document track record (successes, failures, learnings)
+- [x] Document Scott Hardie as primary founder
+- [x] Fill in Scott's LinkedIn background details (previous companies, roles, education)
+- [ ] Identify and document any co-founders
+- [ ] Clarify commitment status (full-time at Agent Factory vs. part-time while at McGraw Hill)
+- [ ] Document McGraw Hill relationship (partnership vs. current employer)
 - [ ] List advisors and network connections
-- [ ] Document commitment status (full-time, runway)
+- [ ] Document track record (successes, failures, learnings)
 
 ---
 

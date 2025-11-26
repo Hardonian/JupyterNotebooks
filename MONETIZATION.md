@@ -1,6 +1,11 @@
 # Monetization Strategy for Agent Factory
 
+**Founder, CEO & Operator:** Scott Hardie  
+**Last Updated:** 2024-01-XX
+
 This document outlines monetization models, pricing strategies, and implementation approaches for Agent Factory.
+
+**Note from Founder:** After 15+ years in EdTech sales and solution architecture, I've learned that value-based pricing and multiple revenue streams create sustainable businesses. This strategy reflects lessons from enterprise SaaS sales, marketplace models, and the education technology market.
 
 ---
 

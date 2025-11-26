@@ -24,7 +24,7 @@ Agent Factory provides everything developers need to go from prototype to produc
 - **Multiple interfaces** including Python SDK, CLI, and REST API
 - **Blueprint marketplace** with pre-built agent configurations
 
-"Agent Factory is like Rails or Django for AI agents," said [Founder Name], [Title] of Agent Factory. "We've solved the infrastructure problems so developers can focus on what makes their agents unique."
+"Agent Factory is like Rails or Django for AI agents," said Scott Hardie, Founder, CEO & Operator of Agent Factory. "After 15+ years helping institutions deploy AI-powered learning platforms, I've seen hundreds of great prototypes die because developers couldn't build the infrastructure. I've built multiple AI systems myself and hit the same wall every time. We've solved the infrastructure problems so developers can focus on what makes their agents unique."
 
 ### Key Features
 
