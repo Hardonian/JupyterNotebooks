@@ -91,15 +91,20 @@ app.include_router(blueprints.router, prefix="/api/v1/blueprints", tags=["bluepr
 app.include_router(executions.router, prefix="/api/v1/executions", tags=["executions"])
 app.include_router(telemetry.router, prefix="/api/v1/telemetry", tags=["telemetry"])
 
+# Authentication routes
+from agent_factory.api.routes import auth
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+
 # Additional routers
 from agent_factory.api.routes import scheduler, payments, health as health_routes
-from agent_factory.api.routes import financial, research, referrals, metrics_dashboard
+from agent_factory.api.routes import financial, referrals, metrics_dashboard
+from agent_factory.api.routes import research
 
 app.include_router(scheduler.router, prefix="/api/v1/scheduler", tags=["scheduler"])
 app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
 app.include_router(health_routes.router, prefix="/api/v1/health", tags=["health"])
 app.include_router(financial.router, prefix="/api/v1/financial", tags=["financial"])
-app.include_router(research.router, prefix="/api/v1/research", tags=["research"])
+app.include_router(research.router, prefix="/api/v1", tags=["research"])  # Product surface at root level
 app.include_router(referrals.router, tags=["referrals"])
 app.include_router(metrics_dashboard.router, tags=["metrics"])
 

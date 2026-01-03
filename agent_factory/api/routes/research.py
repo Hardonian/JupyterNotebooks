@@ -1,167 +1,275 @@
 """
-Research and experimentation API endpoints.
+Research Assistant API Routes - Product Surface.
+
+PRODUCT: Research Assistant
+Provides endpoints for:
+- Running research queries
+- Viewing past research reports
+- Downloading reports
 """
 
-from fastapi import APIRouter, HTTPException, status
-from fastapi.responses import JSONResponse
-from typing import Optional, List
-from agent_factory.research.experiments import (
-    get_experiment_tracker,
-    Variant,
-    VariantType,
-    ExperimentStatus,
+from fastapi import APIRouter, HTTPException, Depends, status
+from typing import List, Dict, Any
+from datetime import datetime, timedelta
+
+from agent_factory.services.research_service import (
+    ResearchService,
+    ResearchRequest,
+    ResearchReport,
+    get_research_service
 )
-from pydantic import BaseModel
+from agent_factory.security.auth import get_current_user_from_request, User
+from fastapi import Request
+from agent_factory.database.session import get_db
+from agent_factory.database.models import Execution as ExecutionModel
 
 router = APIRouter()
 
 
-class VariantRequest(BaseModel):
-    """Variant request."""
-    name: str
-    variant_type: str
-    config: dict
-    allocation_percent: float = 50.0
-
-
-class ExperimentRequest(BaseModel):
-    """Experiment request."""
-    name: str
-    description: str
-    variants: List[VariantRequest]
-    created_by: Optional[str] = None
-
-
-class ResultRequest(BaseModel):
-    """Result request."""
-    variant_id: str
-    success: bool
-    metrics: dict
-    metadata: Optional[dict] = None
-
-
-@router.post("/experiments")
-async def create_experiment(request: ExperimentRequest):
-    """Create an experiment."""
-    tracker = get_experiment_tracker()
-    
-    variants = [
-        Variant(
-            id="",  # Will be generated
-            name=v.name,
-            variant_type=VariantType(v.variant_type),
-            config=v.config,
-            allocation_percent=v.allocation_percent,
-        )
-        for v in request.variants
-    ]
-    
-    experiment = tracker.create_experiment(
-        name=request.name,
-        description=request.description,
-        variants=variants,
-        created_by=request.created_by,
-    )
-    
-    return JSONResponse(
-        content={
-            "experiment_id": experiment.id,
-            "name": experiment.name,
-            "status": experiment.status.value,
-        },
-        status_code=status.HTTP_201_CREATED,
-    )
-
-
-@router.post("/experiments/{experiment_id}/start")
-async def start_experiment(experiment_id: str):
-    """Start an experiment."""
-    tracker = get_experiment_tracker()
-    
-    try:
-        tracker.start_experiment(experiment_id)
-        return JSONResponse(content={"status": "started"})
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
-        )
-
-
-@router.post("/experiments/{experiment_id}/results")
-async def record_result(experiment_id: str, request: ResultRequest):
-    """Record an experiment result."""
-    tracker = get_experiment_tracker()
-    
-    tracker.record_result(
-        experiment_id=experiment_id,
-        variant_id=request.variant_id,
-        success=request.success,
-        metrics=request.metrics,
-        metadata=request.metadata,
-    )
-    
-    return JSONResponse(content={"status": "recorded"})
-
-
-@router.get("/experiments/{experiment_id}/results")
-async def get_experiment_results(experiment_id: str):
-    """Get experiment results."""
-    tracker = get_experiment_tracker()
-    
-    try:
-        results = tracker.get_experiment_results(experiment_id)
-        return JSONResponse(content=results)
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
-        )
-
-
-@router.get("/experiments/{experiment_id}/assign")
-async def assign_variant(experiment_id: str, user_id: str):
-    """Assign a variant to a user."""
-    tracker = get_experiment_tracker()
-    
-    try:
-        variant = tracker.assign_variant(experiment_id, user_id)
-        return JSONResponse(content={
-            "variant_id": variant.id,
-            "variant_name": variant.name,
-            "variant_type": variant.variant_type.value,
-            "config": variant.config,
-        })
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
-        )
-
-
-@router.get("/experiments")
-async def list_experiments(
-    status: Optional[str] = None,
-    created_by: Optional[str] = None,
+@router.post("/research", response_model=ResearchReport)
+async def run_research(
+    request: ResearchRequest,
+    http_request: Request
 ):
-    """List experiments."""
-    tracker = get_experiment_tracker()
+    """
+    Run a research query and generate a report.
     
-    experiment_status = ExperimentStatus(status) if status else None
+    PRODUCT ENDPOINT: This is the main product surface.
+    - Validates inputs against blueprint contract
+    - Enforces usage limits (free vs paid)
+    - Executes real research logic
+    - Returns structured report
+    """
+    # Get authenticated user
+    user = await get_current_user_from_request(http_request)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
     
-    experiments = tracker.list_experiments(
-        status=experiment_status,
-        created_by=created_by,
-    )
+    # Get tenant_id from request state (set by auth middleware)
+    tenant_id = getattr(http_request.state, 'tenant_id', None)
+    if not tenant_id:
+        # Try to get from user's tenant
+        db = next(get_db())
+        try:
+            from agent_factory.database.models import User as UserModel
+            user_model = db.query(UserModel).filter(UserModel.id == user.id).first()
+            if user_model and user_model.tenant_id:
+                tenant_id = user_model.tenant_id
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="User tenant not found"
+                )
+        finally:
+            db.close()
     
-    return JSONResponse(content={
-        "experiments": [
-            {
-                "id": e.id,
-                "name": e.name,
-                "status": e.status.value,
-                "created_at": e.created_at.isoformat(),
-            }
-            for e in experiments
-        ]
-    })
+    # Run research
+    service = get_research_service()
+    try:
+        report = service.run_research(
+            request=request,
+            tenant_id=tenant_id,
+            user_id=user.id
+        )
+        return report
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Research failed: {str(e)}"
+        )
+
+
+@router.get("/research/reports", response_model=List[Dict[str, Any]])
+async def list_reports(
+    http_request: Request,
+    limit: int = 20,
+    offset: int = 0
+):
+    """
+    List past research reports for the authenticated user.
+    
+    PRODUCT ENDPOINT: View past runs.
+    """
+    user = await get_current_user_from_request(http_request)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+    
+    # Get tenant_id
+    tenant_id = getattr(http_request.state, 'tenant_id', None)
+    if not tenant_id:
+        db = next(get_db())
+        try:
+            from agent_factory.database.models import User as UserModel
+            user_model = db.query(UserModel).filter(UserModel.id == user.id).first()
+            if user_model and user_model.tenant_id:
+                tenant_id = user_model.tenant_id
+            else:
+                return []
+        finally:
+            db.close()
+    
+    # Query executions
+    db = next(get_db())
+    try:
+        executions = db.query(ExecutionModel).filter(
+            ExecutionModel.tenant_id == tenant_id,
+            ExecutionModel.execution_type == "blueprint",
+            ExecutionModel.resource_id == "research-assistant",
+            ExecutionModel.status == "completed"
+        ).order_by(ExecutionModel.created_at.desc()).offset(offset).limit(limit).all()
+        
+        reports = []
+        for exec in executions:
+            if exec.output_data:
+                reports.append({
+                    "report_id": exec.output_data.get("report_id", exec.id),
+                    "query": exec.output_data.get("query", ""),
+                    "summary": exec.output_data.get("summary", "")[:200] + "..." if len(exec.output_data.get("summary", "")) > 200 else exec.output_data.get("summary", ""),
+                    "generated_at": exec.output_data.get("generated_at", exec.created_at.isoformat()),
+                    "execution_time_seconds": exec.execution_time or 0.0
+                })
+        
+        return reports
+    finally:
+        db.close()
+
+
+@router.get("/research/reports/{report_id}", response_model=ResearchReport)
+async def get_report(
+    report_id: str,
+    http_request: Request
+):
+    """
+    Get a specific research report by ID.
+    
+    PRODUCT ENDPOINT: View/download specific report.
+    """
+    user = await get_current_user_from_request(http_request)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+    
+    # Get tenant_id
+    tenant_id = getattr(http_request.state, 'tenant_id', None)
+    if not tenant_id:
+        db = next(get_db())
+        try:
+            from agent_factory.database.models import User as UserModel
+            user_model = db.query(UserModel).filter(UserModel.id == user.id).first()
+            if user_model and user_model.tenant_id:
+                tenant_id = user_model.tenant_id
+        finally:
+            db.close()
+    
+    # Find execution
+    db = next(get_db())
+    try:
+        # Try by report_id in output_data first
+        execution = db.query(ExecutionModel).filter(
+            ExecutionModel.tenant_id == tenant_id,
+            ExecutionModel.execution_type == "blueprint",
+            ExecutionModel.resource_id == "research-assistant",
+            ExecutionModel.status == "completed"
+        ).first()
+        
+        # Search through executions to find matching report_id
+        executions = db.query(ExecutionModel).filter(
+            ExecutionModel.tenant_id == tenant_id,
+            ExecutionModel.execution_type == "blueprint",
+            ExecutionModel.resource_id == "research-assistant",
+            ExecutionModel.status == "completed"
+        ).all()
+        
+        for exec in executions:
+            if exec.output_data and exec.output_data.get("report_id") == report_id:
+                return ResearchReport(**exec.output_data)
+            if exec.id == report_id:
+                if exec.output_data:
+                    return ResearchReport(**exec.output_data)
+        
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Report not found"
+        )
+    finally:
+        db.close()
+
+
+@router.get("/research/usage", response_model=Dict[str, Any])
+async def get_usage_info(
+    http_request: Request
+):
+    """
+    Get usage information for the authenticated user.
+    
+    PRODUCT ENDPOINT: Check usage limits and remaining quota.
+    """
+    user = await get_current_user_from_request(http_request)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+    
+    # Get tenant_id
+    tenant_id = getattr(http_request.state, 'tenant_id', None)
+    if not tenant_id:
+        db = next(get_db())
+        try:
+            from agent_factory.database.models import User as UserModel, Tenant
+            user_model = db.query(UserModel).filter(UserModel.id == user.id).first()
+            if user_model and user_model.tenant_id:
+                tenant_id = user_model.tenant_id
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="User tenant not found"
+                )
+        finally:
+            db.close()
+    
+    # Get usage info
+    service = get_research_service()
+    try:
+        limit_info = service._check_usage_limits(tenant_id, user.id)
+        
+        # Get current month usage
+        now = datetime.utcnow()
+        month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        
+        db = next(get_db())
+        try:
+            executions_this_month = db.query(ExecutionModel).filter(
+                ExecutionModel.tenant_id == tenant_id,
+                ExecutionModel.execution_type == "blueprint",
+                ExecutionModel.resource_id == "research-assistant",
+                ExecutionModel.created_at >= month_start,
+                ExecutionModel.status == "completed"
+            ).count()
+        finally:
+            db.close()
+        
+        return {
+            "plan_type": limit_info['plan_type'],
+            "used": executions_this_month,
+            "limit": limit_info['limit'],
+            "remaining": limit_info['remaining'],
+            "reset_date": (month_start + timedelta(days=32)).replace(day=1).isoformat()
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get usage info: {str(e)}"
+        )
