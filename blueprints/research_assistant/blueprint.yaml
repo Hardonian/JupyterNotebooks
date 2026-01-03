@@ -1,25 +1,117 @@
+# RESEARCH ASSISTANT BLUEPRINT - PRODUCT CONTRACT
+# 
+# PRODUCT: Research Assistant
+# TARGET USER: Researchers, analysts, students, professionals who need quick research reports
+# CORE JOB-TO-BE-DONE: Generate comprehensive research reports from a query, saving hours of manual research
+# OUTPUT ARTIFACT: Structured research report with summary, key findings, sources, and citations
+# PRICING MODEL: Free tier (5 reports/month), Pro tier (unlimited reports, $29/month)
+
 blueprint:
   id: research-assistant
   name: Research Assistant
-  version: 1.0.0
-  description: AI-powered research assistant that searches, analyzes, and generates reports
+  version: "1.0.0"
+  description: AI-powered research assistant that searches, analyzes, and generates comprehensive research reports
   author: Agent Factory Team
   category: data-analytics
   tags: [research, analysis, reports, data]
   
+  # PRODUCT CONTRACT - Input Schema
+  input_schema:
+    query:
+      type: string
+      description: Research question or topic
+      required: true
+      min_length: 10
+      max_length: 1000
+      examples:
+        - "What are the latest developments in quantum computing?"
+        - "Compare renewable energy policies in Europe vs North America"
+    
+    max_results:
+      type: integer
+      description: Maximum number of search results to analyze
+      default: 5
+      minimum: 1
+      maximum: 20
+    
+    include_citations:
+      type: boolean
+      description: Whether to include source citations in the report
+      default: true
+    
+    depth:
+      type: string
+      description: Research depth level
+      enum: [quick, standard, comprehensive]
+      default: standard
+  
+  # PRODUCT CONTRACT - Output Schema
+  output_schema:
+    report_id:
+      type: string
+      description: Unique identifier for this research report
+    
+    query:
+      type: string
+      description: Original research query
+    
+    summary:
+      type: string
+      description: Executive summary of findings
+    
+    key_findings:
+      type: array
+      items:
+        type: object
+        properties:
+          finding: string
+          source: string
+          relevance_score: number
+    
+    sources:
+      type: array
+      items:
+        type: object
+        properties:
+          title: string
+          url: string
+          snippet: string
+    
+    citations:
+      type: array
+      items:
+        type: string
+    
+    generated_at:
+      type: string
+      format: date-time
+    
+    execution_time_seconds:
+      type: number
+  
+  # Pricing Configuration
   pricing:
-    model: free
+    model: usage-based
+    free_tier:
+      reports_per_month: 5
+      max_results_per_report: 5
+      depth_levels: [quick]
+    pro_tier:
+      reports_per_month: unlimited
+      max_results_per_report: 20
+      depth_levels: [quick, standard, comprehensive]
+      price_monthly: 29.0
+      currency: USD
   
   config:
     dependencies:
       - openai
+      - duckduckgo-search
     environment_variables:
-      OPENAI_API_KEY: "Your OpenAI API key"
-      SERPER_API_KEY: "Your Serper API key (optional)"
+      OPENAI_API_KEY: "Required: Your OpenAI API key"
+      SERPER_API_KEY: "Optional: Serper API key for enhanced search (falls back to DuckDuckGo)"
     required_tools:
       - web_search
-      - read_file
-      - write_file
     required_agents:
       - research-searcher
       - research-analyzer
@@ -27,3 +119,5 @@ blueprint:
   metadata:
     demo_url: https://demo.agentfactory.io/research-assistant
     documentation: https://docs.agentfactory.io/blueprints/research-assistant
+    product_ready: true
+    commercial: true
