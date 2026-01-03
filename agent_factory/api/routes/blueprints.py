@@ -56,7 +56,7 @@ async def create_blueprint(
         raise HTTPException(status_code=400, detail=f"Blueprint {blueprint_data.id} already exists")
     
     # Create blueprint from data
-    from agent_factory.blueprints.model import BlueprintConfig
+    from agent_factory.blueprints.model import BlueprintConfig, PricingInfo, PricingModel
     
     config = BlueprintConfig()
     if blueprint_data.config:
