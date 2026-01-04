@@ -1,0 +1,105 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-01-04T00:58:42.339928",
+  "packs": [
+    {
+      "id": "pack_0001",
+      "slug": "agentic-ai-master",
+      "title": "Agentic AI Master Notebook",
+      "version": "1.0.0",
+      "category": "ai_ops",
+      "difficulty": "intermediate",
+      "runtime_minutes": 180,
+      "description": "Complete production-ready reference and bootstrap tool for building agentic AI systems. Includes OpenAI Agents SDK, CrewAI, MCP servers, LangGraph, and deployment templates.",
+      "tags": [
+        "ai",
+        "agents",
+        "openai",
+        "crewai",
+        "mcp",
+        "langgraph",
+        "production"
+      ]
+    },
+    {
+      "id": "pack_0002",
+      "slug": "csv-insight-report",
+      "title": "CSV \u2192 Insight Report Generator",
+      "version": "1.0.0",
+      "category": "ai_ops",
+      "difficulty": "intermediate",
+      "runtime_minutes": 15,
+      "description": "Generate comprehensive insight reports from CSV data with statistical analysis, visualizations, and recommendations",
+      "tags": [
+        "csv",
+        "data-analysis",
+        "reporting",
+        "visualization"
+      ]
+    },
+    {
+      "id": "pack_0003",
+      "slug": "prompt-evaluation-harness",
+      "title": "Prompt Evaluation Harness",
+      "version": "1.0.0",
+      "category": "ai_ops",
+      "difficulty": "advanced",
+      "runtime_minutes": 20,
+      "description": "Evaluate and score prompts with drift detection and performance metrics",
+      "tags": [
+        "prompt-engineering",
+        "evaluation",
+        "metrics",
+        "ai"
+      ]
+    },
+    {
+      "id": "pack_0004",
+      "slug": "competitor-table-builder",
+      "title": "Competitor Table Builder",
+      "version": "1.0.0",
+      "category": "consulting",
+      "difficulty": "intermediate",
+      "runtime_minutes": 15,
+      "description": "Build competitor comparison tables with optional web scraping (offline fallback)",
+      "tags": [
+        "competitor-analysis",
+        "research",
+        "web-scraping"
+      ]
+    },
+    {
+      "id": "pack_0005",
+      "slug": "stripe-export-cleaner",
+      "title": "Stripe Export Cleaner",
+      "version": "1.0.0",
+      "category": "finops",
+      "difficulty": "beginner",
+      "runtime_minutes": 10,
+      "description": "Clean and transform Stripe export CSVs for analysis (no API required)",
+      "tags": [
+        "stripe",
+        "csv",
+        "data-cleaning",
+        "finops"
+      ]
+    },
+    {
+      "id": "pack_0006",
+      "slug": "rag-chunking-embedding",
+      "title": "RAG Chunking & Embedding Prep",
+      "version": "1.0.0",
+      "category": "rag",
+      "difficulty": "intermediate",
+      "runtime_minutes": 15,
+      "description": "Prepare documents for RAG: chunking, embedding generation, and vector store preparation",
+      "tags": [
+        "rag",
+        "embeddings",
+        "chunking",
+        "vector-store"
+      ]
+    }
+  ],
+  "total_packs": 6
+}

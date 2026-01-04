@@ -1,0 +1,32 @@
+[project]
+name = "agentic-ai-master"
+version = "1.0.0"
+description = "Complete production-ready reference for building agentic AI systems"
+requires-python = ">=3.10"
+dependencies = [
+    "jupyter>=1.0.0",
+    "nbconvert>=7.0.0",
+    "openai-agents>=1.0.0",
+    "anthropic>=0.20.0",
+    "litellm>=1.0.0",
+    "crewai>=0.30.0",
+    "crewai-tools>=0.1.0",
+    "mcp>=0.1.0",
+    "fastmcp>=0.1.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.0",
+    "pyyaml>=6.0.0",
+    "httpx>=0.25.0",
+    "pandas>=2.0.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-nbval>=0.10.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

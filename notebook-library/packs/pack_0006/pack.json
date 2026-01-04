@@ -1,0 +1,63 @@
+{
+  "id": "pack_0006",
+  "slug": "rag-chunking-embedding",
+  "title": "RAG Chunking & Embedding Prep",
+  "version": "1.0.0",
+  "category": "rag",
+  "difficulty": "intermediate",
+  "runtime_minutes": 15,
+  "description": "Prepare documents for RAG: chunking, embedding generation, and vector store preparation",
+  "tags": [
+    "rag",
+    "embeddings",
+    "chunking",
+    "vector-store"
+  ],
+  "inputs": [
+    {
+      "name": "documents",
+      "type": "text",
+      "required": false,
+      "path": "data/documents.txt",
+      "notes": "Input documents (will use sample if not provided)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "chunks",
+      "type": "json",
+      "path": "outputs/chunks.json",
+      "notes": "Chunked documents with embeddings"
+    },
+    {
+      "name": "preparation_report",
+      "type": "md",
+      "path": "outputs/rag_preparation_report.md",
+      "notes": "Preparation summary report"
+    }
+  ],
+  "entrypoint": "main.ipynb",
+  "python": {
+    "min": "3.10",
+    "tested": [
+      "3.11"
+    ]
+  },
+  "install": {
+    "tool": "pip",
+    "command": "pip install -r requirements.txt"
+  },
+  "run": {
+    "command": "jupyter nbconvert --to notebook --execute main.ipynb --output executed.ipynb"
+  },
+  "license": {
+    "spdx": "GPL-3.0-only",
+    "file": "LICENSE.txt"
+  },
+  "changelog": "CHANGELOG.md",
+  "assets": {
+    "cover": "assets/cover.png",
+    "flow": "assets/flow.svg",
+    "preview_html": "assets/preview.html"
+  }
+}
