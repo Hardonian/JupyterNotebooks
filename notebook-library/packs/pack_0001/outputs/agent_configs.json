@@ -1,0 +1,53 @@
+{
+  "agents": {
+    "research_agent": {
+      "name": "Research Assistant",
+      "instructions": "You are a thorough research assistant. Search for accurate information, cite sources, and present findings in a structured format.",
+      "model": "gpt-4o",
+      "temperature": 0.3,
+      "tools": [
+        "search_web",
+        "read_file",
+        "write_file"
+      ],
+      "use_case": "Research and information gathering"
+    },
+    "coding_agent": {
+      "name": "Coding Assistant",
+      "instructions": "You are an expert software engineer. Write clean, efficient, well-documented code following best practices.",
+      "model": "gpt-4o",
+      "temperature": 0.2,
+      "tools": [
+        "read_file",
+        "write_file",
+        "calculate"
+      ],
+      "use_case": "Software development and debugging"
+    },
+    "general_agent": {
+      "name": "General Assistant",
+      "instructions": "You are a helpful, friendly assistant. Provide clear, accurate, and concise responses.",
+      "model": "gpt-4o-mini",
+      "temperature": 0.7,
+      "tools": [
+        "search_web",
+        "calculate"
+      ],
+      "use_case": "General assistance and quick tasks"
+    },
+    "support_bot": {
+      "name": "Support Bot",
+      "instructions": "Help customers with questions. Search knowledge base first, create tickets for complex issues.",
+      "model": "gpt-4o-mini",
+      "temperature": 0.5,
+      "tools": [
+        "search_kb",
+        "create_ticket"
+      ],
+      "use_case": "Customer support automation"
+    }
+  },
+  "framework": "OpenAI Agents SDK",
+  "generated_at": "2025-01-04T12:00:00",
+  "total_agents": 4
+}

@@ -3,14 +3,94 @@
 <head>
     <title>Agentic AI Master Notebook - Preview</title>
     <meta charset="utf-8">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #1e40af;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        .meta {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .meta p {
+            margin: 5px 0;
+        }
+        .outputs {
+            background: #ecfdf5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #10b981;
+        }
+        .outputs ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e2e8f0;
+            margin: 30px 0;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
 </head>
 <body>
     <h1>Agentic AI Master Notebook</h1>
-    <p><strong>Description:</strong> Complete production-ready reference and bootstrap tool for building agentic AI systems. Includes OpenAI Agents SDK, CrewAI, MCP servers, LangGraph, and deployment templates.</p>
-    <p><strong>Category:</strong> ai_ops</p>
-    <p><strong>Difficulty:</strong> intermediate</p>
-    <p><strong>Runtime:</strong> 180 minutes</p>
+    
+    <div class="meta">
+        <p><strong>Description:</strong> Complete production-ready reference and bootstrap tool for building agentic AI systems. Includes OpenAI Agents SDK, CrewAI, MCP servers, LangGraph, and deployment templates.</p>
+        <p><strong>Category:</strong> ai_ops</p>
+        <p><strong>Difficulty:</strong> intermediate</p>
+        <p><strong>Runtime:</strong> ~5 minutes</p>
+        <p><strong>Version:</strong> 1.0.0</p>
+    </div>
+
+    <h2>What This Pack Does</h2>
+    <p>Generates a complete, production-ready agentic AI project structure with:</p>
+    <ul>
+        <li>Pre-configured agent templates (Research, Coding, General, Support)</li>
+        <li>Complete folder structure (agents, tools, MCP servers, flows, configs, tests, docker)</li>
+        <li>Essential files (README, requirements.txt, .gitignore, .env.example)</li>
+        <li>JSON metadata documenting the generated structure</li>
+        <li>Execution summary report</li>
+    </ul>
+
+    <h2>Outputs</h2>
+    <div class="outputs">
+        <p><strong>Generated Files:</strong></p>
+        <ul>
+            <li><code>outputs/project_structure.json</code> - Complete project metadata</li>
+            <li><code>outputs/agent_configs.json</code> - Pre-configured agent templates</li>
+            <li><code>outputs/execution_summary.md</code> - Detailed execution report</li>
+            <li><code>my_agent_project/</code> - Complete project directory</li>
+        </ul>
+    </div>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>Python 3.10+</li>
+        <li>Jupyter notebook</li>
+        <li>Optional: OpenAI API key (for agent execution, not required for structure generation)</li>
+    </ul>
+
     <hr>
-    <p><em>Full notebook preview requires jupyter nbconvert. Install with: pip install jupyter nbconvert</em></p>
+    <p><em>Full notebook preview requires jupyter nbconvert. Install with: <code>pip install jupyter nbconvert</code></em></p>
+    <p><em>To view the complete notebook, execute: <code>jupyter notebook main.ipynb</code></em></p>
 </body>
 </html>

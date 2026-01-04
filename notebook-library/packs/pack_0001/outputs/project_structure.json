@@ -1,0 +1,29 @@
+{
+  "project_name": "my_agent_project",
+  "description": "Agentic AI system built with OpenAI Agents SDK",
+  "folders": [
+    "src/agents",
+    "src/tools",
+    "src/mcp_servers",
+    "src/flows",
+    "src/utils",
+    "config",
+    "tests",
+    "scripts",
+    "docker",
+    "logs"
+  ],
+  "files": [
+    "src/__init__.py",
+    "src/agents/__init__.py",
+    "src/tools/__init__.py",
+    "src/mcp_servers/__init__.py",
+    "src/flows/__init__.py",
+    "src/utils/__init__.py",
+    "README.md",
+    ".env.example",
+    ".gitignore",
+    "requirements.txt"
+  ],
+  "created_at": "2025-01-04T12:00:00"
+}
