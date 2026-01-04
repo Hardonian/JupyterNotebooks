@@ -5,16 +5,23 @@
   "version": "1.0.0",
   "category": "ai_ops",
   "difficulty": "intermediate",
-  "runtime_minutes": 180,
+  "runtime_minutes": 5,
   "description": "Complete production-ready reference and bootstrap tool for building agentic AI systems. Includes OpenAI Agents SDK, CrewAI, MCP servers, LangGraph, and deployment templates.",
   "tags": ["ai", "agents", "openai", "crewai", "mcp", "langgraph", "production"],
   "inputs": [
+    {
+      "name": "project_name",
+      "type": "env",
+      "required": false,
+      "path": "env:PROJECT_NAME",
+      "notes": "Optional: Project name (default: 'my_agent_project')"
+    },
     {
       "name": "api_keys",
       "type": "env",
       "required": false,
       "path": ".env",
-      "notes": "Optional: API keys for OpenAI, Anthropic, etc. Pack works without keys for learning."
+      "notes": "Optional: API keys for OpenAI, Anthropic, etc. Pack works without keys for structure generation."
     }
   ],
   "outputs": [
@@ -22,13 +29,25 @@
       "name": "project_structure",
       "type": "json",
       "path": "outputs/project_structure.json",
-      "notes": "Generated project structure metadata"
+      "notes": "Complete project structure metadata with folders and files"
     },
     {
       "name": "agent_configs",
       "type": "json",
       "path": "outputs/agent_configs.json",
-      "notes": "Agent factory configurations"
+      "notes": "Pre-configured agent templates (research, coding, general, support)"
+    },
+    {
+      "name": "execution_summary",
+      "type": "md",
+      "path": "outputs/execution_summary.md",
+      "notes": "Detailed execution report with generated components and next steps"
+    },
+    {
+      "name": "project_directory",
+      "type": "directory",
+      "path": "my_agent_project/",
+      "notes": "Complete project directory with source folders, config files, and templates"
     }
   ],
   "entrypoint": "main.ipynb",
