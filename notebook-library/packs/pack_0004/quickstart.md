@@ -1,46 +1,56 @@
-# Quick Start Guide
+# Quick Start
 
-Copy and paste these commands to get started:
-
-## 1. Install Dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Or with uv:
-
-```bash
-uv pip install -r requirements.txt
-```
-
-## 2. Configure Environment (if needed)
-
-```bash
-cp .env.example .env
-# Edit .env with your API keys or settings
-```
-
-## 3. Run the Notebook
-
-### Option A: Interactive (Jupyter)
+## Run Notebook
 
 ```bash
 jupyter notebook main.ipynb
 ```
 
-### Option B: Headless Execution
+## Or Execute Headless
 
 ```bash
 jupyter nbconvert --to notebook --execute main.ipynb --output executed.ipynb
 ```
 
-## 4. Check Outputs
+## Optional: Use Your Own Competitor Data
 
-Outputs will be generated in the `outputs/` directory (or as specified in pack.json).
+```bash
+# Create competitors.json with your data
+cat > data/competitors.json << EOF
+{
+  "competitors": [
+    {
+      "name": "Competitor A",
+      "category": "Enterprise",
+      "pricing": "$99/month",
+      "features": ["Feature 1", "Feature 2"],
+      "rating": 4.5,
+      "users": "10K+"
+    }
+  ]
+}
+EOF
 
-## Troubleshooting
+jupyter notebook main.ipynb
+```
 
-- **Missing dependencies**: Ensure Python 3.10+ is installed
-- **API errors**: Check `.env` file for required API keys
-- **Import errors**: Verify all dependencies are installed
+## Optional: Enable Web Scraping
+
+```bash
+export ENABLE_SCRAPING=true
+jupyter notebook main.ipynb
+```
+
+## Check Outputs
+
+```bash
+ls -la outputs/
+cat outputs/competitor_table.csv
+cat outputs/competitor_table.json
+```
