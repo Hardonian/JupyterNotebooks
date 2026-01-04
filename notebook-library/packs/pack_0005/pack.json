@@ -1,0 +1,57 @@
+{
+  "id": "pack_0005",
+  "slug": "stripe-export-cleaner",
+  "title": "Stripe Export Cleaner",
+  "version": "1.0.0",
+  "category": "finops",
+  "difficulty": "beginner",
+  "runtime_minutes": 10,
+  "description": "Clean and transform Stripe export CSVs for analysis (no API required)",
+  "tags": [
+    "stripe",
+    "csv",
+    "data-cleaning",
+    "finops"
+  ],
+  "inputs": [
+    {
+      "name": "stripe_export",
+      "type": "csv",
+      "required": false,
+      "path": "data/stripe_export.csv",
+      "notes": "Stripe export CSV (will generate sample if not provided)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cleaned_csv",
+      "type": "csv",
+      "path": "outputs/stripe_cleaned.csv",
+      "notes": "Cleaned and transformed CSV"
+    }
+  ],
+  "entrypoint": "main.ipynb",
+  "python": {
+    "min": "3.10",
+    "tested": [
+      "3.11"
+    ]
+  },
+  "install": {
+    "tool": "pip",
+    "command": "pip install -r requirements.txt"
+  },
+  "run": {
+    "command": "jupyter nbconvert --to notebook --execute main.ipynb --output executed.ipynb"
+  },
+  "license": {
+    "spdx": "GPL-3.0-only",
+    "file": "LICENSE.txt"
+  },
+  "changelog": "CHANGELOG.md",
+  "assets": {
+    "cover": "assets/cover.png",
+    "flow": "assets/flow.svg",
+    "preview_html": "assets/preview.html"
+  }
+}

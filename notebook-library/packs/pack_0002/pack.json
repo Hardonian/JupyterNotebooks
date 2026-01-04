@@ -1,0 +1,69 @@
+{
+  "id": "pack_0002",
+  "slug": "csv-insight-report",
+  "title": "CSV \u2192 Insight Report Generator",
+  "version": "1.0.0",
+  "category": "ai_ops",
+  "difficulty": "intermediate",
+  "runtime_minutes": 15,
+  "description": "Generate comprehensive insight reports from CSV data with statistical analysis, visualizations, and recommendations",
+  "tags": [
+    "csv",
+    "data-analysis",
+    "reporting",
+    "visualization"
+  ],
+  "inputs": [
+    {
+      "name": "input_csv",
+      "type": "csv",
+      "required": false,
+      "path": "data/input.csv",
+      "notes": "Input CSV file (will generate sample if not provided)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "statistics",
+      "type": "json",
+      "path": "outputs/statistics.json",
+      "notes": "Statistical analysis results"
+    },
+    {
+      "name": "report",
+      "type": "md",
+      "path": "outputs/report.md",
+      "notes": "Generated insight report"
+    },
+    {
+      "name": "project_structure",
+      "type": "json",
+      "path": "outputs/project_structure.json",
+      "notes": "Project metadata"
+    }
+  ],
+  "entrypoint": "main.ipynb",
+  "python": {
+    "min": "3.10",
+    "tested": [
+      "3.11"
+    ]
+  },
+  "install": {
+    "tool": "pip",
+    "command": "pip install -r requirements.txt"
+  },
+  "run": {
+    "command": "jupyter nbconvert --to notebook --execute main.ipynb --output executed.ipynb"
+  },
+  "license": {
+    "spdx": "GPL-3.0-only",
+    "file": "LICENSE.txt"
+  },
+  "changelog": "CHANGELOG.md",
+  "assets": {
+    "cover": "assets/cover.png",
+    "flow": "assets/flow.svg",
+    "preview_html": "assets/preview.html"
+  }
+}

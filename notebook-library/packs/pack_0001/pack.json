@@ -1,0 +1,56 @@
+{
+  "id": "pack_0001",
+  "slug": "agentic-ai-master",
+  "title": "Agentic AI Master Notebook",
+  "version": "1.0.0",
+  "category": "ai_ops",
+  "difficulty": "intermediate",
+  "runtime_minutes": 180,
+  "description": "Complete production-ready reference and bootstrap tool for building agentic AI systems. Includes OpenAI Agents SDK, CrewAI, MCP servers, LangGraph, and deployment templates.",
+  "tags": ["ai", "agents", "openai", "crewai", "mcp", "langgraph", "production"],
+  "inputs": [
+    {
+      "name": "api_keys",
+      "type": "env",
+      "required": false,
+      "path": ".env",
+      "notes": "Optional: API keys for OpenAI, Anthropic, etc. Pack works without keys for learning."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "project_structure",
+      "type": "json",
+      "path": "outputs/project_structure.json",
+      "notes": "Generated project structure metadata"
+    },
+    {
+      "name": "agent_configs",
+      "type": "json",
+      "path": "outputs/agent_configs.json",
+      "notes": "Agent factory configurations"
+    }
+  ],
+  "entrypoint": "main.ipynb",
+  "python": {
+    "min": "3.10",
+    "tested": ["3.11"]
+  },
+  "install": {
+    "tool": "pip",
+    "command": "pip install -r requirements.txt"
+  },
+  "run": {
+    "command": "jupyter nbconvert --to notebook --execute main.ipynb --output executed.ipynb"
+  },
+  "license": {
+    "spdx": "GPL-3.0-only",
+    "file": "LICENSE.txt"
+  },
+  "changelog": "CHANGELOG.md",
+  "assets": {
+    "cover": "assets/cover.png",
+    "flow": "assets/flow.svg",
+    "preview_html": "assets/preview.html"
+  }
+}
