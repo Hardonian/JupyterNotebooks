@@ -1,0 +1,20 @@
+[project]
+name = "rag-chunking-embedding"
+version = "1.0.0"
+description = "Prepare documents for RAG: chunking, embedding generation, and vector store preparation"
+requires-python = ">=3.10"
+dependencies = [
+    "jupyter>=1.0.0",
+    "nbconvert>=7.0.0",
+    "pandas>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-nbval>=0.10.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

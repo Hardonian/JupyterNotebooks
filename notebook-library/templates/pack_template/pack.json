@@ -1,0 +1,50 @@
+{
+  "id": "pack_XXXX",
+  "slug": "pack-slug-template",
+  "title": "Pack Title Template",
+  "version": "1.0.0",
+  "category": "ai_ops",
+  "difficulty": "beginner",
+  "runtime_minutes": 15,
+  "description": "Template description for pack functionality",
+  "tags": ["template", "example"],
+  "inputs": [
+    {
+      "name": "input_data",
+      "type": "csv",
+      "required": true,
+      "path": "data/input.csv",
+      "notes": "Input data file"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output_report",
+      "type": "md",
+      "path": "outputs/report.md",
+      "notes": "Generated report"
+    }
+  ],
+  "entrypoint": "main.ipynb",
+  "python": {
+    "min": "3.10",
+    "tested": ["3.11"]
+  },
+  "install": {
+    "tool": "pip",
+    "command": "pip install -r requirements.txt"
+  },
+  "run": {
+    "command": "jupyter nbconvert --to notebook --execute main.ipynb --output executed.ipynb"
+  },
+  "license": {
+    "spdx": "GPL-3.0-only",
+    "file": "LICENSE.txt"
+  },
+  "changelog": "CHANGELOG.md",
+  "assets": {
+    "cover": "assets/cover.png",
+    "flow": "assets/flow.svg",
+    "preview_html": "assets/preview.html"
+  }
+}
