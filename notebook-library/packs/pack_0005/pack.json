@@ -3,6 +3,8 @@
   "slug": "stripe-export-cleaner",
   "title": "Stripe Export Cleaner",
   "version": "1.0.0",
+  "tool": "jupyter",
+  "key_type": "notebook",
   "category": "finops",
   "difficulty": "beginner",
   "runtime_minutes": 10,

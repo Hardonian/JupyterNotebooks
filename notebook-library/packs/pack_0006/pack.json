@@ -3,6 +3,8 @@
   "slug": "rag-chunking-embedding",
   "title": "RAG Chunking & Embedding Prep",
   "version": "1.0.0",
+  "tool": "jupyter",
+  "key_type": "notebook",
   "category": "rag",
   "difficulty": "intermediate",
   "runtime_minutes": 15,

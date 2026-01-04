@@ -3,6 +3,8 @@
   "slug": "csv-insight-report",
   "title": "CSV \u2192 Insight Report Generator",
   "version": "1.0.0",
+  "tool": "jupyter",
+  "key_type": "notebook",
   "category": "ai_ops",
   "difficulty": "intermediate",
   "runtime_minutes": 15,
@@ -34,12 +36,6 @@
       "type": "md",
       "path": "outputs/report.md",
       "notes": "Generated insight report"
-    },
-    {
-      "name": "project_structure",
-      "type": "json",
-      "path": "outputs/project_structure.json",
-      "notes": "Project metadata"
     }
   ],
   "entrypoint": "main.ipynb",
