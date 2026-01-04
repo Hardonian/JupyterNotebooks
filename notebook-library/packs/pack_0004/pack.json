@@ -3,6 +3,8 @@
   "slug": "competitor-table-builder",
   "title": "Competitor Table Builder",
   "version": "1.0.0",
+  "tool": "jupyter",
+  "key_type": "notebook",
   "category": "consulting",
   "difficulty": "intermediate",
   "runtime_minutes": 15,
