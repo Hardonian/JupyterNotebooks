@@ -9,7 +9,10 @@
 ### Bandit (Python Security Linter)
 - **Report:** `security-reports/bandit_20260127_041034.txt`
 - **JSON:** `security-reports/bandit_20260127_041034.json`
-- **Issues Found:** 0
+- **Issues Found:** 29
+  - High: 1
+  - Medium: 4
+  - Low: 24
 
 ### Safety (Dependency Vulnerabilities)
 - **Report:** `security-reports/safety_20260127_041034.txt`
