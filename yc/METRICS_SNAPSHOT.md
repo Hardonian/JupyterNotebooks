@@ -1,6 +1,6 @@
 # Metrics Snapshot
 
-**Date:** 2026-04-10  
+**Date:** 2026-06-11  
 **Founder, CEO & Operator:** Scott Hardie  
 **Source:** Production deployment at http://localhost:8000
 
@@ -128,6 +128,6 @@ ORDER BY DATE(created_at) DESC;
 
 ---
 
-**Last Updated:** 2026-04-10  
+**Last Updated:** 2026-06-11  
 **Next Update:** [Set weekly reminder]
 
