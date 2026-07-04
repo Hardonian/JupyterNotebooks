@@ -1,17 +1,17 @@
-name = "ai-lab-audit-api"
+name = "jupyter-notebooks-api"
 main = "src/worker.js"
 compatibility_date = "2024-06-01"
 
 [vars]
 ENVIRONMENT = "production"
-APP_NAME = "ai-lab-audit-api"
+APP_NAME = "jupyter-notebooks-api"
 SCAN_CRON = "0 3 * * *"
 LOG_LEVEL = "INFO"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "ai_lab_audit"
-database_id = "placeholder-id"
+database_name = "jupyter_notebooks"
+database_id = "ccc9baf9-8031-4d30-9a3d-b89e0c13e1cf"
 
 [triggers]
 crons = ["0 3 * * *"]
