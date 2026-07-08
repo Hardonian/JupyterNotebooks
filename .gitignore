@@ -1,69 +1,42 @@
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
+*.pyc
+*.pyo
+.venv/
+.egg-info/
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
+build/
 *.egg
 
-# Virtual environments
-venv/
-env/
-ENV/
-.venv
+# Environment
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
 
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
-
-# Environment variables
-.env
-.env.local
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Logs
-*.log
-logs/
-
-# Agent Factory
-.agent_factory/
-sessions.db
-agent_sessions.db
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Docker
-docker-compose.override.yml
+# Logs
+*.log
+# --- Hardonian bootstrap kit ---
+# Hardonian standard ignores
+!.env.template
+venv/
+target/
+.coverage
+htmlcov/
