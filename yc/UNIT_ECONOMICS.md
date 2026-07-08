@@ -1,6 +1,10 @@
 # Unit Economics Analysis
 
+<<<<<<< HEAD
 **Date:** 2026-06-22  
+=======
+**Date:** 2026-07-08  
+>>>>>>> pr265
 **Founder, CEO & Operator:** Scott Hardie  
 **Status:** PRELIMINARY (No Real Data)
 
@@ -124,7 +128,11 @@
 
 ---
 
+<<<<<<< HEAD
 **Last Updated:** 2026-06-22  
+=======
+**Last Updated:** 2026-07-08  
+>>>>>>> pr265
 **Next Review:** [Set monthly review]
 
 ---
