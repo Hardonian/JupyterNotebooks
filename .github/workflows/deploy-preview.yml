@@ -18,7 +18,7 @@ jobs:
     name: Build Preview
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       
@@ -50,7 +50,7 @@ jobs:
     environment:
       name: preview
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       
@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-preview
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       
@@ -133,7 +133,7 @@ jobs:
     needs: [deploy-preview-render, deploy-preview-docker]
     if: always() && (needs.deploy-preview-render.result == 'success' || needs.deploy-preview-docker.result == 'success')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       
       - name: Wait for preview deployment
         run: |

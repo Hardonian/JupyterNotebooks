@@ -53,7 +53,7 @@ jobs:
     needs: determine-environment
     if: needs.determine-environment.outputs.should_deploy == 'true' && github.event.inputs.skip_tests != 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -84,7 +84,7 @@ jobs:
     environment:
       name: ${{ needs.determine-environment.outputs.environment }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -125,7 +125,7 @@ jobs:
       matrix:
         target: [render, docker]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       
       - name: Deploy to Render (${{ needs.determine-environment.outputs.environment }})
         if: matrix.target == 'render'
@@ -165,7 +165,7 @@ jobs:
     needs: [determine-environment, deploy]
     if: needs.determine-environment.outputs.should_deploy == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       
       - name: Wait for deployment
         run: sleep 30
