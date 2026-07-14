@@ -1,7 +1,7 @@
 # Data Room Placeholder Fill Guide
 
 **Founder, CEO & Operator:** Scott Hardie  
-**Generated:** 2026-06-22
+**Generated:** 2026-07-14
 
 ---
 
@@ -98,7 +98,7 @@ make unit-economics
 **Files:** All data room files
 
 **Fill With:**
-- Current date: 2026-06-22
+- Current date: 2026-07-14
 - Or specific dates (e.g., submission date)
 
 ---
@@ -138,4 +138,4 @@ grep -r "TO BE FILLED\|TBD\|\[DATE\]\|\[NUMBER\]\|\[AMOUNT\]" dataroom/
 
 ---
 
-**Last Updated:** 2026-06-22
+**Last Updated:** 2026-07-14
