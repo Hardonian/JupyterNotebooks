@@ -108,8 +108,8 @@ blueprint:
       - openai
       - duckduckgo-search
     environment_variables:
-      OPENAI_API_KEY: "Required: Your OpenAI API key"
-      SERPER_API_KEY: "Optional: Serper API key for enhanced search (falls back to DuckDuckGo)"
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      SERPER_API_KEY: "${SERPER_API_KEY}"
     required_tools:
       - web_search
     required_agents:
