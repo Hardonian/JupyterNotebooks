@@ -1,6 +1,6 @@
 # Unit Economics Analysis
 
-**Date:** 2026-07-16  
+**Date:** 2026-07-20  
 **Founder, CEO & Operator:** Scott Hardie  
 **Status:** PRELIMINARY (No Real Data)
 
@@ -124,7 +124,7 @@
 
 ---
 
-**Last Updated:** 2026-07-16  
+**Last Updated:** 2026-07-20  
 **Next Review:** [Set monthly review]
 
 ---
