@@ -1,7 +1,7 @@
 # Data Room Placeholder Fill Guide
 
 **Founder, CEO & Operator:** Scott Hardie  
-**Generated:** 2026-06-22
+**Generated:** 2026-07-21
 
 ---
 
@@ -22,15 +22,15 @@
 - **Placeholders:** 10
 - **Examples:** [Date], [TO BE FILLED], [TBD]
 
-### 04_CUSTOMER_PROOF.md
-- **File:** `dataroom/04_CUSTOMER_PROOF.md`
-- **Placeholders:** 5
-- **Examples:** [TO BE FILLED], [TO BE FILLED], [TO BE FILLED]
-
 ### 07_CAP_TABLE_PLACEHOLDER.md
 - **File:** `dataroom/07_CAP_TABLE_PLACEHOLDER.md`
 - **Placeholders:** 8
 - **Examples:** [TO BE FILLED BY FOUNDERS], [TO BE FILLED], [TO BE FILLED]
+
+### 04_CUSTOMER_PROOF.md
+- **File:** `dataroom/04_CUSTOMER_PROOF.md`
+- **Placeholders:** 5
+- **Examples:** [TO BE FILLED], [TO BE FILLED], [TO BE FILLED]
 
 ### APPLICATION_ANSWERS_YC_DRAFT.md
 - **File:** `dataroom/APPLICATION_ANSWERS_YC_DRAFT.md`
@@ -98,7 +98,7 @@ make unit-economics
 **Files:** All data room files
 
 **Fill With:**
-- Current date: 2026-06-22
+- Current date: 2026-07-21
 - Or specific dates (e.g., submission date)
 
 ---
@@ -138,4 +138,4 @@ grep -r "TO BE FILLED\|TBD\|\[DATE\]\|\[NUMBER\]\|\[AMOUNT\]" dataroom/
 
 ---
 
-**Last Updated:** 2026-06-22
+**Last Updated:** 2026-07-21
