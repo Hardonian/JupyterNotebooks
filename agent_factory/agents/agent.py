@@ -9,7 +9,8 @@ from enum import Enum
 from agent_factory.tools.base import Tool
 from agent_factory.runtime.memory import MemoryStore
 from agent_factory.core.guardrails import Guardrails
-from agent_factory.promptlog import Run, SQLiteStorage
+from agent_factory.promptlog.model import Run
+from agent_factory.promptlog.storage import SQLiteStorage
 from agent_factory.knowledge import KnowledgePack
 import uuid
 import time

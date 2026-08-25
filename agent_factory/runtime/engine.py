@@ -9,7 +9,8 @@ import uuid
 
 from agent_factory.agents.agent import Agent, AgentResult
 from agent_factory.workflows.model import Workflow, WorkflowResult
-from agent_factory.promptlog import SQLiteStorage, Run as RunModel
+from agent_factory.promptlog.storage import SQLiteStorage
+from agent_factory.promptlog.model import Run as RunModel
 from agent_factory.telemetry.collector import get_collector
 from agent_factory.telemetry.model import UserActivatedEvent, UserSignupEvent, UserLoginEvent
 
