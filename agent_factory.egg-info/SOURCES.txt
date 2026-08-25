@@ -95,6 +95,9 @@ agent_factory/financial/cost_tracker.py
 agent_factory/integrations/__init__.py
 agent_factory/integrations/anthropic_client.py
 agent_factory/integrations/openai_client.py
+agent_factory/integrations/semantic_cache.py
+agent_factory/integrations/streaming.py
+agent_factory/integrations/universal_client.py
 agent_factory/integrations/tools/__init__.py
 agent_factory/integrations/tools/calculator.py
 agent_factory/integrations/tools/file_io.py

@@ -1,0 +1,74 @@
+"""
+Zero-Trust Capability Tokens for Tool Execution in Agent Factory.
+
+Ensures tools (e.g. database execution, file write, shell commands) can only
+be invoked with valid, time-bounded HMAC-SHA256 capability tokens granted to the agent.
+"""
+
+import hmac
+import hashlib
+import time
+import json
+import base64
+from typing import Dict, Any, Optional, List
+
+
+class CapabilityTokenManager:
+    """
+    Issues and verifies time-bounded cryptographic capability tokens for tool execution.
+    """
+
+    def __init__(self, secret_key: str = "agent-factory-capability-secret-key-2026"):
+        self.secret_key = secret_key.encode("utf-8")
+
+    def issue_token(
+        self,
+        agent_id: str,
+        tool_name: str,
+        expires_in_seconds: int = 300,
+        allowed_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """
+        Issue a signed capability token for a specific agent and tool.
+        """
+        payload = {
+            "agent_id": agent_id,
+            "tool_name": tool_name,
+            "exp": time.time() + expires_in_seconds,
+            "allowed_params": allowed_params or {},
+        }
+        raw_json = json.dumps(payload, sort_keys=True)
+        signature = hmac.new(self.secret_key, raw_json.encode("utf-8"), hashlib.sha256).hexdigest()
+        
+        token_data = {
+            "payload": payload,
+            "signature": signature,
+        }
+        return base64.urlsafe_b64encode(json.dumps(token_data).encode("utf-8")).decode("utf-8")
+
+    def verify_token(self, token: str, agent_id: str, tool_name: str) -> bool:
+        """
+        Verify that a capability token is authentic, unexpired, and granted for the target tool.
+        """
+        try:
+            raw_bytes = base64.urlsafe_b64decode(token.encode("utf-8"))
+            token_data = json.loads(raw_bytes.decode("utf-8"))
+
+            payload = token_data.get("payload", {})
+            signature = token_data.get("signature", "")
+
+            # Check expiration
+            if time.time() > payload.get("exp", 0):
+                return False
+
+            # Check target match
+            if payload.get("agent_id") != agent_id or payload.get("tool_name") != tool_name:
+                return False
+
+            # Verify cryptographic signature
+            raw_json = json.dumps(payload, sort_keys=True)
+            expected_sig = hmac.new(self.secret_key, raw_json.encode("utf-8"), hashlib.sha256).hexdigest()
+
+            return hmac.compare_digest(signature, expected_sig)
+        except Exception:
+            return False

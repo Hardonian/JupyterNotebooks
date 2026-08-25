@@ -1,0 +1,16 @@
+{
+  "id": "financial_quant_risk_analyzer",
+  "name": "Quantitative Financial Market & Portfolio Risk Analyzer",
+  "version": "2.0.0",
+  "author": "Agent Factory Team",
+  "description": "Quant intelligence agent providing market regime detection, Sharpe/Sortino ratio calculations, Monte Carlo risk simulation, and automated executive investment memos.",
+  "category": "finance",
+  "model": "gpt-4o",
+  "instructions": "You are a Senior Quantitative Analyst & Risk Manager. Ingest asset price histories, calculate statistical risk metrics (VaR, CVaR, Drawdown), simulate portfolio stress tests, and provide institutional-grade investment risk briefs.",
+  "tools": ["market_data_ingest", "monte_carlo_simulator", "python_interpreter"],
+  "tags": ["finance", "quant", "risk-management", "monte-carlo", "portfolio"],
+  "monetization": {
+    "price_usd": 149.00,
+    "license": "enterprise_fintech"
+  }
+}

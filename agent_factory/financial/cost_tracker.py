@@ -27,9 +27,9 @@ class CostRecord:
     timestamp: datetime
     cost_type: CostType
     amount: Decimal
-    currency: str = "USD"
     entity_type: str  # "agent", "workflow", "user", "tenant"
     entity_id: str
+    currency: str = "USD"
     metadata: Dict[str, Any] = field(default_factory=dict)
 
 

@@ -50,6 +50,7 @@ Requires-Dist: passlib>=1.7.4
 Requires-Dist: bcrypt>=4.0.0
 Requires-Dist: packaging>=23.0
 Requires-Dist: supabase>=2.0.0
+Requires-Dist: email-validator>=2.0.0
 Provides-Extra: dev
 Requires-Dist: pytest>=7.0.0; extra == "dev"
 Requires-Dist: pytest-cov>=4.0.0; extra == "dev"

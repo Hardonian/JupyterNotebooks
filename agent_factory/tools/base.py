@@ -35,6 +35,15 @@ class ToolMetadata:
     pricing: Optional[Dict[str, Any]] = None
 
 
+@dataclass
+class ToolResult:
+    """Standard result structure returned from a tool execution."""
+    output: Any
+    success: bool = True
+    error: Optional[str] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
 class Tool(ABC):
     """
     Abstract base class for tools that agents can use.
@@ -47,8 +56,10 @@ class Tool(ABC):
         id: str,
         name: str,
         description: str,
-        implementation: Callable,
+        implementation: Optional[Callable] = None,
         metadata: Optional[ToolMetadata] = None,
+        func: Optional[Callable] = None,
+        parameters: Optional[Dict[str, Any]] = None,
     ):
         """
         Initialize a Tool.
@@ -57,19 +68,22 @@ class Tool(ABC):
             id: Unique identifier
             name: Human-readable name
             description: Description of what the tool does
-            implementation: Callable that implements the tool logic
+            implementation: Callable that implements the tool logic (or func)
             metadata: Optional metadata
+            func: Alias for implementation
+            parameters: Optional pre-defined JSON schema for parameters
         """
         self.id = id
         self.name = name
         self.description = description
-        self._implementation = implementation
+        self._implementation = implementation or func or (lambda **kwargs: str(kwargs))
+        self.parameters = parameters
         self.metadata = metadata or ToolMetadata(
             id=id,
             name=name,
             description=description,
         )
-        self._schema = self._infer_schema()
+        self._schema = parameters or self._infer_schema()
     
     def _infer_schema(self) -> Dict[str, Any]:
         """Infer JSON schema from function signature."""

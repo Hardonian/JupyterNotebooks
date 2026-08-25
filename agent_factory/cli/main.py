@@ -90,5 +90,103 @@ Agent Factory project.
     typer.echo(f"✅ Project initialized at {project_path.absolute()}")
 
 
+@app.command()
+def serve(
+    host: str = typer.Option("127.0.0.1", "--host", "-h", help="Host address"),
+    port: int = typer.Option(8000, "--port", "-p", help="Port number"),
+    reload: bool = typer.Option(False, "--reload", "-r", help="Auto reload"),
+):
+    """
+    Launch Agent Factory API and Visual Studio web dashboard.
+    """
+    import uvicorn
+    typer.echo(f"🚀 Starting Agent Factory Studio at http://{host}:{port}")
+    uvicorn.run("agent_factory.api.main:app", host=host, port=port, reload=reload)
+
+
+@app.command()
+def chat(
+    agent_id: str = typer.Argument("default", help="Agent ID to chat with"),
+    model: str = typer.Option("gpt-4o", "--model", "-m", help="Target LLM model"),
+):
+    """
+    Start interactive terminal chat session with an agent.
+    """
+    from agent_factory.agents.agent import Agent
+    from agent_factory.integrations.universal_client import UniversalLLMClient
+    
+    typer.echo(f"💬 Agent Factory Interactive Chat Session [{agent_id}] (Model: {model})")
+    typer.echo("Type 'exit' or 'quit' to terminate.\n" + "=" * 50)
+    
+    agent = Agent(id=agent_id, name=agent_id, instructions=f"You are {agent_id}, a helpful assistant.", model=model)
+    
+    while True:
+        try:
+            user_input = input("\n👤 You: ")
+            if user_input.strip().lower() in {"exit", "quit"}:
+                typer.echo("👋 Goodbye!")
+                break
+            if not user_input.strip():
+                continue
+                
+            res = agent.run(user_input)
+            if res.reasoning_content:
+                typer.echo(f"\n🧠 Thinking:\n{res.reasoning_content}")
+            typer.echo(f"\n🤖 {agent_id}: {res.output}")
+        except (KeyboardInterrupt, EOFError):
+            typer.echo("\n👋 Exiting chat.")
+            break
+
+
+@app.command()
+def audit(
+    agent_id: str = typer.Argument(..., help="Agent ID to scan"),
+):
+    """
+    Run automated OWASP Top 10 for LLMs security audit scan on an agent.
+    """
+    from agent_factory.agents.agent import Agent
+    from agent_factory.security.owasp_scanner import OWASPSecurityScanner
+    
+    agent = Agent(id=agent_id, name=agent_id, instructions="Autonomous agent instance.")
+    report = OWASPSecurityScanner.audit_agent(agent)
+    
+    typer.echo(f"\n🛡️  OWASP Top 10 Security Audit Report for Agent: [{agent_id}]")
+    typer.echo(f"Score: {report.score}/100 | Status: {report.overall_status}")
+    typer.echo("-" * 60)
+    for check in report.checks:
+        typer.echo(f"[{check.status}] {check.category_id}: {check.name} - {check.details}")
+
+
+@app.command()
+def pack(
+    blueprint_dir: str = typer.Argument(..., help="Path to blueprint directory"),
+    output: Optional[str] = typer.Option(None, "--output", "-o", help="Output .afpkg path"),
+):
+    """
+    Pack a blueprint into a cryptographically signed .afpkg archive.
+    """
+    from pathlib import Path
+    from agent_factory.marketplace.packager import BlueprintPackager, PackageManifest
+    
+    src = Path(blueprint_dir)
+    if not src.exists():
+        typer.echo(f"❌ Directory not found: {src}", err=True)
+        raise typer.Exit(1)
+        
+    out = Path(output) if output else src.with_suffix(".afpkg")
+    manifest = PackageManifest(
+        id=src.name,
+        name=src.name.replace("_", " ").title(),
+        version="1.0.0",
+        author="Agent Factory Creator",
+        description=f"Packaged blueprint from {src.name}",
+    )
+    
+    out_path, checksum = BlueprintPackager.pack_directory(src, out, manifest)
+    typer.echo(f"📦 Successfully packaged [{src.name}] into {out_path}")
+    typer.echo(f"🔑 SHA-256 Checksum: {checksum}")
+
+
 if __name__ == "__main__":
     app()

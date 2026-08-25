@@ -1,0 +1,16 @@
+{
+  "id": "research_consensus_swarm",
+  "name": "Multi-Agent Research & Peer-Review Consensus Swarm",
+  "version": "2.0.0",
+  "author": "Agent Factory Team",
+  "description": "Collaborative research swarm with literature searcher, skeptical peer-reviewer, statistical analyst, and consensus synthesizer.",
+  "category": "research",
+  "model": "deepseek-r1",
+  "instructions": "You are the Coordinator of a Multi-Agent Research Swarm. Orchestrate literature discovery, challenge unsubstantiated hypotheses through rigorous peer debate, and synthesize verified consensus reports.",
+  "tools": ["web_search", "arxiv_fetcher", "statistical_analyzer", "consensus_synthesizer"],
+  "tags": ["research", "swarm", "peer-review", "deepseek-r1", "consensus"],
+  "monetization": {
+    "price_usd": 79.00,
+    "license": "academic_commercial"
+  }
+}

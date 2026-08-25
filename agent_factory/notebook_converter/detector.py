@@ -241,11 +241,16 @@ class ToolVisitor(ast.NodeVisitor):
     def _extract_parameters(self, node: ast.FunctionDef) -> List[Dict[str, Any]]:
         """Extract function parameters."""
         params = []
-        for param in node.args.args:
+        num_defaults = len(node.args.defaults)
+        num_args = len(node.args.args)
+        default_offset = num_args - num_defaults
+        
+        for idx, param in enumerate(node.args.args):
+            is_required = idx < default_offset
             param_def = {
                 "name": param.arg,
                 "type": self._extract_type(param.annotation),
-                "required": param.default is None,
+                "required": is_required,
             }
             params.append(param_def)
         return params

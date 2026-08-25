@@ -4,7 +4,7 @@ Write agents, tools, and workflows to files.
 
 import yaml
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, Optional, List, Union
 
 
 class AgentWriter:

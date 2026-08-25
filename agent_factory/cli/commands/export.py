@@ -146,10 +146,40 @@ def channels(
     end_date = datetime.utcnow()
     start_date = end_date - timedelta(days=days)
     
-    channel_data = analytics.get_channel_attribution(start_date, end_date)
+@app.command(name="agent")
+def export_agent_command(
+    agent_id: str = typer.Argument(..., help="Agent ID to export"),
+    target: str = typer.Option("langgraph", "--target", "-t", help="Target framework (langgraph, crewai, autogen, llamaindex, docker, openai)"),
+    output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file path"),
+):
+    """
+    Export an agent to LangGraph, CrewAI, AutoGen, LlamaIndex, Docker, or OpenAI specs.
     
-    output_path = Path(output_file)
-    with open(output_path, "w") as f:
-        json.dump(channel_data, f, indent=2, default=str)
+    Example:
+        agent-factory export agent research_assistant --target langgraph
+    """
+    from agent_factory.agents.agent import Agent
+    from agent_factory.registry.local_registry import LocalRegistry
+    from agent_factory.interop import export_agent
     
-    typer.echo(f"✅ Channel data exported to {output_path}")
+    registry = LocalRegistry()
+    agent_obj = registry.get_agent(agent_id)
+    if not agent_obj:
+        # Create a mock agent representation for export if not in local registry
+        agent_obj = Agent(
+            id=agent_id,
+            name=agent_id.replace("_", " ").title(),
+            instructions=f"Autonomous Agent Factory instance for {agent_id}.",
+            model="gpt-4o",
+        )
+        
+    exported_code = export_agent(agent_obj, target_framework=target)
+    
+    if output:
+        out_p = Path(output)
+        out_p.write_text(exported_code, encoding="utf-8")
+        typer.echo(f"✅ Exported {agent_id} to {target} at {out_p.absolute()}")
+    else:
+        typer.echo(f"\n--- Exported {agent_id} ({target}) ---\n")
+        typer.echo(exported_code)
+
