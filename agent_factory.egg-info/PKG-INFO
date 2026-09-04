@@ -75,6 +75,10 @@ Dynamic: license-file
 
 # Agent Factory
 
+<!-- BEGIN: REPO HERO -->
+![JupyterNotebooks — hero generated locally on the GPU stack](assets/repo-hero.png)
+<!-- END: REPO HERO -->
+
 **Build production-ready AI agents in minutes, not months.**
 
 Agent Factory is the platform that turns your AI prototypes into real products. Stop wrestling with infrastructure. Start building agents that matter.
